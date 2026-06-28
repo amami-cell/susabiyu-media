@@ -4,5 +4,7 @@
 window.SUSABIYU = {
   GAS_URL: "https://script.google.com/macros/s/AKfycbxKn_MUfPgJ0nA8LJPp6YGb2Jehp9G8CpckV5bOAhe3M53eBC3Kle3O3Bf7mFzUJ2TMQw/exec",
   STORE_NAME: "すさび湯三条",
-  POLL_MS: 7000   // 最新チェックの間隔（ミリ秒）
+  POLL_MS: 7000,  // 最新チェックの間隔（ミリ秒）
+  // Web Push の公開鍵（applicationServerKey）。公開情報なのでここに置いてOK。
+  VAPID_PUBLIC: "BFDIPEHslhSqZlE4QooHXikxgv-25YJEDmESsYVxLXFnrmPWLO8aQGoVFYTUWO5nn_QpkUAiCtb1QZprcMCNIuc"
 };

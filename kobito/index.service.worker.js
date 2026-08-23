@@ -4,7 +4,7 @@
 // Incrementing CACHE_VERSION will kick off the install event and force
 // previously cached resources to be updated from the network.
 /** @type {string} */
-const CACHE_VERSION = '1787464761|2567409';
+const CACHE_VERSION = '1787465722|2052185';
 /** @type {string} */
 const CACHE_PREFIX = '小人一家と汚れた世界-sw-cache-';
 const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;

@@ -1,0 +1,20 @@
+[
+  {
+    "pattern": "yoshokumag",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@f8147e1026fa98ed356062045c8b2034d35aae7e/preview/20260910181832_6978.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@0f0fb03654488ea500406f365d945acecd54c35f/preview/20260910181836_0871.jpg",
+    "label": "洋食おしゃれ・雑誌エディトリアル",
+    "caption": "今夜は、肉。",
+    "music": "1分23秒～　愛の傘下",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokumagazine",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@0db48e02253858d410a252dba306f28e2fefa422/preview/20260910182004_8129.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@33731e62cb17503864c7d141d7ec19d85719c158/preview/20260910182006_2636.jpg",
+    "label": "洋食おしゃれ・雑誌ストーリー",
+    "caption": "この一皿に乾杯を。",
+    "music": "1分3秒～　Funky_droll_street",
+    "enabled": 1
+  }
+]

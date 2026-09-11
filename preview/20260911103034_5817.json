@@ -1,0 +1,29 @@
+[
+  {
+    "pattern": "yoshokuconto",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@17da9262330b97dda226efa7112df796106b4c92/preview/20260911102758_8272.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@a1651e72c131c8b5f16e15925a4c88379c22c943/preview/20260911102801_9719.jpg",
+    "label": "洋食おしゃれ・伝票（コント）",
+    "caption": "今夜は、肉。",
+    "music": "1分23秒～　愛の傘下",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokumaiolica",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@215d6592a347623092d2589c09007a70bf32a20f/preview/20260911102912_9239.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@a7f7415d59b1d45414423cf4409d55e76e22a291/preview/20260911102916_9696.jpg",
+    "label": "洋食おしゃれ・陶タイル",
+    "caption": "この一皿に乾杯を。",
+    "music": "1分3秒～　Funky_droll_street",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuprovino",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@86f3ea8bc5b224464e80afaa410c366bd65f4222/preview/20260911103030_5784.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@3c33ecfb693b208306d7dc52647049fedf089019/preview/20260911103033_4366.jpg",
+    "label": "洋食おしゃれ・ベタ焼き",
+    "caption": "肉と、赤と、いい夜と。",
+    "music": "1分51秒～　Good_Evening_Sunset",
+    "enabled": 1
+  }
+]

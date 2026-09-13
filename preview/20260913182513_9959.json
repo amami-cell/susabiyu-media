@@ -1,0 +1,65 @@
+[
+  {
+    "pattern": "yoshokucicchetti",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@7a9dceae74d9d45838b5d24cdf5b04f591fe6433/preview/20260913181704_5055.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@62df6d87319e9391f1275d08de0cff13123791fe/preview/20260913181707_5536.jpg",
+    "label": "洋食おしゃれ・カウンター横歩き",
+    "caption": "今夜は、肉。",
+    "music": "1分23秒～　愛の傘下",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokutricolore",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@18b4f115e62e95b865638fc448330000ee0de056/preview/20260913181813_6370.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@39e9c90817c9f8a7adbecf34d1f462ca39c8eedd/preview/20260913181815_8041.jpg",
+    "label": "洋食おしゃれ・三色帯",
+    "caption": "この一皿に乾杯を。",
+    "music": "1分3秒～　Funky_droll_street",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuprovino",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@96ed7d46ecad39bcafde1df63557abfdbfc40b36/preview/20260913181915_2812.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@12baf76874c88169c47f6f96cc147dbb83655781/preview/20260913181933_2938.jpg",
+    "label": "洋食おしゃれ・ベタ焼き",
+    "caption": "肉と、赤と、いい夜と。",
+    "music": "1分51秒～　Good_Evening_Sunset",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokunumeri",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@fb98186d7fcbabdc98a16a5e8d90b27633f84766/preview/20260913182046_6290.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@4f278d54868b7cd0b06ddfa4ec524b66332f351f/preview/20260913182105_8901.jpg",
+    "label": "洋食おしゃれ・数字で見る",
+    "caption": "旨いを、遠慮なく。",
+    "music": "20秒～　Cocktail_Glass",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokutenda",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@5d12f826937e9ca812f9bf1799e408141be6bc80/preview/20260913182207_4350.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@bdd8a48c3b6de0ed73cbe0d8ba3f15f178626c30/preview/20260913182209_3814.jpg",
+    "label": "洋食おしゃれ・縞の日除け",
+    "caption": "腹ペコ、集合。",
+    "music": "26秒～　Just_the_Record",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokumuro",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@bd2089607a7f40a15636bf4ee8d6f0ff528c03a5/preview/20260913182329_5662.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@cd4a9b488c227570e5b64239f1376c1116bbc0db/preview/20260913182349_0230.jpg",
+    "label": "洋食おしゃれ・石壁の壁書き",
+    "caption": "日常に、ひと皿の贅沢。",
+    "music": "49秒～　Somebody_(Prod._Khaim)",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokupassio",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@deeb1f328b289a03c50364db7b68a72a028022ee/preview/20260913182509_8543.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@dcb77acdfc53cf64a7234f73b74fb4919b82ef1d/preview/20260913182512_9814.jpg",
+    "label": "洋食おしゃれ・扉が開く",
+    "caption": "〆まで、旨い。",
+    "music": "49秒～　Take_Me_To_The_Top",
+    "enabled": 1
+  }
+]

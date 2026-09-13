@@ -1,0 +1,47 @@
+[
+  {
+    "pattern": "yoshokuetichetta",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@0655e5d5ec8cb30bfb01c1dbd2512b7baeade56f/preview/20260913165959_4982.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@1c696fcaf96fef4d7d03e263032c709b0cfdeea7/preview/20260913170001_6632.jpg",
+    "label": "洋食おしゃれ・ボトルのラベル",
+    "caption": "今夜は、肉。",
+    "music": "1分23秒～　愛の傘下",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokutessera",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@733a481cbd889c2a9fbe42c8cb8d1dc6fb62c27b/preview/20260913170145_8895.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@60bf490ff7cad3e2c2ee85c361cfbf5f3c5f978a/preview/20260913170147_4276.jpg",
+    "label": "洋食おしゃれ・スタンプカード",
+    "caption": "この一皿に乾杯を。",
+    "music": "1分3秒～　Funky_droll_street",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokunastro",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@fb6c2767d4a02953db55438c0b288f2f84c0a6fe/preview/20260913170305_3433.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@5637e5fab3bb123e78a6cbe15de3ef7c37ca9cea/preview/20260913170307_1984.jpg",
+    "label": "洋食おしゃれ・斜めのリボン帯",
+    "caption": "肉と、赤と、いい夜と。",
+    "music": "1分51秒～　Good_Evening_Sunset",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuconto",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@632f76dae5a4615b234f46c831637618fd90c447/preview/20260913170503_8183.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@7b2ca6b02cf5012f4c7e1f7f1648bc726318cc7f/preview/20260913170505_7725.jpg",
+    "label": "洋食おしゃれ・伝票（コント）",
+    "caption": "旨いを、遠慮なく。",
+    "music": "20秒～　Cocktail_Glass",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokumaiolica",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@0a84db93483a109b11fa7470744f0786a519e9f2/preview/20260913170613_0688.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@58bc60542285c4461e79a8ce28feeaf9c878f36d/preview/20260913170615_3238.jpg",
+    "label": "洋食おしゃれ・陶タイル",
+    "caption": "腹ペコ、集合。",
+    "music": "26秒～　Just_the_Record",
+    "enabled": 1
+  }
+]

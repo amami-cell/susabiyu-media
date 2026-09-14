@@ -1,0 +1,29 @@
+[
+  {
+    "pattern": "yoshokuritmo",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@6d7e0b39220c2bb2146dbada012fa73545dd3855/preview/20260914210604_0071.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@1c9c4a9c401201fce68a8095735435050afcb03b/preview/20260914210606_6940.jpg",
+    "label": "洋食おしゃれ・音ハメ(別の曲A)",
+    "caption": "旨いを、遠慮なく。",
+    "music": "French_Toast",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuonda",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@f98bf959ba66cd8251a0478dc80d845c95bb2704/preview/20260914210800_0398.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@fdecff9928496b81963a0196a847bb5575c552a1/preview/20260914210802_3184.jpg",
+    "label": "洋食おしゃれ・音ハメ(別の曲C)",
+    "caption": "日常に、ひと皿の贅沢。",
+    "music": "49秒～　Somebody_(Prod._Khaim)",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokubattere",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@f79e8a251c084cfddccfc76f63639288e882dab9/preview/20260914210958_8580.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@b0b7791956e1ef667ae80d3527825c2d256f2a21/preview/20260914211002_9472.jpg",
+    "label": "洋食おしゃれ・音ハメ(小節で切る)",
+    "caption": "今夜は、肉。",
+    "music": "swing_swing",
+    "enabled": 1
+  }
+]

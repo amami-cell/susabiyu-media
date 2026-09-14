@@ -1,0 +1,29 @@
+[
+  {
+    "pattern": "yoshokubattere",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@86f88b8831ec6bf4c4d9e4aa11203d20e37e70a8/preview/20260914161144_4371.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@119cafbae55e8edf84d7fa94784c16c8bb39b366/preview/20260914161146_2281.jpg",
+    "label": "洋食おしゃれ・音ハメ(小節で切る)",
+    "caption": "今夜は、肉。",
+    "music": "swing_swing",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuscritto",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@886e849147a3b56d4da5fd67931ef476364bcf5e/preview/20260914161302_5728.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@686194e47abd14e3e40616ac1807539105749c2f/preview/20260914161305_8414.jpg",
+    "label": "洋食おしゃれ・音ハメ(拍で書く)",
+    "caption": "この一皿に乾杯を。",
+    "music": "ジングルベル_Jingle_Bells-Cover-フレンチジャズ風",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokurespiro",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@cbfab32d857fb88fef3ae68b24e4e9513f315536/preview/20260914161422_6729.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@e0109dbfff88bef949b9276f9cae9ed766c2a5d5/preview/20260914161425_0535.jpg",
+    "label": "洋食おしゃれ・音ハメ(拍で呼吸)",
+    "caption": "肉と、赤と、いい夜と。",
+    "music": "スターリーディッシュ",
+    "enabled": 1
+  }
+]

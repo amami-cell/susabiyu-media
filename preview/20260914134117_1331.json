@@ -1,0 +1,20 @@
+[
+  {
+    "pattern": "yoshokutenda",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@8edfe7262fef3704c056f2caccf154985a49631a/preview/20260914133948_9453.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@32c4473ce4b2db026355502a30d84d4f0467ce8d/preview/20260914133950_2497.jpg",
+    "label": "洋食おしゃれ・縞の日除け",
+    "caption": "今夜は、肉。",
+    "music": "1分23秒～　愛の傘下",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokumuro",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@6b4ec1f62441244ae2b66d01bcc28d6e3c3acade/preview/20260914134113_3554.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@a3e8af90350ed344c91582e179c00c3a88dd7d8f/preview/20260914134116_2422.jpg",
+    "label": "洋食おしゃれ・石壁の壁書き",
+    "caption": "この一皿に乾杯を。",
+    "music": "1分3秒～　Funky_droll_street",
+    "enabled": 1
+  }
+]

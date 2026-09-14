@@ -1,0 +1,20 @@
+[
+  {
+    "pattern": "yoshokubattere",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@3fd8a16cfda2159bfd13933dd2010ac528d304ba/preview/20260914220318_5540.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@11389fcf999ac5114e6217fcf115037dfe7661ac/preview/20260914220320_5129.jpg",
+    "label": "洋食おしゃれ・音ハメ(小節で切る)",
+    "caption": "今夜は、肉。",
+    "music": "swing_swing",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuritmo",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@1982aae9738b4a9a547dbc70803b5e06106c9834/preview/20260914220638_5952.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@0a2481ed584ec20174769036de66aa04ca2a7a93/preview/20260914220640_4584.jpg",
+    "label": "洋食おしゃれ・音ハメ(別の曲A)",
+    "caption": "旨いを、遠慮なく。",
+    "music": "French_Toast",
+    "enabled": 1
+  }
+]

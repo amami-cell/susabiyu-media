@@ -1,0 +1,20 @@
+[
+  {
+    "pattern": "yoshokuritmo",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@bcd74a6b33f9109daa32253d823507aedb4bf4a5/preview/20260914205049_8124.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@6cb15ed0b124dadb478dc099ec1f9cc11b0191ee/preview/20260914205051_2422.jpg",
+    "label": "洋食おしゃれ・音ハメ(別の曲A)",
+    "caption": "旨いを、遠慮なく。",
+    "music": "French_Toast",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuonda",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@7ffd3ab4980b37a4ce9f492a2ac9aff84a903f6d/preview/20260914205410_0703.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@c1c3354542cefd19de9520acf673be5a62c06a3e/preview/20260914205411_6533.jpg",
+    "label": "洋食おしゃれ・音ハメ(別の曲C)",
+    "caption": "日常に、ひと皿の贅沢。",
+    "music": "49秒～　Somebody_(Prod._Khaim)",
+    "enabled": 1
+  }
+]

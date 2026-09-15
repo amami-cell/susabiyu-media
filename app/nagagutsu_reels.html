@@ -75,7 +75,7 @@
   <a id="forceupd" style="color:#8ab4e0;text-decoration:underline;cursor:pointer;margin-left:8px">🔄 最新に更新</a>
 </div>
 
-<script src="./config.nagagutsu.js?v=91da4639"></script>
+<script src="./config.nagagutsu.js?v=d199decc"></script>
 <script>
 (function(){
   "use strict";
@@ -877,6 +877,17 @@
       if(!extras.length) return;
       FEED = shuffleFeed(FEED.concat(extras));   // 厳選＋加工済み全料理を日替わり順で
       if(tF.classList.contains("on")) render("feed");
+    }).catch(function(){});
+  })();
+  // リールも同じ作りで外から読む。ぎふやはHTMLに直書きだが、ナガグツは焼き直すたびに
+  // HTMLを書き換えずに済むよう reel.json にした（中身と並びは nagagutsu_reels.yml が作る）。
+  (function loadReelJson(){
+    fetch("./nagagutsu/reel.json"+V, {cache:"no-store"}).then(function(r){ return r.ok?r.json():null; }).then(function(d){
+      if(!d || !d.items || !d.items.length) return;
+      REEL = d.items.map(function(it){
+        return {vid: it.vid, poster: it.poster||"", t: it.t||"", cap: it.cap||"", tags: it.tags||""};
+      });
+      if(tR.classList.contains("on")) render("reel");
     }).catch(function(){});
   })();
 })();

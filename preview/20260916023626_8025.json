@@ -1,0 +1,38 @@
+[
+  {
+    "pattern": "yoshokuopwine",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@b12b8ba8511ed90bf86c078e2b26027ef9837f89/preview/20260916022937_0296.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@2c8d95c26fb8a4268686109571748e748b138be6/preview/20260916022940_7795.jpg",
+    "label": "洋食おしゃれ・OP/CLOSE案3・ボルドー",
+    "caption": "本物を、気軽に。",
+    "music": "",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokumagazine",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@f8ea7fbde44ae5846de84ae3f4986dd2cd98b9db/preview/20260916023055_5308.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@ac7c2b3572e254b073b3f0e6a94b3ffb0665a72a/preview/20260916023058_7044.jpg",
+    "label": "洋食おしゃれ・雑誌ストーリー",
+    "caption": "今宵は、贅沢に。",
+    "music": "",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokudish",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@9efdae43f148c98052d8f25ad930f2cf2655d5ef/preview/20260916023337_7550.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@f63c9ab90c0ab792af44c806f3547864806a51f2/preview/20260916023340_1512.jpg",
+    "label": "洋食おしゃれ・本日の一皿",
+    "caption": "今宵は、贅沢に。",
+    "music": "",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokubattere",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@57745634e11fc0ef598e1101db9e0a494df9d7f7/preview/20260916023621_1359.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@9192c731e41b165e693849baaaf371cc11d06478/preview/20260916023624_7153.jpg",
+    "label": "洋食おしゃれ・音ハメ(小節で切る)",
+    "caption": "今宵は、贅沢に。",
+    "music": "",
+    "enabled": 1
+  }
+]

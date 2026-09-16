@@ -1,0 +1,101 @@
+[
+  {
+    "pattern": "yoshokucicchetti",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@fbc08ab302e9e131ce5798fcd27cb2eca6d1900c/preview/20260916110124_9689.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@72e30dccf37b9b7c2de809b62c95f95dae15cbc7/preview/20260916110127_7325.jpg",
+    "label": "洋食おしゃれ・カウンター横歩き",
+    "caption": "本物を、気軽に。",
+    "music": "ボナペティ",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokutricolore",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@eb5b8e208d235fd3886e1a774a3d749dc8f68324/preview/20260916110249_3693.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@b86cf6edec90a682d7a4b199842df2dc19928892/preview/20260916110252_6347.jpg",
+    "label": "洋食おしゃれ・三色帯",
+    "caption": "駅前で、ちょっと贅沢。",
+    "music": "1分23秒～　愛の傘下",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuprovino",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@566cadeff72fe0f7edd109e481798a61a1923492/preview/20260916110411_0974.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@73055b339a746b55f53a1f51a410e174c403bbf2/preview/20260916110414_9378.jpg",
+    "label": "洋食おしゃれ・ベタ焼き",
+    "caption": "〆まで、美しい。",
+    "music": "1分3秒～　Funky_droll_street",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokunumeri",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@bbeb8215a5dc2c2453e250a67c0b955323c9a2aa/preview/20260916110541_0720.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@d01eb6a59e83ea4a2a94347f018ac48b48b89cba/preview/20260916110543_1356.jpg",
+    "label": "洋食おしゃれ・数字で見る",
+    "caption": "いい夜の、幕開け。",
+    "music": "20秒～　Cocktail_Glass",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokutenda",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@b5426f8bf219def5bb55202e49ae1e9a4b2f089a/preview/20260916110700_7999.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@1b8ce435dc51db9e305f9f3348e515b8e0643f2c/preview/20260916110703_8707.jpg",
+    "label": "洋食おしゃれ・縞の日除け",
+    "caption": "〜日常に、上質なひと皿を〜",
+    "music": "26秒～　Just_the_Record",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokumuro",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@10df53c66128d8516255abd11bb69b7292c6e8c9/preview/20260916110821_1848.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@38d43c3fcb4d82dbb8f38529f53b1273b70a0981/preview/20260916110824_3305.jpg",
+    "label": "洋食おしゃれ・石壁の壁書き",
+    "caption": "この一皿に金の一杯を。",
+    "music": "49秒～　Take_Me_To_The_Top",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokupassio",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@896c169771403e64bb2472f606826c560e8492b1/preview/20260916110949_2602.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@d0b2c548a1f966503fb251a6000f97b2f33220de/preview/20260916110951_1923.jpg",
+    "label": "洋食おしゃれ・扉が開く",
+    "caption": "夜と、金と、フレンチと。",
+    "music": "4秒～月の降る街",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuetichetta",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@12577b65b94f2b409b65a8a70c1b2dcf1578601b/preview/20260916111138_7979.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@784911254b0acd3e1d92b9fbe6c9480f173f99a0/preview/20260916111140_3228.jpg",
+    "label": "洋食おしゃれ・ボトルのラベル",
+    "caption": "今夜のごちそう。",
+    "music": "paving_walkway",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokufuoco",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@3d0786d3727b74b331a74d2e2503ef853c3b52f6/preview/20260916111315_6196.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@0aa46ee3257d22a6559ccc62975cb80f86646cc5/preview/20260916111317_5384.jpg",
+    "label": "洋食おしゃれ・ピントが合う",
+    "caption": "駅前で、ちょっと贅沢。",
+    "music": "swing_swing",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokubattere",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@2ec002afe53ace5c09588303b47b1b9b6717a12f/preview/20260916111636_5329.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@2008b82dd285eb5ec1fe72dcd256b419babe466e/preview/20260916111639_0475.jpg",
+    "label": "洋食おしゃれ・音ハメ(小節で切る)",
+    "caption": "今宵は、贅沢に。",
+    "music": "swing_swing",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuritmo",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@74ea648d0dcda4e4d8ab4d14f8940dd6f16631c1/preview/20260916111959_1273.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@c690cb8807d240629d3aaba5ca1a290b14a6ae8e/preview/20260916112002_1987.jpg",
+    "label": "洋食おしゃれ・音ハメ(別の曲A)",
+    "caption": "旨いを、遠慮なく。",
+    "music": "French_Toast",
+    "enabled": 1
+  }
+]

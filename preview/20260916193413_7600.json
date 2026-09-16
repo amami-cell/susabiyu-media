@@ -1,0 +1,92 @@
+[
+  {
+    "pattern": "yoshokuonda",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@b480cd30799fa85ca3fe8c85f829e77d8e4e479b/preview/20260916192721_4916.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@a1783571240f7c70bf3fd2c145f668f2f6c51e06/preview/20260916192723_3776.jpg",
+    "label": "洋食おしゃれ・音ハメ(別の曲C)",
+    "caption": "日常に、ひと皿の贅沢。",
+    "music": "49秒～　Somebody_(Prod._Khaim)",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuopblur",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@5a1250c1f42b0873aa8e9d9f9396cf645954cb48/preview/20260916192841_8611.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@f7604c3e56b60e23f2a953188710a6a382bd7b3e/preview/20260916192842_2827.jpg",
+    "label": "洋食おしゃれ・OP/CLOSE案1・ぼかし写真",
+    "caption": "この一皿に金の一杯を。",
+    "music": "1分3秒～　Funky_droll_street",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuopmortar",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@89dd690763b0664aabc587216edf32670fb2961e/preview/20260916192921_1229.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@faf4871cf155868ba3d834d0092138d010c6aaaa/preview/20260916192922_3686.jpg",
+    "label": "洋食おしゃれ・OP/CLOSE案2・モルタル壁",
+    "caption": "夜と、金と、フレンチと。",
+    "music": "1分51秒～　Good_Evening_Sunset",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuopwine",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@762e1b8e22083f0bc6e1a3a79a26e8ecd4c9a605/preview/20260916192957_5106.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@a03da9e2f39ae1340203d8b2b0c29ee8a65b00e8/preview/20260916192958_5720.jpg",
+    "label": "洋食おしゃれ・OP/CLOSE案3・ボルドー",
+    "caption": "本物を、気軽に。",
+    "music": "20秒～　Cocktail_Glass",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuop4",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@5a689b8e9176fa6edb877ccd7c3cf3c5383fe4a9/preview/20260916193037_3140.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@9af0cdd6567b2528af02562ebad589d317c73365/preview/20260916193038_0349.jpg",
+    "label": "洋食おしゃれ・OP/CLOSE案4・シネマの幕",
+    "caption": "今夜のごちそう。",
+    "music": "26秒～　Just_the_Record",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuop5",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@e8a4a6cbb5fc89e62ab94b1565bc8ab7792b027b/preview/20260916193131_3391.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@a9fffca7647eece88a5748deacabc0aebf5012d1/preview/20260916193133_4748.jpg",
+    "label": "洋食おしゃれ・OP/CLOSE案5・一皿から引く",
+    "caption": "駅前で、ちょっと贅沢。",
+    "music": "49秒～　Somebody_(Prod._Khaim)",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuop6",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@f3d37d40d94cef1ae291518993cc469c8abd2821/preview/20260916193220_5967.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@6c719bfca86b3351eeb35fab3c754d7c0b3888e0/preview/20260916193222_9413.jpg",
+    "label": "洋食おしゃれ・OP/CLOSE案6・ネオンが灯る",
+    "caption": "〆まで、美しい。",
+    "music": "49秒～　Take_Me_To_The_Top",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuop7",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@2c95a0e98483a7661c6f2b0e478abe363e6717c0/preview/20260916193256_3272.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@585324070dc5137b205674269511d09216f3d2e9/preview/20260916193257_4463.jpg",
+    "label": "洋食おしゃれ・OP/CLOSE案7・金の円環",
+    "caption": "ビストロの、実力。",
+    "music": "4秒～月の降る街",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuop8",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@693ac66feb2ba0dd9c00b1a921114d356493f7da/preview/20260916193336_5467.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@26ee030bb90efc1480038ddd0af73c2d581d4833/preview/20260916193337_4426.jpg",
+    "label": "洋食おしゃれ・OP/CLOSE案8・タイポが集まる",
+    "caption": "いい夜の、幕開け。",
+    "music": "French_Toast",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuop9",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@aa779f6c99d5879dd8c3f90b5d435cec0ad51a91/preview/20260916193410_7854.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@008612c9e5dd42435750aed6b97ff27e008700cb/preview/20260916193412_2925.jpg",
+    "label": "洋食おしゃれ・OP/CLOSE案9・雑誌の表紙/裏表紙",
+    "caption": "〜日常に、上質なひと皿を〜",
+    "music": "paving_walkway",
+    "enabled": 1
+  }
+]

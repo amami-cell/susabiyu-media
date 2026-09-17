@@ -1,1 +1,1656 @@
-!function(){"use strict";var e=window.SUSABIYU||window.GIFUYA||{},t=(e.GAS_URL||"").trim(),n=e.POLL_MS||4e3,r=localStorage.getItem("sb_key")||"",a=localStorage.getItem("sb_admin")||"",i=function(){try{var e=JSON.parse(localStorage.getItem("sb_notif")||"{}");return e&&"object"==typeof e?e:{}}catch(e){return{}}}();var o=0;function s(e,t){if(void 0!==t&&t!==o)return r;var n=window.prompt(e||"確認コードを入力してください","");if(null!=n){var a=r;r=n.trim(),localStorage.setItem("sb_key",r),o++,function(e,t){if(!e||!window.crypto||!crypto.subtle)return;Qe(e).then(function(e){if(e===l){try{t?localStorage.setItem("sb_key",t):localStorage.removeItem("sb_key"),localStorage.setItem("sb_store","karasuma")}catch(e){}location.reload()}})}(r,a)}return r}var l="92925488b28ab12584ac8fcaa8a27a0f497b2c62940c8f4fbc8ef19ebc87c43e",c={sushi:1,tempo:1,typo:1,photo:1,oshina:1,oshinatate:1,kaiten:1,osusume:1,gridzoom:1,noren:1,season:1};function d(e){return 1===c[String(e&&e.pattern||"")]||0===String(e&&e.label||"").indexOf("【鮨処】")}var u=!1;try{u="karasuma"===localStorage.getItem("sb_store")}catch(e){}var p=document.getElementById("feed"),v=document.getElementById("live"),f=document.getElementById("liveTxt"),m=document.getElementById("toast"),h={},g={},b=!0,y=null,w=0;function k(n){return new Promise(function(i,s){if(t&&0!==t.indexOf("PASTE_")){var l="__sb_cb"+ ++w+"_"+Date.now(),c=document.createElement("script"),d=setTimeout(function(){v(),s(new Error("timeout"))},6e4),u=o;window[l]=function(e){if(v(),e&&"object"==typeof e)try{e._gen=u}catch(e){}i(e)},r&&(n.key=r),a&&void 0===n.owner&&(n.owner=a),e.ACCOUNT&&void 0===n.account&&(n.account=e.ACCOUNT);var p=Object.keys(n).map(function(e){return e+"="+encodeURIComponent(n[e])}).join("&");c.src=t+(t.indexOf("?")>=0?"&":"?")+p+"&cb="+l,c.onerror=function(){v(),s(new Error("network"))},document.head.appendChild(c)}else s(new Error("GAS_URL未設定"));function v(){clearTimeout(d),delete window[l],c.parentNode&&c.parentNode.removeChild(c)}})}function S(e){m.textContent=e,m.classList.add("show"),clearTimeout(window._tt),window._tt=setTimeout(function(){m.classList.remove("show")},1700)}function E(e){try{navigator.vibrate&&navigator.vibrate(e||15)}catch(e){}}function L(e){m.innerHTML='<span class="tspin"></span>'+(e||"更新中…"),m.classList.add("show"),clearTimeout(window._tt)}function _(e){var t=(e.url||"").toLowerCase();return t.indexOf(".mp4")>=0||t.indexOf(".mov")>=0||t.indexOf(".webm")>=0||"video"===e.kind}function x(e){return e?"background:#000 url("+e+") center/cover no-repeat":"background:#000"}function N(e){if(_(e)){var t=e.poster?' poster="'+e.poster+'"':"",n=e.poster?"none":"metadata";return'<div class="mediaWrap"><video class="media" crossorigin="anonymous" style="'+x(e.blur)+'" src="'+e.url+'"'+t+' controls playsinline preload="'+n+'" onloadeddata="window.__mediaOk&&window.__mediaOk(this)" onerror="window.__mediaErr&&window.__mediaErr(this)"></video><div class="badge">▶ タップで再生（音が出ます）</div></div>'}return e.url?'<div class="mediaWrap"><img class="media" crossorigin="anonymous" style="'+x(e.blur)+'" src="'+e.url+'" alt="preview" decoding="async" loading="eager" fetchpriority="high" onload="window.__mediaOk&&window.__mediaOk(this)" onerror="window.__mediaErr&&window.__mediaErr(this)"></div>':'<div class="mediaWrap"><div class="media" style="height:180px"></div></div>'}function A(e){var t,n,r=(t=e.when,(n=String(t||"").match(/(\d{4})-(\d{1,2})-(\d{1,2})\s+(\d{1,2}):(\d{2})/))?Date.UTC(+n[1],+n[2]-1,+n[3],+n[4]-9,+n[5],0):0);if(!r)return"";var a=r-Date.now();if(a<=0)return"まもなく投稿";var i=Math.floor(a/6e4),o=Math.floor(i/60),s=i%60;return o>0?"あと"+o+"時間"+s+"分":"あと"+s+"分"}function I(e){return String(null==e?"":e).replace(/[&<>"]/g,function(e){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[e]})}function C(e,t){e.setAttribute("data-status",t.status);var n=e.querySelector(".slot");n&&(n.innerHTML=function(e){return"redo"===e.status?'<div class="redoing"><span class="spin"></span>作り直しています…（1〜3分・完成したら自動更新）</div>':"approved"===e.status?'<div class="banner okb" data-unapprove="1">✓ 承認済み（予定時刻に投稿されます）<small>タップで承認取消（管理者）</small></div>':"rejected"===e.status?'<div class="banner ngb">— 取りやめました</div>':"gone"===e.status?'<div class="banner ngb">— この枠は削除されました</div>':'<div class="btns"><button class="ok">投稿OK</button><button class="rd">作り直す</button><button class="ng">やめる</button></div>'}(t),function(e,t){var n=e.querySelectorAll(".btns button");n.length&&(n[0].onclick=function(){q(e,t.token,"ok")},n[1].onclick=function(){q(e,t.token,"redo")},n[2].onclick=function(){q(e,t.token,"cancel")})}(e,t)),e.classList.toggle("done","approved"===t.status||"rejected"===t.status||"gone"===t.status);var r=e.querySelector(".banner.okb[data-unapprove]");r&&(r.onclick=function(){!function(e,t){function n(){g[t]="pending",C(e,{token:t,status:"pending"}),S("承認を取り消しました（やめない限り自動投稿します）"),k({api:"act",token:t,action:"unapprove"}).then(function(n){if(n&&"owner"===n.error)return S("管理者コードが必要です"),delete g[t],C(e,{token:t,status:"approved"}),void oe();var r=n&&n.result||"";if("pending"===r)g[t]="pending";else if(0===r.indexOf("locked:")){var a=r.split(":")[1];delete g[t],C(e,{token:t,status:a}),S("取り消せませんでした")}else delete g[t],P()}).catch(function(){delete g[t],S("通信エラー"),C(e,{token:t,status:"approved"})})}if(a)return void n();var r=window.prompt("承認を取り消すには管理者コードを入力してください","");if(null==r)return;if(!(r=String(r).trim()))return;k({api:"owner",owner:r}).then(function(e){e&&"auth"===e.error?s("確認コードを入力してください",e._gen):e&&e.owner?(a=r,localStorage.setItem("sb_admin",r),n()):S("管理者コードが違います")}).catch(function(){S("通信エラー")})}(e,t.token)}),e._redoTimer&&(clearTimeout(e._redoTimer),e._redoTimer=null),"redo"===t.status&&(e._redoTimer=setTimeout(function(){var t=e.querySelector(".slot");if(t&&"redo"===e.getAttribute("data-status")){var n=document.createElement("div");n.className="redoslow",n.innerHTML='時間がかかっています。<button class="mlink" data-r="again">もう一度</button>・<button class="mlink" data-r="stop">やめる</button>',t.appendChild(n);var r=n.querySelector('[data-r="again"]'),a=n.querySelector('[data-r="stop"]');r&&(r.onclick=function(){q(e,e.dataset.token,"redo")}),a&&(a.onclick=function(){q(e,e.dataset.token,"cancel")})}},3e5))}window.__mediaErr=function(e){if(e){var t=e.getAttribute("src")||"",n=function(){var t=e.closest&&e.closest(".mediaWrap");t&&t.classList.add("mediaerr")};if(/^https?:/i.test(t)){var r=t.replace(/[?&]r=\d+$/,""),a=parseInt(e.getAttribute("data-retry")||"0",10)+1;e.setAttribute("data-retry",String(a)),a<=4?setTimeout(function(){var t=r+(r.indexOf("?")>=0?"&":"?")+"r="+Date.now();if(e.src=t,"VIDEO"===e.tagName)try{e.load()}catch(e){}},700*a):n()}else n()}},window.__mediaOk=function(e){var t=e&&e.closest&&e.closest(".mediaWrap");t&&t.classList.remove("mediaerr"),e&&e.setAttribute("data-retry","0")},setInterval(function(){for(var e=document.querySelectorAll("img.media"),t=Date.now(),n=0;n<e.length;n++){var r=e[n];if(r.complete&&r.naturalWidth>0)r._t0=0;else if(r.getAttribute("src")){var a=r.getBoundingClientRect();if(null!==r.offsetParent&&a.bottom>-600&&a.top<window.innerHeight+600){var i=r.closest&&r.closest(".mediaWrap");i&&i.classList.contains("mediaerr")?(!r._again||t>r._again)&&(r._again=t+3e4,r.setAttribute("data-retry","0"),window.__mediaErr&&window.__mediaErr(r)):r._t0?t-r._t0>15e3&&(r._t0=t,window.__mediaErr&&window.__mediaErr(r)):r._t0=t}else r._t0=0}}},5e3);var T={taishufuda:"大衆・値札チラシ",taishukaiten:"大衆・回転レーン",taishuoshi:"大衆・イチオシ",taishuodo:"大衆・王道",taishuzen:"大衆・全画面",taishushinbun:"大衆・見出し新聞",taishugrid:"大衆・グリッドズーム",taishutanzaku:"大衆・壁の短冊",taishunoren:"大衆・暖簾くぐり",taishutempo:"大衆・賑やかテンポ",taishushun:"大衆・季節の旬",taishuhito:"大衆・本日の一皿",taishuoshina:"大衆・お品書き",sanjokaiten:"回転レーン(烏丸ベース)",taishugaku:"大衆・額装（画像）",taishucap:"大衆・写真一言（画像）",taishuimga:"画像案A・提灯(寿司酒場)",taishuimga2:"画像案A2・提灯(大衆酒場)",taishuimgb:"画像案B・チラシ",taishuimgd:"画像案D・紺のれん",taishuimge:"画像案E・黄ポップ",taishuimgf:"画像案F・白抜き文字"};function M(e){var t=document.createElement("div");t.className="card",t.setAttribute("data-token",e.token),t.dataset.url=e.url||"";var n=A(e);return t.innerHTML='<div class="head"><span class="time">'+I(e.when)+'</span><span class="pat">'+I(function(e){return e.patternJa&&e.patternJa!==e.pattern?e.patternJa:T[e.pattern]||e.patternJa||e.pattern||""}(e))+"</span>"+(n?'<span class="remain">'+n+"</span>":"")+"</div>"+N(e)+'<div class="cap">'+I(e.caption||"（動画）")+'</div><div class="slot"></div>',C(t,e),t}function q(e,t,n){for(var r=e.querySelectorAll(".btns button"),a=0;a<r.length;a++)r[a].disabled=!0;var i="ok"===n?"approved":"redo"===n?"redo":"rejected";g[t]=i,C(e,{token:t,status:i}),S("ok"===n?"承認しました":"redo"===n?"作り直しを開始しました":"取りやめました"),k({api:"act",token:t,action:n}).then(function(r){var a=r&&r.result||"";if(0===a.indexOf("locked:")){var o=a.split(":")[1];S("他の方が「"+("approved"===o?"投稿OK":"rejected"===o?"やめる":"作り直し")+"」済みです"),g[t]=o,C(e,{token:t,status:o})}else"busy"===a?(delete g[t],S("混雑中。再取得します"),P()):"notfound"===a?(delete g[t],C(e,{token:t,status:"gone"})):(g[t]=i,"redo"===n&&(H(3e3),R()))}).catch(function(){delete g[t],S("通信エラー。元に戻します"),C(e,{token:t,status:"pending"})})}function B(e){b&&(p.innerHTML="",b=!1);var t={},r=!1;e.forEach(function(e){t[e.token]=!0,"redo"===e.status&&(r=!0);var n=h[e.token];if(n){var a=n.querySelector(".remain");if(a&&(a.textContent=A(e)),g[e.token]){if(e.status!==g[e.token])return;delete g[e.token]}if((n.dataset.url||"")!==(e.url||"")){n.dataset.url=e.url||"";var i=n.querySelector(".mediaWrap");i&&(i.outerHTML=N(e));var o=n.querySelector(".cap");o&&(o.textContent=e.caption||"（動画）")}n.getAttribute("data-status")!==e.status&&C(n,e)}else n=M(e),h[e.token]=n,p.appendChild(n)}),Object.keys(h).forEach(function(e){if(!t[e]){var n=h[e];delete h[e],n.style.opacity="0",n.style.transform="scale(.98)",setTimeout(function(){n.parentNode&&n.parentNode.removeChild(n)},280)}}),p.children.length||(p.innerHTML='<div class="empty">確認待ちの投稿はありません。<br>新しい投稿ができると、ここに表示されます。</div>'),H(r?3e3:n)}function O(e){if(v.classList.toggle("live",e),e){var t=new Date,n=function(e){return("0"+e).slice(-2)};f.textContent="最新 "+n(t.getHours())+":"+n(t.getMinutes())+":"+n(t.getSeconds())}else f.textContent="接続中…"}function P(){return k({api:"list"}).then(function(e){if(e&&"auth"===e.error)return O(!1),s("確認コードが違います。もう一度入力してください",e._gen),P();O(!0);var t=e&&e.items||[];e&&e.sig;try{localStorage.setItem("sb_feed",JSON.stringify(t))}catch(e){}B(t)}).catch(function(e){O(!1),b&&(p.innerHTML='<div class="empty">接続できませんでした。<br>設定(GAS_URL)をご確認ください。<br><small>'+I(e.message)+"</small></div>",b=!1)})}function R(){document.hidden||P()}function H(e){y&&clearInterval(y),y=setInterval(R,e)}function D(e){for(var t=(e+"=".repeat((4-e.length%4)%4)).replace(/-/g,"+").replace(/_/g,"/"),n=atob(t),r=new Uint8Array(n.length),a=0;a<n.length;a++)r[a]=n.charCodeAt(a);return r}function F(){return"serviceWorker"in navigator&&"PushManager"in window&&"Notification"in window}function j(){var e=document.getElementById("pushBtn");if(e){e.onclick=W;var t=/iphone|ipad|ipod/i.test(navigator.userAgent),n="standalone"in navigator&&navigator.standalone;F()?navigator.serviceWorker.ready.then(function(e){return e.pushManager.getSubscription()}).then(function(t){e.style.display="inline-block",t&&"granted"===Notification.permission?(e.textContent="🔔 通知ON",e.classList.add("on"),e.onclick=function(){Y(t)}):(e.textContent="🔔 通知を受け取る",e.classList.remove("on"),e.onclick=W)}).catch(function(){e.style.display="inline-block"}):t&&!n?(e.style.display="inline-block",e.textContent="🔔 通知",e.classList.remove("on")):e.style.display="none"}}function W(){var t=/iphone|ipad|ipod/i.test(navigator.userAgent),n="standalone"in navigator&&navigator.standalone;if(t&&!n){var r=document.getElementById("ios");return r&&(r.style.display="block"),void S("iPhoneは『ホーム画面に追加』してから通知をオンにできます")}F()?e.VAPID_PUBLIC?Notification.requestPermission().then(function(t){"granted"===t?navigator.serviceWorker.ready.then(function(t){return t.pushManager.subscribe({userVisibleOnly:!0,applicationServerKey:D(e.VAPID_PUBLIC)})}).then(function(e){return k({api:"subscribe",sub:(t=JSON.stringify(e),btoa(unescape(encodeURIComponent(t)))),prefs:JSON.stringify(i),ep:e.endpoint}).then(function(t){t&&"auth"===t.error?s("確認コードを入力してください",t._gen):(S("通知をオンにしました 🔔"),j(),Y(e))});var t}).catch(function(e){S("通知の登録に失敗: "+(e&&e.message||e))}):S("通知が許可されませんでした")}):S("通知の設定(VAPID)が未設定です"):S("この端末/ブラウザは通知に未対応です")}function U(e){e.classList.remove("show"),setTimeout(function(){e.parentNode&&e.parentNode.removeChild(e)},220)}var J=[{key:"ig",label:"Instagram投稿完了",desc:"実際にInstagramへ投稿された時"},{key:"confirm",label:"確認用の作成完了",desc:"確認用の動画・画像ができた時"},{key:"redo",label:"作り直しの作成完了",desc:"作り直した動画・画像ができた時"}];function Y(e){!function(e,t){var n=document.createElement("div");n.className="modalOv";var r=document.createElement("div");r.className="modal",r.innerHTML='<div class="mhead"><span>'+I(e)+'</span><button class="mx">✕</button></div><div class="mbody"></div>',n.appendChild(r),document.body.appendChild(n),r.querySelector(".mx").onclick=function(){U(n)},n.onclick=function(e){e.target===n&&U(n)},t(r.querySelector(".mbody"),n),requestAnimationFrame(function(){n.classList.add("show")})}("通知の設定",function(t,n){var r=document.createElement("div");r.className="mlead",r.textContent="受け取りたい通知だけをオンにできます（この端末ごとの設定）。",t.appendChild(r),J.forEach(function(n){var r,a=document.createElement("label");a.className="swrow",a.innerHTML='<div class="swtxt"><b>'+I(n.label)+"</b><small>"+I(n.desc)+'</small></div><span class="sw"><input type="checkbox"'+(r=n.key,("0"!==String(void 0!==i[r]?i[r]:1)?" checked":"")+"><i></i></span>");var o=a.querySelector("input");o.onchange=function(){i[n.key]=o.checked?1:0,function(){try{localStorage.setItem("sb_notif",JSON.stringify(i))}catch(e){}}(),e&&k({api:"notifprefs",ep:e.endpoint,prefs:JSON.stringify(i)}).then(function(e){e&&"auth"===e.error&&s("確認コードを入力してください",e._gen)}),S((o.checked?"ON：":"OFF：")+n.label)},t.appendChild(a)});var a=document.createElement("button");a.className="mbtn off",a.textContent="通知をすべてオフにする",a.onclick=function(){if(e)try{e.unsubscribe()}catch(e){}S("通知をオフにしました"),U(n),j()},t.appendChild(a)})}function z(e){if(e){var t=0,n=0;!function r(){var a=h[e];if(a)return a.scrollIntoView({behavior:"auto",block:"start"}),0===n&&(a.classList.add("flash"),setTimeout(function(){a.classList.remove("flash")},2200)),void(++n<5&&setTimeout(r,250));++t<25&&setTimeout(r,250)}()}}var V=document.getElementById("gallery"),G=document.getElementById("tabFeed"),X=document.getElementById("tabGallery"),K=!1,$=null,Q={};function Z(e){return"0"!==String(e)&&"false"!==String(e).toLowerCase()?"1":"0"}var ee=window.IntersectionObserver?new IntersectionObserver(function(e){for(var t=0;t<e.length;t++){var n=e[t].target;if(e[t].isIntersecting){if(!n.getAttribute("src")&&n.getAttribute("data-vsrc")){n.setAttribute("src",n.getAttribute("data-vsrc"));try{n.load()}catch(e){}}}else if(n.getAttribute("src")&&n.paused){n.removeAttribute("src");try{n.load()}catch(e){}}}},{rootMargin:"180% 0px 180% 0px"}):null;function te(e){var t=document.createElement("div");t.className="card "+(e.url?_(e)?"cv":"ci":"cu"),t.setAttribute("data-pattern",e.pattern),t.setAttribute("data-csig",he(e));var n,r="0"!==String(e.enabled)&&"false"!==String(e.enabled).toLowerCase(),a=e.poster?' poster="'+I(e.poster)+'"':"";if(e.url)if(_(e)){var i=ee?' data-vsrc="'+I(e.url)+'"':' src="'+I(e.url)+'"',o=e.poster?"none":"metadata";n='<div class="mediaWrap"><video class="media" crossorigin="anonymous" style="'+x(e.blur)+'"'+i+a+' controls playsinline preload="'+o+'" onerror="window.__mediaErr&&window.__mediaErr(this)"></video><div class="badge">▶ タップで再生（音が出ます）</div></div>'}else n='<div class="mediaWrap"><img class="media" crossorigin="anonymous" style="'+x(e.blur)+'" src="'+I(e.url)+'" alt="preview" decoding="async" loading="lazy" onerror="window.__mediaErr&&window.__mediaErr(this)"><div class="badge">画像投稿</div></div>';else n='<div class="mediaWrap"><div class="media" style="height:180px;display:flex;align-items:center;justify-content:center;color:#9aa3b2">見本を生成中…</div></div>';t.innerHTML='<div class="head"><span class="pat">'+I(e.label||e.pattern)+'</span><span class="gstate '+(r?"on":"off")+'">'+(r?"採用中":"無し")+"</span></div>"+n+(e.caption||e.music?'<div class="gcap" style="margin:8px 2px 0;font-size:12.5px;color:#c9d2e0;line-height:1.5">'+(e.caption?"💬 "+I(e.caption):"")+(e.music?'<span style="color:#9aa3b2">'+(e.caption?"　／　":"")+"🎵 "+I(e.music)+"</span>":"")+"</div>":"")+'<div class="seg"><button class="seg-on">採用する</button><button class="seg-off">無しにする</button></div><div class="ghintline">「採用する」を選んだパターンだけが投稿に使われます</div><div class="gnote">採用／無しの変更は管理者のみです。再生して確認できます。</div>';var s=t.querySelector(".seg-on"),l=t.querySelector(".seg-off");s.onclick=function(){"1"!==t.dataset.on&&re(t,e.pattern,!0)},l.onclick=function(){"0"!==t.dataset.on&&re(t,e.pattern,!1)},ne(t,r);var c=t.querySelector("video");return c&&ee&&ee.observe(c),t}function ne(e,t){e.dataset.on=t?"1":"0";var n=e.querySelector(".gstate");n&&(n.className="gstate "+(t?"on":"off"),n.textContent=t?"採用中":"無し");var r=e.querySelector(".seg-on"),a=e.querySelector(".seg-off");r&&a&&(r.classList.toggle("sel",t),r.textContent=t?"✓ 採用する":"採用する",a.classList.toggle("sel",!t),a.textContent=t?"無しにする":"✓ 無しにする")}function re(t,n,r){if(ne(t,r),e.SAMPLES)return S(r?"採用にしました":"無しにしました"),void k({api:"pattern",pattern:n,on:r?1:0}).catch(function(){});Q[n]=r?"1":"0",S(r?"採用にしました":"無しにしました"),k({api:"pattern",pattern:n,on:r?1:0}).then(function(e){if(e&&"owner"===e.error)return S("管理者コードが必要です"),delete Q[n],ne(t,!r),void oe();e&&e.error&&(S("反映できませんでした"),delete Q[n],ne(t,!r))}).catch(function(){S("通信エラー。元に戻します"),delete Q[n],ne(t,!r)})}function ae(){V&&V.classList.toggle("admin",!!e.SAMPLES||!!a&&!u),function(){var t=document.getElementById("adminBar");if(!t)return;if(e.SAMPLES)return void(t.innerHTML="");if(a){t.innerHTML='<span class="abadge">🔓 管理者モード</span><button class="alink" id="adminLock">解除する</button>';var n=t.querySelector("#adminLock");n&&(n.onclick=oe)}else{t.innerHTML='<button class="alink" id="adminUnlock">🔑 管理者モード（採用／無しを変更）</button>';var r=t.querySelector("#adminUnlock");r&&(r.onclick=ie)}}()}function ie(){var e=window.prompt("管理者コードを入力（採用／無しを変更できます）","");null!=e&&(e=String(e).trim())&&k({api:"owner",owner:e}).then(function(t){t&&"auth"===t.error?s("確認コードを入力してください",t._gen):t&&t.owner?(a=e,localStorage.setItem("sb_admin",e),S("管理者モードON"),ae()):S("管理者コードが違います")}).catch(function(){S("通信エラー")})}function oe(){var e=document.documentElement,t=window.pageYOffset||e.scrollTop||0;a="",localStorage.removeItem("sb_admin"),ae(),t>0&&window.scrollTo(0,t)}var se=localStorage.getItem("sb_gfilter")||"vid";function le(){if(V){V.classList.toggle("fvid","vid"===se),V.classList.toggle("fimg","img"===se);var e=document.getElementById("gFilter");if(e){var t=document.querySelector(".topbar");t&&(e.style.top=t.offsetHeight+8+"px");var n=e.querySelector(".fv"),r=e.querySelector(".fi");n&&n.classList.toggle("sel","vid"===se),r&&r.classList.toggle("sel","img"===se)}}}function ce(e){se=e;try{localStorage.setItem("sb_gfilter",e)}catch(e){}le(),Ie()}function de(e){var t=document.createElement("div");return t.className="gfilter",t.id="gFilter",t.innerHTML='<button class="fv"></button><button class="fi"></button>',t.querySelector(".fv").onclick=function(){ce("vid")},t.querySelector(".fi").onclick=function(){ce("img")},ue(e,t),t}function ue(e,t){if(t=t||document.getElementById("gFilter")){var n=0,r=0;e.forEach(function(e){e.url&&!_(e)||n++,e.url&&_(e)||r++});var a=t.querySelector(".fv"),i=t.querySelector(".fi");a&&(a.textContent="🎬 動画 "+n),i&&(i.textContent="🖼 画像 "+r)}}window.addEventListener("resize",le);var pe=/^yoshokuop(\d+|blur|mortar|wine)$/;function ve(e){return pe.test(String(e&&e.pattern||""))}var fe=!1;try{fe="1"===localStorage.getItem("sb_opfold")}catch(e){}function me(){if(V){var e=V.querySelector(".opfold");e&&e.parentNode&&e.parentNode.removeChild(e);for(var t=V.querySelectorAll(".card"),n=null,r=0,a=0;a<t.length;a++){var i=pe.test(t[a].getAttribute("data-pattern")||"");t[a].classList&&t[a].classList.toggle("opitem",i),i&&(r++,n||(n=t[a]))}if(V.classList.toggle("opopen",fe),n){var o=document.createElement("div");o.className="opfold"+(fe?" open":""),o.innerHTML='<button class="opfoldb"><span class="opcar">▶</span> 📁 OP・クローズ案 <b>'+r+"</b>本</button>",o.querySelector(".opfoldb").onclick=function(){fe=!fe;try{localStorage.setItem("sb_opfold",fe?"1":"0")}catch(e){}V.classList.toggle("opopen",fe),o.classList.toggle("open",fe)},n.parentNode.insertBefore(o,n)}}}function he(e){return JSON.stringify([e.pattern,e.url||"",e.label||"",e.poster||"",e.blur||"",e.caption||"",e.music||""])}var ge="";function be(){return!!V.querySelector(".card")}function ye(e){var t=document.documentElement,n=window.pageYOffset||t.scrollTop||0;!function(e){if(be()&&we())return;if(!e.length&&be())return;e=e.map(function(e){var t=Q[e.pattern];if(void 0===t)return e;if(Z(e.enabled)===t)return delete Q[e.pattern],e;var n={};for(var r in e)n[r]=e[r];return n.enabled=t,n});var t=JSON.stringify(e.map(function(e){return[e.pattern,e.url,e.enabled,e.label,e.poster?1:0]}));if(t===ge&&be())return ae(),void le();ge=t;var n=e.filter(function(e){return!d(e)}),r=e.filter(d);n=n.filter(function(e){return!ve(e)}).concat(n.filter(ve));var a=u?r:n,i=document.getElementById("gFilter");if(be()&&i&&a.length){ue(a);for(var o={},s=V.querySelectorAll(".card"),l=0;l<s.length;l++)o[s[l].getAttribute("data-pattern")]=s[l];var c=i;for(var p in a.forEach(function(e){var t=o[e.pattern];if(t&&t.getAttribute("data-csig")!==he(e)){var n=te(e);t.parentNode.replaceChild(n,t),t=n}else t?ne(t,"1"===Z(e.enabled)):t=te(e);t.previousElementSibling!==c&&V.insertBefore(t,c.nextSibling),delete o[e.pattern],c=t}),o)o[p].parentNode&&o[p].parentNode.removeChild(o[p]);return me(),ae(),void le()}V.innerHTML="";var v=document.createElement("div");v.className="ghint",v.innerHTML="各動画パターンの見本です。<b style='color:#7fd1a0'>採用する</b>を選ぶと、その型だけが日々の投稿ローテーションに使われます。<br>（店舗ごとの好みに合わせて選べます）",V.appendChild(v);var f=document.createElement("div");if(f.className="adminbar",f.id="adminBar",V.appendChild(f),!e.length){var m=document.createElement("div");return m.className="empty",m.innerHTML="見本がまだありません。<br>サンプル生成（samples）を実行すると、ここに各パターンの動画が並びます。",V.appendChild(m),void ae()}if(u){if(v.innerHTML="🍣 <b>鮨処すさび湯 四条烏丸</b>（準備中）の見本置き場です。このページは入口PASSを知る人だけが開けます。<br>Instagram連携はアカウント情報が揃ってから。<b>採用ボタンはまだ使いません</b>。 <button class='alink' id='karBack'>三条ページへ戻る</button>",r.length&&V.appendChild(de(r)),r.forEach(function(e){V.appendChild(te(e))}),!r.length){var h=document.createElement("div");h.className="empty",h.innerHTML="保管中の見本はまだありません。",V.appendChild(h)}var g=v.querySelector("#karBack");g&&(g.onclick=function(){try{localStorage.removeItem("sb_store")}catch(e){}location.reload()})}else n.length&&V.appendChild(de(n)),n.forEach(function(e){V.appendChild(te(e))}),me();ae(),le()}(e),(window.pageYOffset||t.scrollTop||0)!==n&&n>0&&window.scrollTo(0,n)}function we(){if(!V)return!1;for(var e=V.getElementsByTagName("video"),t=0;t<e.length;t++)if(!e[t].paused&&!e[t].ended)return!0;return!1}function ke(){if(e.SAMPLES)return ye(e.SAMPLES),Promise.resolve();var t=function(){try{return JSON.parse(localStorage.getItem("sb_patterns")||"null")}catch(e){return null}}();return t&&!be()?ye(t):t||be()||(V.innerHTML='<div class="ghint">見本を読み込んでいます…</div>'),k({api:"patterns"}).then(function(e){if(e&&"auth"===e.error)return s("確認コードを入力してください",e._gen),ke();var t=e&&e.items||[];!function(e){try{localStorage.setItem("sb_patterns",JSON.stringify(e))}catch(e){}}(t),ye(t)}).catch(function(e){be()||(V.innerHTML='<div class="empty">見本を取得できませんでした。<br><small>'+I(e.message)+"</small></div>")})}var Se=document.getElementById("report"),Ee=document.getElementById("tabReport");function Le(){e.SAMPLES||(_e(),$=setInterval(ke,5e3))}function _e(){$&&(clearInterval($),$=null)}if(V){V.addEventListener("play",function(e){_e(),e.target&&"VIDEO"===e.target.tagName&&(Ae=e.target),Ie()},!0);var xe=function(){"gallery"!==Ce||document.hidden||we()||Le(),Ie()};V.addEventListener("pause",xe,!0),V.addEventListener("ended",xe,!0)}var Ne=null,Ae=null;function Ie(){var e,t,n;!Ae||Ae.paused||Ae.ended||null!==Ae.offsetParent?Ne&&(Ne.style.display="none"):(Ne||((Ne=document.createElement("div")).className="npbar",Ne.style.display="none",Ne.innerHTML='<span class="npdot"></span><span class="nptxt"></span><button class="npgo">見る</button><button class="npstop">停止</button>',Ne.querySelector(".npstop").onclick=function(){if(Ae)try{Ae.pause()}catch(e){}Ie()},Ne.querySelector(".npgo").onclick=function(){if(Ae){"gallery"!==Ce&&Te("gallery"),"vid"!==se&&ce("vid");var e=Ae.closest&&Ae.closest(".card");e&&e.scrollIntoView({behavior:"auto",block:"center"}),Ie()}},document.body.appendChild(Ne)),Ne.querySelector(".nptxt").textContent=(t=(e=Ae)&&e.closest&&e.closest(".card"),((n=t&&t.querySelector(".pat"))&&n.textContent||"見本動画")+" を再生中"),Ne.style.display="flex")}var Ce="feed";function Te(e){Ce=e,G.classList.toggle("on","feed"===e),X.classList.toggle("on","gallery"===e),Ee&&Ee.classList.toggle("on","report"===e),p.style.display="feed"===e?"":"none",V.style.display="gallery"===e?"":"none",Se&&(Se.style.display="report"===e?"":"none");var t=document.getElementById("repmodeBar");t&&(t.style.display="report"===e?"":"none"),"report"===e&&(De(),function(){if(window.html2pdf||window.__pdfPre)return;window.__pdfPre=1,Ye(Ge,function(){},function(){window.__pdfPre=0})}()),"gallery"===e?(K=!0,we()||Le()):_e(),Ie()}function Me(e,t,n){if(e&&(e.classList.remove("tapped"),e.offsetWidth,e.classList.add("tapped")),Ce===t){E(18),L("更新中…");var r=function(){E(8),S("✓ 最新にしました")};Promise.resolve(n()).then(r,r)}else{var a=function(e){return"gallery"===e?K:"report"!==e||!!qe}(t);Te(t),a||n()}}G&&(G.onclick=function(){Me(G,"feed",P)}),X&&(X.onclick=function(){Me(X,"gallery",ke)}),Ee&&(Ee.onclick=function(){Me(Ee,"report",We)}),function(){var e=document.getElementById("repmodeBar");if(e)for(var t=e.querySelectorAll(".rm"),n=0;n<t.length;n++)t[n].onclick=function(){var e=this.getAttribute("data-m");e&&e!==Be&&(Be=e,E(10),De(),qe&&Je(qe))}}(),function(){var e=document.getElementById("ptr"),t=document.getElementById("app");if(e&&t){var n=e.querySelector("i"),r=null,a=!1,i=!1;document.addEventListener("touchstart",function(e){r=i||1!==e.touches.length||document.querySelector(".modalOv")?null:o()?e.touches[0].clientY:null},{passive:!0}),document.addEventListener("touchmove",function(l){if(!i&&null!=r){var c=l.touches[0].clientY-r;c>0&&o()?(l.preventDefault(),function(r){var i=Math.min(.5*r,120);t.style.transition="none",t.style.transform="translateY("+i+"px)",e.style.transition="none",e.style.opacity=String(Math.min(i/32,1)),e.style.transform="translateY("+(Math.min(i,92)-46)+"px)",n.style.transform="rotate("+Math.min(3*i,270)+"deg)";var o=r>=70;o&&!a&&E(12),a=o}(c)):(r=null,a=!1,s())}},{passive:!1}),document.addEventListener("touchend",function(){if(!i&&null!=r){var o=a;if(r=null,a=!1,o){E(25),i=!0,e.classList.add("spin"),n.style.transform="",t.style.transition="transform .2s ease",t.style.transform="translateY(54px)",e.style.transition="transform .2s ease, opacity .2s ease",e.style.opacity="1",e.style.transform="translateY(10px)",L("更新中…");var l,c=function(){i=!1,e.classList.remove("spin"),s(),E(8),S("✓ 最新にしました")};Promise.resolve((l=Ce,"gallery"===l?ke:"report"===l?We:P)()).then(c,c)}else s()}})}function o(){return(window.scrollY||document.documentElement.scrollTop||0)<=0}function s(){t.style.transition="transform .3s cubic-bezier(.2,.8,.3,1)",t.style.transform="translateY(0)",e.style.transition="transform .25s ease, opacity .25s ease",e.style.opacity="0",e.style.transform="translateY(-54px)",n.style.transform=""}}();var qe=null,Be="month",Oe="reach",Pe={reach:"リーチ",views:"閲覧数",pviews:"プロフィール表示",followers:"フォロワー"},Re=[];function He(e,t){if(!e)return{top:[],storyAvg:{},storyN:0,feedN:0};var n=e.all&&e.all.length?e.all:e.top||[];if(!n.length)return{top:e.top||[],storyAvg:e.storyAvg||{},storyN:e.storyN||0,feedN:e.feedN||0};var r=Date.now()-864e5*t,a=n.filter(function(e){return t=e.date,n=Date.parse(String(t)),(isNaN(n)?0:n)>=r;var t,n});a.length||(a=n);var i=a.filter(function(e){return"story"===e.kind}),o=a.filter(function(e){return"story"!==e.kind});function s(e,t){if(!e.length)return 0;for(var n=0,r=0;r<e.length;r++)n+=Number(e[r][t])||0;return Math.round(n/e.length)}function l(e,t){for(var n=0,r=0;r<e.length;r++)n+=Number(e[r][t])||0;return n}function c(e,t,n){return t>0?Math.round(e/t*(n?1e3:100))/(n?10:1):null}function d(e,t){return(Number(t.reach)||0)-(Number(e.reach)||0)}var u=a.slice().sort(d).slice(0,5),p=i.slice().sort(d).slice(0,5),v=o.slice().sort(d).slice(0,5),f=l(i,"reach"),m=l(o,"reach"),h=l(i,"navExit"),g=h+l(i,"navFwd")+l(i,"navBack")+l(i,"navAuto")>0;return{top:u,topStory:p,topFeed:v,storyN:i.length,feedN:o.length,storyAvg:{reach:s(i,"reach"),views:s(i,"views"),navigation:s(i,"navigation"),replies:s(i,"replies")},exitRate:g?c(h,f,!1):null,compRate:g?c(l(i,"navFwd")+l(i,"navAuto"),f,!1):null,stShareRate:c(l(i,"shares"),f,!0),saveRate:c(l(o,"saved"),m,!0),shareRate:c(l(o,"shares"),m,!0)}}function De(){var e=document.getElementById("repmodeBar");if(e)for(var t=e.querySelectorAll(".rm"),n=0;n<t.length;n++)t[n].classList.toggle("on",t[n].getAttribute("data-m")===Be)}function Fe(e){if(e){E(10);var t,n=document.createElement("div");n.className="lbov",t="video"===e.mtype&&e.full?'<video class="lbm" src="'+I(e.full)+'" controls autoplay playsinline webkit-playsinline loop></video>':e.full||e.thumb?'<img class="lbm" src="'+I(e.thumb||e.full)+'" alt="" decoding="async">':'<div class="lbnone">画像を準備中です</div>';var r=e.link?'<a class="lblink" href="'+I(e.link)+'" target="_blank" rel="noopener">Instagramで開く ↗</a>':"",a='<div class="lbmeta"><b>リーチ '+Ue(e.reach)+"</b>　閲覧 "+Ue(e.views)+("story"===e.kind?"　タップ "+Ue(e.navigation)+"　返信 "+Ue(e.replies):"　いいね "+Ue(e.likes)+"　保存 "+Ue(e.saved))+"</div>";if(n.innerHTML='<div class="lbbox" onclick="event.stopPropagation()"><button class="lbx">✕</button>'+t+a+r+"</div>",n.onclick=function(){o()},n.querySelector(".lbx").onclick=function(e){e.stopPropagation(),o()},document.body.appendChild(n),"video"!==e.mtype&&e.full&&e.thumb&&e.full!==e.thumb){var i=new Image;i.onload=function(){var t=n.querySelector("img.lbm");t&&(t.src=e.full)},i.src=e.full}requestAnimationFrame(function(){n.classList.add("show")})}function o(){var e=n.querySelector("video");if(e)try{e.pause()}catch(e){}n.classList.remove("show"),setTimeout(function(){n.parentNode&&n.parentNode.removeChild(n)},200)}}function je(e){if(!e||!e.length)return null;for(var t={reach:0,views:0,pviews:0,links:0,eng:0},n=null,r=null,a=0;a<e.length;a++){var i=e[a];t.reach+=Number(i.reach)||0,t.views+=Number(i.views)||0,t.pviews+=Number(i.pviews)||0,t.links+=Number(i.links)||0,t.eng+=Number(i.eng)||0;var o=Number(i.followers)||0;o>0&&(null===n&&(n=o),r=o)}return t.followersStart=null===n?0:n,t.followersEnd=null===r?0:r,t.n=e.length,t}function We(){if(Se)return qe||(Se.innerHTML='<div class="rephint">レポートを読み込んでいます…</div>'),k({api:"report"}).then(function(e){e&&"auth"===e.error?s("確認コードを入力してください",e._gen):Je(qe=e||{})}).catch(function(e){qe||(Se.innerHTML='<div class="rephint">レポートを取得できませんでした。<br>'+I(e&&e.message||e)+"</div>")})}function Ue(e){return e=Math.round(Number(e)||0),String(e).replace(/\B(?=(\d{3})+(?!\d))/g,",")}function Je(t){var n=e.STORE_NAME||"すさび湯三条",r='<div class="rephd"><div class="t">Instagram インサイトレポート</div><div class="s">'+I(n)+"　"+I(e.HANDLE||"@susabiyu_sanjyo")+"</div>";if(t&&t.days&&t.cur){var a,i,o,s,l,c="week"===Be?7:"biweek"===Be?14:30,d=7===c?"週間":14===c?"14日間":"月間",u=7===c?"週":c+"日",p=null;if(t.daily&&t.daily.length){var v=t.daily;p=v.slice(Math.max(0,v.length-c));var f=v.slice(Math.max(0,v.length-2*c),Math.max(0,v.length-c));a=je(p)||t.cur,i=je(f),o=p.map(function(e){return{date:String(e.date),val:Number(e[Oe])||0}}),s=p.length,l=p.length?String(p[p.length-1].date):t.latestDate||""}else a=t.cur,i=t.prev||{},o=(t.series||[]).map(function(e){return{date:String(e.date),val:Number(e.reach)||0}}),s=t.days,l=t.latestDate;i=i||{};var m=a.followersEnd-a.followersStart,h=i&&null!=i.followersEnd?i.followersEnd-i.followersStart:null,g={reach:"#c8a24a",views:"#3b6fd6",pviews:"#7a4fd6",followers:"#1f9d55"},b={reach:pe("reach"),views:pe("views"),pviews:pe("pviews"),followers:pe("followers")},y=ve("リーチ",a.reach,ue("reach"),"reach")+ve("閲覧数",a.views,ue("views"),"views")+ve("プロフィール表示",a.pviews,ue("pviews"),"pviews")+ve("フォロワー純増",m,h,"followers",{plus:!0,sub:"計 "+Ue(a.followersEnd)}),w=(o||[]).map(function(e){return Number(e.val)||0}),k=Math.max.apply(null,w.concat([1])),S=o.map(function(e){var t=Number(e.val)||0;return'<i style="height:'+Math.max(2,Math.round(t/k*100))+'%" data-d="'+I(String(e.date))+'" data-v="'+t+'"></i>'}).join(""),L=(Pe[Oe]||"リーチ")+"の推移（日別）",_=w.length?o[0].date.slice(5):"",x=w.length?o[o.length-1].date.slice(5):"",N=fe(a.reach,ue("reach")),A=a.pviews?Math.round(a.links/a.pviews*1e3)/10:null,C=t.posts,T="直近"+c+"日",M=He(C,c),q="",B=M.topStory||[],O=M.topFeed||[],P=T,R=!1;if(!O.length)(R=(O=He(C,3650).topFeed||[]).length>0)&&(P="直近のフィード");if(Re=B.concat(O),B.length+O.length>0){var H=M.storyAvg||{},D=M.storyN?'<div class="repkpis"><div class="repkpi"><div class="l">平均リーチ</div><div class="v">'+Ue(H.reach)+'</div></div><div class="repkpi"><div class="l">平均閲覧</div><div class="v">'+Ue(H.views)+'</div></div><div class="repkpi"><div class="l">平均タップ</div><div class="v">'+Ue(H.navigation)+'</div></div><div class="repkpi"><div class="l">平均返信</div><div class="v">'+Ue(H.replies)+"</div></div></div>":"",F=[];null!=M.compRate&&F.push('<span class="rchip good">完了率 '+M.compRate+"%</span>"),null!=M.exitRate&&F.push('<span class="rchip warn">離脱率 '+M.exitRate+"%</span>"),null!=M.saveRate&&F.push('<span class="rchip">投稿 保存率 '+M.saveRate+"%</span>"),null!=M.shareRate&&F.push('<span class="rchip">投稿 シェア率 '+M.shareRate+"%</span>");var j=F.length?'<div class="repsec"><h3>反応の質（'+T+'）</h3><div class="rchips">'+F.join("")+'</div><div class="repnote"><b>完了率</b>＝ストーリーズを離脱せず最後（次へ送り・自動送り含む）まで見られた割合の目安。<b>離脱率</b>＝途中で閉じられた割合。完了率が高く・離脱率が低いほど良い。保存率／シェア率＝投稿が保存・拡散された割合（口コミの起点）。</div></div>':"",W=B.length?'<div class="repsec"><h3>ストーリー ベスト'+B.length+"（"+T+'・リーチ順）</h3><div class="repposts">'+B.map(function(e,t){return me(e,t)}).join("")+"</div></div>":"",U=O.length?'<div class="repsec"><h3>フィード ベスト'+O.length+"（"+P+'・リーチ順）</h3><div class="repposts">'+O.map(function(e,t){return me(e,B.length+t)}).join("")+'</div><div class="repnote">フィード投稿はリール含む。リーチ順で表示。'+(R?"　※選択期間内に投稿が無いため、直近のフィード投稿を表示しています。":"")+"</div></div>":'<div class="repsec"><h3>フィード ベスト</h3><div class="repnote">まだフィード投稿のデータがありません。</div></div>';q=(M.storyN?'<div class="repsec"><h3>ストーリーズの反応（'+T+"・1本あたり平均）</h3>"+D+'<div class="repnote">'+M.storyN+"本の平均。タップ＝次へ/前へ/外部リンク等の操作数。</div></div>":"")+j+W+U}for(var J=[],Y=[],z=[],V="前"+u+"比",G=(fe(a.views,ue("views")),fe(a.pviews,ue("pviews"))),X="",K=-1,$=0;$<o.length;$++)(Number(o[$].val)||0)>K&&(K=Number(o[$].val)||0,X=o[$].date);var Q=Pe[Oe]||"リーチ";if(null!=N?N>0?J.push(d+"のリーチは <b>"+Ue(a.reach)+"</b>（"+V+" <b>+"+N+"%</b>）。露出が伸びています。"):N<0?Y.push(d+"のリーチは <b>"+Ue(a.reach)+"</b>（"+V+" <b>"+N+"%</b>）。投稿の時間帯・内容を見直し。"):J.push(d+"のリーチは <b>"+Ue(a.reach)+"</b>（"+V+" 横ばい）。"):J.push(d+"のリーチは <b>"+Ue(a.reach)+"</b>。比較は前期間のデータが揃うと表示されます。"),X&&J.push("最も伸びた日は <b>"+I(X.slice(5))+"</b>（"+Q+" <b>"+Ue(K)+"</b>）。この日の内容・時間を再現したい。"),a.reach){var Z=Math.round(a.views/a.reach*10)/10;Z>=1.5&&J.push("1人あたり約 <b>"+Z+"回</b>見られています（リピート視聴が良好）。")}null!=G&&G<0&&Y.push("プロフィール表示が "+V+" <b>"+G+"%</b>。1枚目の訴求と固定リンクを強化。"),null!=A&&(A<4?Y.push("誘導率（リンク÷プロフ表示）が <b>"+A+"%</b> と低め。予約リンクを毎回明示。"):J.push("誘導率 <b>"+A+"%</b>。プロフィールから行動につながっています。")),m>0?J.push("フォロワー <b>+"+m+"</b>（計 "+Ue(a.followersEnd)+"）。"):null!=h&&Y.push("フォロワー純増 <b>"+m+"</b>。投稿頻度・導線を確認。");var ee=M.storyN&&M.storyAvg&&M.storyAvg.reach?Math.round(M.storyAvg.navigation/M.storyAvg.reach*100):null;if(null!=ee&&(J.push("ストーリーズ平均リーチ <b>"+Ue(M.storyAvg.reach)+"</b>／タップ率 <b>"+ee+"%</b>（"+T+"・"+M.storyN+"本）。"),ee<30&&Y.push("ストーリーズのタップ率が <b>"+ee+"%</b> と低め。1枚目を強い引き＋リンク明確に。")),null!=M.exitRate&&(null!=M.compRate&&J.push("ストーリーズ完了率 <b>"+M.compRate+"%</b>／離脱率 <b>"+M.exitRate+"%</b>。"),M.exitRate>=40&&(Y.push("離脱率が <b>"+M.exitRate+"%</b> と高め。冒頭2秒で内容が伝わる構成に。"),z.push("ストーリーズ1枚目を<b>結論ファースト</b>（何の告知か一目で）にして離脱を減らす。"))),null!=M.saveRate&&M.saveRate>=1&&J.push("投稿の保存率 <b>"+M.saveRate+"%</b>。保存される＝後で来店検討の良い兆候。"),null!=M.saveRate&&M.saveRate<.5&&null!=M.shareRate&&M.shareRate<.5&&z.push("<b>保存版（メニュー一覧・コース内容）</b>を増やし、保存・シェアを促す。"),M.top&&M.top.length){var te=M.top[0];J.push("ベストは"+("story"===te.kind?"ストーリーズ":"投稿")+"（"+I(String(te.date).slice(5))+"・リーチ <b>"+Ue(te.reach)+"</b>）。")}null!=A&&A<4&&z.push("各投稿に<b>予約リンク</b>を必ず明示し、誘導率 "+A+"% の底上げを狙う。"),null!=ee&&ee<30&&z.push("ストーリーズ1枚目を<b>料理ドアップ＋一言</b>にしてタップ率UP。"),null!=N&&N<0&&z.push("反応が落ちた"+d+"。<b>投稿時間</b>を反応の良い曜日・時間に寄せる。"),X&&z.push("伸びた <b>"+I(X.slice(5))+"</b> の型（内容・時間帯）を<b>再現</b>する。"),m<=0&&null!=h&&z.push("保存・シェアされやすい<b>保存版（まとめ）投稿</b>を増やしてフォロー転換を狙う。"),z.length||z.push("好調を維持。伸びた投稿の型を<b>横展開</b>し、頻度を保つ。"),J.length||J.push(d+"のデータを蓄積中。日数が増えるほど精度が上がります。"),Y.length||Y.push(d+"では大きな課題は見当たりません。継続して様子を見ましょう。");var ne="前"+u+"と比較",re='<div class="p">'+d+"（直近"+s+"日"+(l?"〜"+I(l):"")+"）<small>"+(null!=h||null!=ue("reach")?ne:"データ蓄積中（30日で比較が満額に）")+"</small></div>";De(),{store:n,handle:e.HANDLE||"@susabiyu_sanjyo",modeLbl:d,days:s,latestDate:l,cur:a,prev:{reach:ue("reach"),views:ue("views"),pviews:ue("pviews")},fNet:m,pNet:h,followersEnd:a.followersEnd,series:o,trendLbl:L,sparks:b,topS:B,topF:O,good:J,warn:Y,act:z},Se.innerHTML='<div class="repbar"><button id="repReload">↻ 更新</button><button id="repPdf" class="pdf">📄 PDF出力（A4）</button></div><div class="rephint">この画面は誰でも閲覧できます（操作はありません）。PDF出力（A4・2ページ）ができます。</div><div class="repdoc">'+r+re+'</div><div class="repsec"><h3>アカウント全体</h3><div class="repkpis">'+y+'</div></div><div class="repsec"><h3>'+I(L)+'</h3><div class="repchart"><div class="repbars">'+S+'</div><div class="reptip"></div></div><div class="repax"><span>'+_+"</span><span>"+x+'</span></div><div class="repnote">KPIをタップで指標を切替／グラフを指でなぞると日付と数値が出ます。</div></div>'+q+'<div class="repsec repbreak"><h3>分析・まとめ（'+I(d)+'）</h3><div class="repanal"><div class="repcard good"><h4>強み・良かった点</h4><ul>'+he(J)+'</ul></div><div class="repcard warn"><h4>反省点・課題</h4><ul>'+he(Y)+'</ul></div><div class="repcard act"><h4>今後の施策</h4><ul>'+he(z)+'</ul></div></div></div><div class="repfoot">データ元：Instagram Graph API（毎日自動収集）／分析は数値から自動生成</div></div>';var ae=document.getElementById("repReload");ae&&(ae.onclick=We);var ie=document.getElementById("repPdf");ie&&(ie.onclick=Xe);for(var oe=Se.querySelectorAll(".repkpi.tap"),se=0;se<oe.length;se++)oe[se].onclick=function(){var e=this.getAttribute("data-metric");e&&e!==Oe&&(Oe=e,E(10),qe&&Je(qe))};for(var le=Se.querySelectorAll(".reppost.tap"),ce=0;ce<le.length;ce++)le[ce].onclick=function(){var e=parseInt(this.getAttribute("data-pi"),10);!isNaN(e)&&Re[e]&&Fe(Re[e])};!function(){var e=Se.querySelector(".repchart");if(!e)return;var t=e.querySelector(".repbars"),n=e.querySelector(".reptip"),r=-1;function a(e){var a=t.querySelectorAll("i");if(a.length){var i=t.getBoundingClientRect(),o=Math.floor((e-i.left)/i.width*a.length);(o=Math.max(0,Math.min(a.length-1,o)))!==r&&(E(6),r=o);for(var s=0;s<a.length;s++)s===o?a[s].classList.add("hot"):a[s].classList.remove("hot");var l=a[o],c=l.getBoundingClientRect();n.innerHTML="<b>"+Ue(Number(l.getAttribute("data-v")))+"</b><span>"+I(l.getAttribute("data-d"))+"</span>",n.style.display="block";var d=c.left+c.width/2-i.left;n.style.left=Math.max(34,Math.min(i.width-34,d))+"px"}}function i(){n.style.display="none",r=-1;for(var e=t.querySelectorAll("i.hot"),a=0;a<e.length;a++)e[a].classList.remove("hot")}e.addEventListener("touchstart",function(e){e.stopPropagation(),e.preventDefault(),a(e.touches[0].clientX)},{passive:!1}),e.addEventListener("touchmove",function(e){e.stopPropagation(),e.preventDefault(),a(e.touches[0].clientX)},{passive:!1}),e.addEventListener("touchend",i),e.addEventListener("touchcancel",i),e.addEventListener("mousedown",function(e){a(e.clientX)}),e.addEventListener("mousemove",function(e){e.buttons&&a(e.clientX)}),e.addEventListener("mouseup",i),e.addEventListener("mouseleave",i)}()}else{Se.innerHTML='<div class="repbar"><button id="repReload">↻ 更新</button></div><div class="repdoc">'+r+'</div></div><div class="rephint">データを集計中です。毎日自動で蓄積され、数日たつとレポートが表示されます。<br>30日たつと「直近30日 vs 前30日」の比較が満額になります。</div>';var de=document.getElementById("repReload");de&&(de.onclick=We)}function ue(e){return i&&null!=i[e]?i[e]:null}function pe(e){return p?p.map(function(t){return Number(t[e])||0}):[]}function ve(e,t,n,r,a){var i=((a=a||{}).plus&&t>0?"+":"")+Ue(t),o=null==n?null:(a.plus&&n>0?"+":"")+Ue(n);return'<div class="repkpi tap'+(r===Oe?" on":"")+'" data-metric="'+r+'"><div class="l">'+I(e)+'</div><div class="v">'+i+(a.sub?" <small>"+I(a.sub)+"</small>":"")+"</div>"+function(e,t){if(null==t||0===t)return'<span class="d flat">—</span>';var n=Math.round((e-t)/t*1e3)/10;return'<span class="d '+(n>0?"up":n<0?"down":"flat")+'">'+(n>0?"▲ +":n<0?"▼ ":"± ")+Math.abs(n)+"%</span>"}(t,n)+(null!=o?'<div class="prev">前期間 '+o+"</div>":"")+function(e,t,n){if(!e||!e.length)return"";var r=Math.max.apply(null,e.concat([1]));return'<div class="repspark" style="height:'+(n||30)+'px;display:flex;align-items:flex-end;gap:1px;margin-top:8px">'+e.map(function(n){return n=Number(n)||0,'<i style="display:inline-block;width:'+100/e.length+"%;height:"+Math.max(8,Math.round(n/r*100))+"%;background:"+t+';opacity:.9;vertical-align:bottom;border-radius:1px 1px 0 0"></i>'}).join("")+"</div>"}(b[r],g[r]||"#c8a24a",28)+"</div>"}function fe(e,t){return null==t||0===t?null:Math.round((e-t)/t*1e3)/10}function me(e,t){var n="story"===e.kind?"ストーリーズ":"reel"===e.kind?"リール":"フィード",r=e.caption?I(String(e.caption).slice(0,38)):"（キャプションなし）",a="story"===e.kind?"閲覧 "+Ue(e.views)+"・タップ "+Ue(e.navigation)+"・返信 "+Ue(e.replies):"閲覧 "+Ue(e.views)+"・いいね "+Ue(e.likes)+"・保存 "+Ue(e.saved),i=e.thumb||e.full||"";return'<div class="reppost tap" data-pi="'+t+'"><div class="rtwrap">'+(i?'<img class="rt" src="'+I(i)+'" alt="" loading="lazy" crossorigin="anonymous" onerror="this.style.display=\'none\'">':'<div class="rt none">🍶</div>')+("video"===e.mtype?'<span class="rtplay">▶</span>':"")+'</div><div class="ri"><div class="rl"><span class="rb '+I(e.kind)+'">'+n+'</span><span class="rd">'+I(e.date)+'</span></div><div class="rc">'+r+'</div><div class="rr"><b>リーチ '+Ue(e.reach)+"</b><small>"+a+"</small></div></div></div>"}function he(e){return e.map(function(e){return"<li>"+e+"</li>"}).join("")}}function Ye(e,t,n){var r=document.createElement("script");r.src=e,r.onload=t,r.onerror=n||function(){S("PDFライブラリの読込に失敗")},document.head.appendChild(r)}var ze,Ve,Ge="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.3/dist/html2pdf.bundle.min.js";function Xe(){var t=Se.querySelector(".repdoc");if(t){var n=document.getElementById("repPdf");if(!n||!n.disabled){n&&(n.disabled=!0),E(12),L("PDF出力を準備中…");var r=!1,a=setTimeout(function(){r||window.html2pdf||(window.__pdfPre=0,i("PDF部品を読み込めませんでした。電波の良い場所でもう一度お試しください"))},15e3);window.html2pdf?setTimeout(o,60):Ye(Ge,o,function(){i("PDF部品の読込に失敗。通信環境をご確認ください")})}}else S("レポートがありません");function i(e){r=!0,n&&(n.disabled=!1),e&&S(e)}function o(){if(!r)if(clearTimeout(a),window.html2pdf){L("PDFを出力中…（数秒かかります）");var n=document.createElement("div");n.style.cssText="position:fixed;left:-99999px;top:0;width:794px;background:#fff";var o=t.cloneNode(!0);o.classList.add("a4"),n.appendChild(o),document.body.appendChild(n),function(){var e=o.querySelector(".repbreak");if(e){for(var t=0;e.offsetTop>1040&&t<14;){if(0===t)o.classList.add("a4tight");else if(1===t)o.classList.add("a4tight2");else{var n=o.querySelectorAll(".reppost");if(!(n.length>2))break;n[n.length-1].parentNode.removeChild(n[n.length-1])}t++}for(var r=0;o.scrollHeight-e.offsetTop>1050&&r<14;){if(0===r)o.classList.add("a4tight");else if(1===r)o.classList.add("a4tight2");else{for(var a=null,i=0,s=o.querySelectorAll(".repcard"),l=0;l<s.length;l++){var c=s[l].querySelectorAll("li").length;c>i&&(i=c,a=s[l])}if(!(a&&i>2))break;var d=a.querySelectorAll("li");d[d.length-1].parentNode.removeChild(d[d.length-1])}r++}}}(),window.html2pdf().set({margin:[6,0,6,0],filename:(e.ACCOUNT||"susabiyu")+"_insight_"+(qe&&qe.latestDate||"report")+".pdf",image:{type:"jpeg",quality:.95},html2canvas:{scale:2,backgroundColor:"#ffffff",useCORS:!0,width:794,windowWidth:794,x:0,scrollX:0},jsPDF:{unit:"mm",format:"a4",orientation:"portrait"},pagebreak:{mode:["css","legacy"],before:".repbreak",avoid:[".repsec",".reppost",".repkpi",".repcard"]}}).from(o).save().then(function(){n.remove(),i("✓ PDF出力が完了しました（2ページ）")}).catch(function(){n.remove(),i("PDF作成に失敗しました。もう一度お試しください")})}else i("PDF生成に失敗")}}p&&p.addEventListener("click",function(e){e.target&&e.target.closest&&e.target.closest(".mediaWrap.mediaerr")&&(S("再読み込みします"),P())}),V&&V.addEventListener("click",function(e){e.target&&e.target.closest&&e.target.closest(".mediaWrap.mediaerr")&&(S("再読み込みします"),ke())}),ze=document.getElementById("storeName"),Ve=(e.STORE_NAME||"").trim(),ze&&Ve&&(ze.textContent=Ve),Ve&&(document.title=Ve);var Ke=String(e.MEDIA_BASE||"").replace(/\/+$/,"");function $e(e){return String(null==e?"":e).replace(/[&<>"']/g,function(e){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[e]})}function Qe(e){return crypto.subtle.digest("SHA-256",(new TextEncoder).encode(e)).then(function(e){for(var t=new Uint8Array(e),n="",r=0;r<t.length;r++)n+=("0"+t[r].toString(16)).slice(-2);return n})}function Ze(e){return Qe(e).then(function(e){return new Promise(function(t,n){if(Ke&&0!==Ke.indexOf("PASTE_")){var r=document.createElement("script"),a=setTimeout(function(){i(),n(new Error("timeout"))},12e3);window.__pvCb=function(e){i(),t(e)},r.src=Ke+"/pv-"+e+"/index.js?ts="+Date.now(),r.onerror=function(){i(),n(new Error("notfound"))},document.head.appendChild(r)}else n(new Error("nobase"));function i(){clearTimeout(a);try{delete window.__pvCb}catch(e){}r.parentNode&&r.parentNode.removeChild(r)}})})}var et,tt=null;function nt(e){tt&&tt.parentNode&&tt.parentNode.removeChild(tt),(tt=document.createElement("div")).style.cssText="position:fixed;inset:0;z-index:99999;background:#0b0f14;color:#fff;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 12px 44px";var t=e&&e.v||[],n='<div style="display:flex;align-items:center;justify-content:space-between;margin:0 0 12px"><div style="font-weight:700;font-size:16px">🎬 専用プレビュー <span style="opacity:.55;font-size:12px">'+t.length+'本</span></div><button id="pvClose" style="background:#26313d;color:#fff;border:0;border-radius:8px;padding:8px 14px;font-size:14px">閉じる</button></div>';t.length||(n+='<div style="opacity:.7;padding:36px 0;text-align:center">まだ動画がありません</div>'),t.forEach(function(e){n+='<div style="margin:0 0 20px"><div style="font-size:13px;margin:0 0 6px"><b>'+$e(e.t)+'</b> <span style="opacity:.5">'+$e(e.d)+'</span></div><video controls playsinline preload="metadata" style="width:100%;max-width:420px;border-radius:12px;background:#000;display:block" src="'+$e(e.u)+'"></video></div>'}),tt.innerHTML=n,document.body.appendChild(tt);var r=tt.querySelector("#pvClose");r&&(r.onclick=function(){tt&&tt.parentNode&&tt.parentNode.removeChild(tt),tt=null})}function rt(){var e=window.prompt("コードを入力","");null!=e&&(e=String(e).trim())&&Ze(e).then(function(t){try{localStorage.setItem("sb_pv",e)}catch(e){}nt(t)}).catch(function(){S("コードが違います")})}function at(){try{navigator.clearAppBadge&&navigator.clearAppBadge()}catch(e){}navigator.serviceWorker&&navigator.serviceWorker.ready&&navigator.serviceWorker.ready.then(function(e){var t=e.active||navigator.serviceWorker&&navigator.serviceWorker.controller;t&&t.postMessage({type:"clearBadge"})}).catch(function(){})}!function(){var e=document.getElementById("storeName");if(e&&window.crypto&&crypto.subtle){var t=0,n=0;e.addEventListener("click",function(){var e=Date.now();if(e-n>3e3&&(t=0),n=e,!(++t<7)){t=0;var r="";try{r=localStorage.getItem("sb_pv")||""}catch(e){}r?Ze(r).then(nt).catch(rt):rt()}})}}(),(et=document.querySelector(".logo"))&&(et.style.cursor="pointer",et.addEventListener("click",function(){location.href="./home.html"})),function(){if(u){var e=document.getElementById("storeName");e&&(e.textContent="鮨処すさび湯 四条烏丸"),document.title="鮨処すさび湯 四条烏丸",G&&(G.style.display="none"),Ee&&(Ee.style.display="none"),setTimeout(function(){X&&X.click()},80)}}();try{var it=JSON.parse(localStorage.getItem("sb_feed")||"null");it&&it.length&&B(it)}catch(e){}P().then(function(){H(n),z(function(e){var t=new RegExp("[?&]"+e+"=([^&]+)").exec(location.search||"");return t?decodeURIComponent(t[1]):""}("focus"))}),at(),window.addEventListener("focus",at),document.addEventListener("visibilitychange",function(){document.hidden?_e():(R(),at(),V&&"none"!==V.style.display&&(ke(),Le()))}),"serviceWorker"in navigator&&navigator.serviceWorker&&navigator.serviceWorker.addEventListener("message",function(e){e.data&&"focus"===e.data.type&&(R(),z(e.data.token))}),function(){var e=navigator.userAgent,t=/iphone|ipad|ipod/i.test(e),n="standalone"in navigator&&navigator.standalone;if(t&&!n&&!localStorage.getItem("ios_hint_off")){var r=document.getElementById("ios");r&&(r.style.display="block",r.querySelector(".x").addEventListener("click",function(){localStorage.setItem("ios_hint_off","1")}))}}(),j(),setTimeout(function(){r&&!K&&(K=!0,ke())},1200)}();
+/* すさび湯 確認PWA — フロントロジック
+   データ/操作は GAS を JSONP で呼ぶ（CORS回避）。メディアは jsDelivr CDN。 */
+(function () {
+  "use strict";
+  var CFG = window.SUSABIYU || window.GIFUYA || {};   // 三条=SUSABIYU / ぎふや=GIFUYA（同一エンジンを店舗設定で駆動）
+  var GAS = (CFG.GAS_URL || "").trim();
+  var POLL = CFG.POLL_MS || 4000;
+  var KEY = localStorage.getItem("sb_key") || "";
+  var ADMIN = localStorage.getItem("sb_admin") || "";   // 管理者コード（採用/無しの変更に必要。空＝閲覧のみ）
+  var NOTIF = loadNotif();                                // 通知カテゴリの個別ON/OFF
+  function loadNotif() {
+    try { var o = JSON.parse(localStorage.getItem("sb_notif") || "{}"); return o && typeof o === "object" ? o : {}; }
+    catch (e) { return {}; }
+  }
+  function notifOn(k) { return String(NOTIF[k] !== undefined ? NOTIF[k] : 1) !== "0"; }
+  function saveNotifLocal() { try { localStorage.setItem("sb_notif", JSON.stringify(NOTIF)); } catch (e) {} }
+
+  var keyGen = 0;   // キー入力ごとに+1。送信後に別要求でキーが入った場合の“二重入力”を防ぐ
+  function askKey(msg, genAtSend) {
+    // この要求を投げた後に、別の要求でキーが入力済みなら聞かない（＝1回で済む）
+    if (genAtSend !== undefined && genAtSend !== keyGen) return KEY;
+    var k = window.prompt(msg || "確認コードを入力してください", "");
+    if (k != null) { var prevK = KEY; KEY = k.trim(); localStorage.setItem("sb_key", KEY); keyGen++; karCheck(KEY, prevK); }
+    return KEY;
+  }
+
+  /* ---------- 烏丸店ページ（仮・PASSを知る人だけ） ---------- */
+  var KAR_HASH = "92925488b28ab12584ac8fcaa8a27a0f497b2c62940c8f4fbc8ef19ebc87c43e";
+  // 烏丸（鮨処）行きのテンプレID。ラベルに頼らずIDで確実に振り分ける。
+  var KAR_KEYS = { sushi: 1, tempo: 1, typo: 1, photo: 1, oshina: 1, oshinatate: 1, kaiten: 1, osusume: 1, gridzoom: 1, noren: 1, season: 1 };
+  function isKarPat(it) {
+    return KAR_KEYS[String((it && it.pattern) || "")] === 1 || String((it && it.label) || "").indexOf("【鮨処】") === 0;
+  }
+  var KAR = false;
+  try { KAR = localStorage.getItem("sb_store") === "karasuma"; } catch (e) {}
+  function karCheck(code, prevKey) {
+    if (!code || !window.crypto || !crypto.subtle) return;
+    pvHash(code).then(function (h) {
+      if (h !== KAR_HASH) return;
+      try {
+        if (prevKey) localStorage.setItem("sb_key", prevKey); else localStorage.removeItem("sb_key");
+        localStorage.setItem("sb_store", "karasuma");
+      } catch (e) {}
+      location.reload();
+    });
+  }
+
+  var feed = document.getElementById("feed");
+  var live = document.getElementById("live");
+  var liveTxt = document.getElementById("liveTxt");
+  var toastEl = document.getElementById("toast");
+  var cardEls = {};      // token -> card element
+  var pendingActs = {};  // token -> 楽観状態（サーバ反映までポーリングで巻き戻さない）
+  var firstLoad = true;
+  var lastSig = null;
+  var timer = null;
+
+  /* ---------- JSONP ---------- */
+  var jcount = 0;
+  function jsonp(params) {
+    return new Promise(function (resolve, reject) {
+      if (!GAS || GAS.indexOf("PASTE_") === 0) { reject(new Error("GAS_URL未設定")); return; }
+      var cb = "__sb_cb" + (++jcount) + "_" + Date.now();
+      var s = document.createElement("script");
+      // GAS(/exec)は遅い時がある。実測で schedlist が27秒かかり、15秒で切っていたため
+      // 「接続できませんでした／timeout」になっていた（GAS自体は生きている）。
+      // 待たせてでも出す方がよいので、実測の倍の余裕を持たせる。
+      var to = setTimeout(function () { cleanup(); reject(new Error("timeout")); }, 60000);
+      function cleanup() { clearTimeout(to); delete window[cb]; if (s.parentNode) s.parentNode.removeChild(s); }
+      var genAtSend = keyGen;   // この要求を投げた時点のキー世代
+      window[cb] = function (data) { cleanup(); if (data && typeof data === "object") { try { data._gen = genAtSend; } catch (e) {} } resolve(data); };
+      if (KEY) params.key = KEY;
+      if (ADMIN && params.owner === undefined) params.owner = ADMIN;
+      if (CFG.ACCOUNT && params.account === undefined) params.account = CFG.ACCOUNT;   // 共有GASの店舗振り分け（三条=未設定）
+      var q = Object.keys(params).map(function (k) { return k + "=" + encodeURIComponent(params[k]); }).join("&");
+      s.src = GAS + (GAS.indexOf("?") >= 0 ? "&" : "?") + q + "&cb=" + cb;
+      s.onerror = function () { cleanup(); reject(new Error("network")); };
+      document.head.appendChild(s);
+    });
+  }
+
+  /* ---------- helpers ---------- */
+  function toast(t) {
+    toastEl.textContent = t; toastEl.classList.add("show");
+    clearTimeout(window._tt); window._tt = setTimeout(function () { toastEl.classList.remove("show"); }, 1700);
+  }
+  // 端末バイブ（対応端末のみ。iOSのWebは非対応なので視覚で補う）
+  function haptic(ms) { try { if (navigator.vibrate) navigator.vibrate(ms || 15); } catch (e) {} }
+  // 更新中トースト（スピナー付き・自動で消さない＝完了時にtoast()で置き換える）
+  function toastBusy(t) {
+    toastEl.innerHTML = '<span class="tspin"></span>' + (t || "更新中…");
+    toastEl.classList.add("show"); clearTimeout(window._tt);
+  }
+  function isVideo(it) {
+    var u = (it.url || "").toLowerCase();
+    if (u.indexOf(".mp4") >= 0 || u.indexOf(".mov") >= 0 || u.indexOf(".webm") >= 0) return true;
+    return it.kind === "video";
+  }
+  function bg(blur) {
+    return blur ? 'background:#000 url(' + blur + ') center/cover no-repeat' : 'background:#000';
+  }
+  // 読み込み失敗時：一時的な失敗(回線/CDN伝播遅延等)は数回まで間隔を空けてキャッシュ回避で自動再読込。
+  // それでもダメな時だけ「⟳ タップで再読み込み」を表示する。data URI等は再試行不可なので即表示。
+  window.__mediaErr = function (el) {
+    if (!el) return;
+    var cur = el.getAttribute("src") || "";
+    var fail = function () { var w = el.closest && el.closest(".mediaWrap"); if (w) w.classList.add("mediaerr"); };
+    if (!/^https?:/i.test(cur)) { fail(); return; }            // data:や空はリトライ不可
+    var orig = cur.replace(/[?&]r=\d+$/, "");                   // 直近で付けたキャッシュ回避を除去
+    var n = (parseInt(el.getAttribute("data-retry") || "0", 10)) + 1;
+    el.setAttribute("data-retry", String(n));
+    if (n <= 4) {
+      setTimeout(function () {
+        var bust = orig + (orig.indexOf("?") >= 0 ? "&" : "?") + "r=" + Date.now();
+        el.src = bust;
+        if (el.tagName === "VIDEO") { try { el.load(); } catch (e) {} }
+      }, 700 * n);                                              // 0.7s,1.4s,2.1s,2.8s と間隔を広げて再試行
+      return;
+    }
+    fail();
+  };
+  // 読み込み成功：エラー表示を消し、再試行カウンタをリセット
+  window.__mediaOk = function (el) {
+    var w = el && el.closest && el.closest(".mediaWrap"); if (w) w.classList.remove("mediaerr");
+    if (el) el.setAttribute("data-retry", "0");
+  };
+  // 読み込みが「途中で静かに止まった」画像の監視と自動復旧。
+  // ・画面に見えている画像だけを対象にする（画面外で読み込み待ちの遅延画像を
+  //   「止まった」と誤検知しないため）
+  // ・15秒たっても完了しない画像はキャッシュ回避付きで読み直し（最大4回）
+  // ・リトライを使い切った後も、見えている間は30秒ごとに自動で再挑戦（タップ不要）
+  setInterval(function () {
+    var imgs = document.querySelectorAll("img.media");
+    var now = Date.now();
+    for (var i = 0; i < imgs.length; i++) {
+      var el = imgs[i];
+      if (el.complete && el.naturalWidth > 0) { el._t0 = 0; continue; }   // 正常に完了
+      if (!el.getAttribute("src")) continue;                              // 未読み込み
+      // 非表示（フィルタで隠れている等）や画面から遠い画像は対象外
+      var rct = el.getBoundingClientRect();
+      var vis = el.offsetParent !== null && rct.bottom > -600 && rct.top < window.innerHeight + 600;
+      if (!vis) { el._t0 = 0; continue; }
+      var wrap = el.closest && el.closest(".mediaWrap");
+      var failed = wrap && wrap.classList.contains("mediaerr");
+      if (failed) {
+        // リトライ切れ後も、見えている間は30秒ごとに静かに再挑戦
+        if (!el._again || now > el._again) {
+          el._again = now + 30000;
+          el.setAttribute("data-retry", "0");
+          if (window.__mediaErr) window.__mediaErr(el);
+        }
+        continue;
+      }
+      if (!el._t0) { el._t0 = now; continue; }
+      if (now - el._t0 > 15000) {
+        el._t0 = now;
+        if (window.__mediaErr) window.__mediaErr(el);
+      }
+    }
+  }, 5000);
+  function mediaHtml(it) {
+    if (isVideo(it)) {
+      var p = it.poster ? ' poster="' + it.poster + '"' : '';
+      // ポスターがあれば動画本体は再生ボタンを押すまで読み込まない（省通信＝体感速度UP）
+      var pre = it.poster ? "none" : "metadata";
+      // crossorigin=anonymous：jsDelivrはCORSヘッダを返すので応答が“中身の読める(cors)”状態になり、
+      // SWがポスター(.jpg)を検証して保存→2回目以降は開いた瞬間に鮮明表示できる。解像度は不変。
+      return '<div class="mediaWrap"><video class="media" crossorigin="anonymous" style="' + bg(it.blur) + '" src="' + it.url + '"' + p +
+             ' controls playsinline preload="' + pre + '" onloadeddata="window.__mediaOk&&window.__mediaOk(this)" onerror="window.__mediaErr&&window.__mediaErr(this)"></video><div class="badge">▶ タップで再生（音が出ます）</div></div>';
+    }
+    if (it.url) {
+      // 確認画面は枚数が少なく“すぐ鮮明に見たい”ので即時読み込み＋高優先度（遅延読み込みにしない）
+      return '<div class="mediaWrap"><img class="media" crossorigin="anonymous" style="' + bg(it.blur) + '" src="' + it.url +
+             '" alt="preview" decoding="async" loading="eager" fetchpriority="high" onload="window.__mediaOk&&window.__mediaOk(this)" onerror="window.__mediaErr&&window.__mediaErr(this)"></div>';
+    }
+    return '<div class="mediaWrap"><div class="media" style="height:180px"></div></div>';
+  }
+  // "2026-07-01 16:00"(JST) -> msエポック
+  function parseJst(s) {
+    var m = String(s || "").match(/(\d{4})-(\d{1,2})-(\d{1,2})\s+(\d{1,2}):(\d{2})/);
+    if (!m) return 0;
+    return Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4] - 9, +m[5], 0);
+  }
+  function remainText(it) {
+    var t = parseJst(it.when); if (!t) return "";
+    var ms = t - Date.now();
+    if (ms <= 0) return "まもなく投稿";
+    var min = Math.floor(ms / 60000), h = Math.floor(min / 60), mn = min % 60;
+    return h > 0 ? "あと" + h + "時間" + mn + "分" : "あと" + mn + "分";
+  }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
+    return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]; }); }
+
+  /* ---------- card body by status ---------- */
+  function slotHtml(it) {
+    if (it.status === "redo")
+      return '<div class="redoing"><span class="spin"></span>作り直しています…（1〜3分・完成したら自動更新）</div>';
+    if (it.status === "approved")
+      return '<div class="banner okb" data-unapprove="1">✓ 承認済み（予定時刻に投稿されます）<small>タップで承認取消（管理者）</small></div>';
+    if (it.status === "rejected")
+      return '<div class="banner ngb">— 取りやめました</div>';
+    if (it.status === "gone")
+      return '<div class="banner ngb">— この枠は削除されました</div>';
+    return '<div class="btns">' +
+      '<button class="ok">投稿OK</button>' +
+      '<button class="rd">作り直す</button>' +
+      '<button class="ng">やめる</button></div>';
+  }
+  function wireButtons(card, it) {
+    var b = card.querySelectorAll(".btns button");
+    if (!b.length) return;
+    b[0].onclick = function () { act(card, it.token, "ok"); };
+    b[1].onclick = function () { act(card, it.token, "redo"); };
+    b[2].onclick = function () { act(card, it.token, "cancel"); };
+  }
+  function applyStatus(card, it) {
+    card.setAttribute("data-status", it.status);
+    var slot = card.querySelector(".slot");
+    if (slot) { slot.innerHTML = slotHtml(it); wireButtons(card, it); }
+    card.classList.toggle("done", it.status === "approved" || it.status === "rejected" || it.status === "gone");
+    // 承認済みバナーをタップ→管理者コードで承認取消
+    var ub = card.querySelector('.banner.okb[data-unapprove]');
+    if (ub) ub.onclick = function () { unapprove(card, it.token); };
+    // 作り直しが長引いた時の逃げ道（5分でフォールバックを表示）
+    if (card._redoTimer) { clearTimeout(card._redoTimer); card._redoTimer = null; }
+    if (it.status === "redo") {
+      card._redoTimer = setTimeout(function () {
+        var sl = card.querySelector(".slot");
+        if (sl && card.getAttribute("data-status") === "redo") {
+          var ex = document.createElement("div"); ex.className = "redoslow";
+          ex.innerHTML = "時間がかかっています。<button class=\"mlink\" data-r=\"again\">もう一度</button>・<button class=\"mlink\" data-r=\"stop\">やめる</button>";
+          sl.appendChild(ex);
+          var ag = ex.querySelector('[data-r="again"]'), sp = ex.querySelector('[data-r="stop"]');
+          if (ag) ag.onclick = function () { act(card, card.dataset.token, "redo"); };
+          if (sp) sp.onclick = function () { act(card, card.dataset.token, "cancel"); };
+        }
+      }, 5 * 60 * 1000);
+    }
+  }
+  // パターン名の日本語表（サーバー側が英字キーのまま返した時の保険）
+  var PATJA = {
+    taishufuda: "大衆・値札チラシ", taishukaiten: "大衆・回転レーン", taishuoshi: "大衆・イチオシ",
+    taishuodo: "大衆・王道", taishuzen: "大衆・全画面", taishushinbun: "大衆・見出し新聞",
+    taishugrid: "大衆・グリッドズーム", taishutanzaku: "大衆・壁の短冊", taishunoren: "大衆・暖簾くぐり",
+    taishutempo: "大衆・賑やかテンポ", taishushun: "大衆・季節の旬", taishuhito: "大衆・本日の一皿",
+    taishuoshina: "大衆・お品書き", sanjokaiten: "回転レーン(烏丸ベース)",
+    taishugaku: "大衆・額装（画像）", taishucap: "大衆・写真一言（画像）",
+    taishuimga: "画像案A・提灯(寿司酒場)", taishuimga2: "画像案A2・提灯(大衆酒場)",
+    taishuimgb: "画像案B・チラシ", taishuimgd: "画像案D・紺のれん",
+    taishuimge: "画像案E・黄ポップ", taishuimgf: "画像案F・白抜き文字"
+  };
+  function patJa(it) {
+    if (it.patternJa && it.patternJa !== it.pattern) return it.patternJa;
+    return PATJA[it.pattern] || it.patternJa || it.pattern || "";
+  }
+  function buildCard(it) {
+    var card = document.createElement("div");
+    card.className = "card";
+    card.setAttribute("data-token", it.token);
+    card.dataset.url = it.url || "";
+    var rem = remainText(it);
+    card.innerHTML =
+      '<div class="head"><span class="time">' + esc(it.when) + '</span>' +
+      '<span class="pat">' + esc(patJa(it)) + '</span>' +
+      (rem ? '<span class="remain">' + rem + '</span>' : '') + '</div>' +
+      mediaHtml(it) +
+      '<div class="cap">' + esc(it.caption || "（動画）") + '</div>' +
+      '<div class="slot"></div>';
+    applyStatus(card, it);
+    return card;
+  }
+
+  /* ---------- actions ---------- */
+  function act(card, token, action) {
+    var bs = card.querySelectorAll(".btns button");
+    for (var i = 0; i < bs.length; i++) bs[i].disabled = true;
+    var optimistic = action === "ok" ? "approved" : action === "redo" ? "redo" : "rejected";
+    pendingActs[token] = optimistic;   // サーバ反映までポーリングで巻き戻さない
+    applyStatus(card, { token: token, status: optimistic });
+    toast(action === "ok" ? "承認しました" : action === "redo" ? "作り直しを開始しました" : "取りやめました");
+    jsonp({ api: "act", token: token, action: action }).then(function (res) {
+      var r = (res && res.result) || "";
+      if (r.indexOf("locked:") === 0) {
+        var cur = r.split(":")[1];
+        toast("他の方が「" + (cur === "approved" ? "投稿OK" : cur === "rejected" ? "やめる" : "作り直し") + "」済みです");
+        pendingActs[token] = cur; applyStatus(card, { token: token, status: cur });
+      } else if (r === "busy") { delete pendingActs[token]; toast("混雑中。再取得します"); load(); }
+      else if (r === "notfound") { delete pendingActs[token]; applyStatus(card, { token: token, status: "gone" }); }
+      else { pendingActs[token] = optimistic; if (action === "redo") fast(); }
+    }).catch(function () {
+      delete pendingActs[token];
+      toast("通信エラー。元に戻します");
+      applyStatus(card, { token: token, status: "pending" });
+    });
+  }
+
+  // 承認の取り消し（管理者コード必須）。取り消すと未承認(pending)に戻るが、
+  // 「やめる」を押さない限り予定どおり自動投稿される。
+  function unapprove(card, token) {
+    function go() {
+      pendingActs[token] = "pending";
+      applyStatus(card, { token: token, status: "pending" });
+      toast("承認を取り消しました（やめない限り自動投稿します）");
+      jsonp({ api: "act", token: token, action: "unapprove" }).then(function (res) {
+        if (res && res.error === "owner") {
+          toast("管理者コードが必要です"); delete pendingActs[token];
+          applyStatus(card, { token: token, status: "approved" }); lockAdmin(); return;
+        }
+        var r = (res && res.result) || "";
+        if (r === "pending") { pendingActs[token] = "pending"; }
+        else if (r.indexOf("locked:") === 0) {
+          var cur = r.split(":")[1]; delete pendingActs[token];
+          applyStatus(card, { token: token, status: cur }); toast("取り消せませんでした");
+        } else { delete pendingActs[token]; load(); }
+      }).catch(function () {
+        delete pendingActs[token]; toast("通信エラー");
+        applyStatus(card, { token: token, status: "approved" });
+      });
+    }
+    if (ADMIN) { go(); return; }
+    var code = window.prompt("承認を取り消すには管理者コードを入力してください", "");
+    if (code == null) return; code = String(code).trim(); if (!code) return;
+    jsonp({ api: "owner", owner: code }).then(function (res) {
+      if (res && res.error === "auth") { askKey("確認コードを入力してください", res._gen); return; }
+      if (res && res.owner) { ADMIN = code; localStorage.setItem("sb_admin", code); go(); }
+      else { toast("管理者コードが違います"); }
+    }).catch(function () { toast("通信エラー"); });
+  }
+
+  /* ---------- render / diff ---------- */
+  function render(items) {
+    if (firstLoad) { feed.innerHTML = ""; firstLoad = false; }
+    var seen = {};
+    var anyRedo = false;
+    items.forEach(function (it) {
+      seen[it.token] = true;
+      if (it.status === "redo") anyRedo = true;
+      var card = cardEls[it.token];
+      if (!card) {
+        card = buildCard(it);
+        cardEls[it.token] = card;
+        feed.appendChild(card);
+      } else {
+        // 残り時間は常に更新
+        var rem = card.querySelector(".remain");
+        if (rem) rem.textContent = remainText(it);
+        // 操作直後はサーバ反映まで楽観状態を維持（ポーリングで巻き戻さない）
+        if (pendingActs[it.token]) {
+          if (it.status === pendingActs[it.token]) { delete pendingActs[it.token]; }
+          else { return; }  // まだ反映前 → 状態/メディアは触らない（returnでこの枠だけスキップ）
+        }
+        // メディアが変わった（作り直し完了など）ら差し替え。それ以外は触らずチラつき防止
+        if ((card.dataset.url || "") !== (it.url || "")) {
+          card.dataset.url = it.url || "";
+          var mw = card.querySelector(".mediaWrap");
+          if (mw) mw.outerHTML = mediaHtml(it);
+          var cp = card.querySelector(".cap");
+          if (cp) cp.textContent = it.caption || "（動画）";
+        }
+        var prev = card.getAttribute("data-status");
+        if (prev !== it.status) applyStatus(card, it);
+      }
+    });
+    // 消えた枠（=投稿済みなど）はフェードして除去
+    Object.keys(cardEls).forEach(function (tk) {
+      if (!seen[tk]) {
+        var c = cardEls[tk]; delete cardEls[tk];
+        c.style.opacity = "0"; c.style.transform = "scale(.98)";
+        setTimeout(function () { if (c.parentNode) c.parentNode.removeChild(c); }, 280);
+      }
+    });
+    if (!feed.children.length) {
+      feed.innerHTML = '<div class="empty">確認待ちの投稿はありません。<br>新しい投稿ができると、ここに表示されます。</div>';
+    }
+    setRate(anyRedo ? 3000 : POLL);
+  }
+
+  /* ---------- load / poll ---------- */
+  function setLive(ok) {
+    live.classList.toggle("live", ok);
+    if (ok) {
+      var d = new Date(), p = function (n) { return ("0" + n).slice(-2); };
+      // 最終確認画面が「今の最新」だと一目で分かるよう、取得時刻を表示（毎回のライブ取得で更新）
+      liveTxt.textContent = "最新 " + p(d.getHours()) + ":" + p(d.getMinutes()) + ":" + p(d.getSeconds());
+    } else {
+      liveTxt.textContent = "接続中…";
+    }
+  }
+  function load() {
+    return jsonp({ api: "list" }).then(function (data) {
+      if (data && data.error === "auth") {
+        setLive(false);
+        askKey("確認コードが違います。もう一度入力してください", data._gen);
+        return load();
+      }
+      setLive(true);
+      var items = (data && data.items) || [];
+      lastSig = data && data.sig;
+      try { localStorage.setItem("sb_feed", JSON.stringify(items)); } catch (e) {}
+      render(items);
+    }).catch(function (e) {
+      setLive(false);
+      if (firstLoad) {
+        feed.innerHTML = '<div class="empty">接続できませんでした。<br>設定(GAS_URL)をご確認ください。<br><small>' + esc(e.message) + '</small></div>';
+        firstLoad = false;
+      }
+    });
+  }
+  function poll() { if (!document.hidden) load(); }
+  function setRate(ms) { if (timer) clearInterval(timer); timer = setInterval(poll, ms); }
+  function fast() { setRate(3000); poll(); }
+
+  /* ---------- iOS add-to-home hint ---------- */
+  function maybeIosHint() {
+    var ua = navigator.userAgent;
+    var isIos = /iphone|ipad|ipod/i.test(ua);
+    var standalone = ("standalone" in navigator) && navigator.standalone;
+    if (isIos && !standalone && !localStorage.getItem("ios_hint_off")) {
+      var el = document.getElementById("ios");
+      if (el) {
+        el.style.display = "block";
+        el.querySelector(".x").addEventListener("click", function () { localStorage.setItem("ios_hint_off", "1"); });
+      }
+    }
+  }
+
+  /* ---------- Web Push 購読 ---------- */
+  function urlB64ToU8(s) {
+    var pad = "=".repeat((4 - (s.length % 4)) % 4);
+    var b = (s + pad).replace(/-/g, "+").replace(/_/g, "/");
+    var raw = atob(b), arr = new Uint8Array(raw.length);
+    for (var i = 0; i < raw.length; i++) arr[i] = raw.charCodeAt(i);
+    return arr;
+  }
+  function b64(s) { return btoa(unescape(encodeURIComponent(s))); }
+  function pushSupported() {
+    return ("serviceWorker" in navigator) && ("PushManager" in window) && ("Notification" in window);
+  }
+  function refreshPushBtn() {
+    var btn = document.getElementById("pushBtn"); if (!btn) return;
+    btn.onclick = enablePush;
+    var isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    var standalone = ("standalone" in navigator) && navigator.standalone;
+    if (pushSupported()) {
+      navigator.serviceWorker.ready.then(function (reg) { return reg.pushManager.getSubscription(); })
+        .then(function (sub) {
+          btn.style.display = "inline-block";
+          if (sub && Notification.permission === "granted") {
+            btn.textContent = "🔔 通知ON"; btn.classList.add("on");
+            btn.onclick = function () { openNotifSettings(sub); };  // ON中はタップで個別設定
+          } else {
+            btn.textContent = "🔔 通知を受け取る"; btn.classList.remove("on"); btn.onclick = enablePush;
+          }
+        }).catch(function () { btn.style.display = "inline-block"; });
+    } else if (isIos && !standalone) {
+      btn.style.display = "inline-block"; btn.textContent = "🔔 通知"; btn.classList.remove("on");
+    } else { btn.style.display = "none"; }
+  }
+  function enablePush() {
+    var isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    var standalone = ("standalone" in navigator) && navigator.standalone;
+    if (isIos && !standalone) {
+      var el = document.getElementById("ios"); if (el) el.style.display = "block";
+      toast("iPhoneは『ホーム画面に追加』してから通知をオンにできます"); return;
+    }
+    if (!pushSupported()) { toast("この端末/ブラウザは通知に未対応です"); return; }
+    if (!CFG.VAPID_PUBLIC) { toast("通知の設定(VAPID)が未設定です"); return; }
+    Notification.requestPermission().then(function (perm) {
+      if (perm !== "granted") { toast("通知が許可されませんでした"); return; }
+      navigator.serviceWorker.ready.then(function (reg) {
+        return reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlB64ToU8(CFG.VAPID_PUBLIC) });
+      }).then(function (sub) {
+        return jsonp({ api: "subscribe", sub: b64(JSON.stringify(sub)), prefs: JSON.stringify(NOTIF), ep: sub.endpoint }).then(function (res) {
+          if (res && res.error === "auth") { askKey("確認コードを入力してください", res._gen); return; }
+          toast("通知をオンにしました 🔔"); refreshPushBtn(); openNotifSettings(sub);
+        });
+      }).catch(function (e) { toast("通知の登録に失敗: " + ((e && e.message) || e)); });
+    });
+  }
+
+  /* ---------- モーダル（汎用） ---------- */
+  function modal(title, fill) {
+    var ov = document.createElement("div"); ov.className = "modalOv";
+    var sheet = document.createElement("div"); sheet.className = "modal";
+    sheet.innerHTML = '<div class="mhead"><span>' + esc(title) + '</span><button class="mx">✕</button></div><div class="mbody"></div>';
+    ov.appendChild(sheet); document.body.appendChild(ov);
+    sheet.querySelector(".mx").onclick = function () { closeModal(ov); };
+    ov.onclick = function (e) { if (e.target === ov) closeModal(ov); };
+    fill(sheet.querySelector(".mbody"), ov);
+    requestAnimationFrame(function () { ov.classList.add("show"); });
+    return ov;
+  }
+  function closeModal(ov) {
+    ov.classList.remove("show");
+    setTimeout(function () { if (ov.parentNode) ov.parentNode.removeChild(ov); }, 220);
+  }
+
+  /* ---------- 通知の個別ON/OFF設定 ---------- */
+  var NOTIF_CATS = [
+    { key: "ig", label: "Instagram投稿完了", desc: "実際にInstagramへ投稿された時" },
+    { key: "confirm", label: "確認用の作成完了", desc: "確認用の動画・画像ができた時" },
+    { key: "redo", label: "作り直しの作成完了", desc: "作り直した動画・画像ができた時" }
+  ];
+  function openNotifSettings(sub) {
+    modal("通知の設定", function (body, ov) {
+      var lead = document.createElement("div"); lead.className = "mlead";
+      lead.textContent = "受け取りたい通知だけをオンにできます（この端末ごとの設定）。";
+      body.appendChild(lead);
+      NOTIF_CATS.forEach(function (c) {
+        var row = document.createElement("label"); row.className = "swrow";
+        row.innerHTML = '<div class="swtxt"><b>' + esc(c.label) + '</b><small>' + esc(c.desc) + '</small></div>' +
+          '<span class="sw"><input type="checkbox"' + (notifOn(c.key) ? " checked" : "") + '><i></i></span>';
+        var cb = row.querySelector("input");
+        cb.onchange = function () {
+          NOTIF[c.key] = cb.checked ? 1 : 0; saveNotifLocal();
+          if (sub) jsonp({ api: "notifprefs", ep: sub.endpoint, prefs: JSON.stringify(NOTIF) }).then(function (res) {
+            if (res && res.error === "auth") askKey("確認コードを入力してください", res._gen);
+          });
+          toast((cb.checked ? "ON：" : "OFF：") + c.label);
+        };
+        body.appendChild(row);
+      });
+      var stop = document.createElement("button"); stop.className = "mbtn off"; stop.textContent = "通知をすべてオフにする";
+      stop.onclick = function () {
+        if (sub) { try { sub.unsubscribe(); } catch (e) {} }
+        toast("通知をオフにしました"); closeModal(ov); refreshPushBtn();
+      };
+      body.appendChild(stop);
+    });
+  }
+
+  /* ---------- 通知タップで該当投稿へジャンプ ---------- */
+  function getParam(name) {
+    var m = new RegExp("[?&]" + name + "=([^&]+)").exec(location.search || "");
+    return m ? decodeURIComponent(m[1]) : "";
+  }
+  function focusCard(token) {
+    if (!token) return;
+    var tries = 0, done = 0;
+    (function step() {
+      var c = cardEls[token];
+      if (c) {
+        // 即時で上揃え（上からスクロールせず、その投稿が開いた状態にする）
+        c.scrollIntoView({ behavior: "auto", block: "start" });
+        if (done === 0) { c.classList.add("flash"); setTimeout(function () { c.classList.remove("flash"); }, 2200); }
+        done++;
+        if (done < 5) setTimeout(step, 250);  // 画像読込などのズレを数回補正（手前で止まる対策）
+        return;
+      }
+      if (++tries < 25) setTimeout(step, 250);  // データ到着を待つ
+    })();
+  }
+
+  /* ---------- 見本ギャラリー（採用/無しの判断用） ---------- */
+  var galleryEl = document.getElementById("gallery");
+  var tabFeed = document.getElementById("tabFeed");
+  var tabGallery = document.getElementById("tabGallery");
+  var galleryLoaded = false;
+  var galleryTimer = null;
+  var pendingPat = {};  // pattern -> 望む状態 "1"/"0"（楽観。サーバ反映までポーリングで戻さない）
+  function normOn(v) { return (String(v) !== "0" && String(v).toLowerCase() !== "false") ? "1" : "0"; }
+
+  // 画面外の動画は読み込みを解放し、近づいたら読み込む。
+  // iPhoneは同時に扱える動画数に上限があり、全部にsrcを付けると一部が再生不能になるため。
+  var vidObs = window.IntersectionObserver ? new IntersectionObserver(function (ens) {
+    for (var i = 0; i < ens.length; i++) {
+      var v = ens[i].target;
+      if (ens[i].isIntersecting) {
+        if (!v.getAttribute("src") && v.getAttribute("data-vsrc")) {
+          v.setAttribute("src", v.getAttribute("data-vsrc"));
+          try { v.load(); } catch (e) {}
+        }
+      } else if (v.getAttribute("src") && v.paused) {
+        v.removeAttribute("src");
+        try { v.load(); } catch (e) {}   // デコーダを解放（posterは残るので見た目は変わらない）
+      }
+    }
+  }, { rootMargin: "180% 0px 180% 0px" }) : null;
+
+  function galleryCard(it) {
+    var card = document.createElement("div");
+    // cv=動画 / ci=画像 / cu=生成中（どちらの表示にも出す）
+    card.className = "card " + (!it.url ? "cu" : (isVideo(it) ? "cv" : "ci"));
+    card.setAttribute("data-pattern", it.pattern);
+    card.setAttribute("data-csig", cardSig(it));   // 差分更新用：内容が変わった時だけ差し替える
+    var on = String(it.enabled) !== "0" && String(it.enabled).toLowerCase() !== "false";
+    var p = it.poster ? ' poster="' + esc(it.poster) + '"' : "";
+    var media;
+    if (!it.url) {
+      media = '<div class="mediaWrap"><div class="media" style="height:180px;display:flex;align-items:center;justify-content:center;color:#9aa3b2">見本を生成中…</div></div>';
+    } else if (isVideo(it)) {
+      var srcAttr = vidObs ? ' data-vsrc="' + esc(it.url) + '"' : ' src="' + esc(it.url) + '"';
+      var vpre = it.poster ? "none" : "metadata";   // ポスターがあれば再生まで本体を読まない
+      media = '<div class="mediaWrap"><video class="media" crossorigin="anonymous" style="' + bg(it.blur) + '"' + srcAttr + p +
+        ' controls playsinline preload="' + vpre + '" onerror="window.__mediaErr&&window.__mediaErr(this)"></video><div class="badge">▶ タップで再生（音が出ます）</div></div>';
+    } else {
+      // 画像パターン（額装・写真一言など）は静止画をそのまま表示
+      media = '<div class="mediaWrap"><img class="media" crossorigin="anonymous" style="' + bg(it.blur) + '" src="' + esc(it.url) +
+        '" alt="preview" decoding="async" loading="lazy" onerror="window.__mediaErr&&window.__mediaErr(this)"><div class="badge">画像投稿</div></div>';
+    }
+    // 採用ボタンと注意書きは両方DOMに入れ、表示は #gallery.admin クラスでCSS切替（再描画なし＝カクつかない）
+    card.innerHTML =
+      '<div class="head"><span class="pat">' + esc(it.label || it.pattern) + '</span>' +
+      '<span class="gstate ' + (on ? "on" : "off") + '">' + (on ? "採用中" : "無し") + '</span></div>' +
+      media +
+      ((it.caption || it.music) ? '<div class="gcap" style="margin:8px 2px 0;font-size:12.5px;color:#c9d2e0;line-height:1.5">' +
+        (it.caption ? '💬 ' + esc(it.caption) : '') +
+        (it.music ? '<span style="color:#9aa3b2">' + (it.caption ? '　／　' : '') + '🎵 ' + esc(it.music) + '</span>' : '') +
+        '</div>' : '') +
+      '<div class="seg"><button class="seg-on">採用する</button><button class="seg-off">無しにする</button></div>' +
+      '<div class="ghintline">「採用する」を選んだパターンだけが投稿に使われます</div>' +
+      '<div class="gnote">採用／無しの変更は管理者のみです。再生して確認できます。</div>';
+    var sOn = card.querySelector(".seg-on"), sOff = card.querySelector(".seg-off");
+    sOn.onclick = function () { if (card.dataset.on !== "1") setPattern(card, it.pattern, true); };
+    sOff.onclick = function () { if (card.dataset.on !== "0") setPattern(card, it.pattern, false); };
+    paintToggle(card, on);  // 初期状態を反映
+    var vv = card.querySelector("video");
+    if (vv && vidObs) vidObs.observe(vv);   // 画面に近づいた時だけ読み込む
+    return card;
+  }
+  // 2択スイッチ：選んでいる方を色付き＋「✓」で明示。両方いつでも押せる
+  function paintToggle(card, on) {
+    card.dataset.on = on ? "1" : "0";
+    var st = card.querySelector(".gstate");
+    if (st) { st.className = "gstate " + (on ? "on" : "off"); st.textContent = on ? "採用中" : "無し"; }
+    var sOn = card.querySelector(".seg-on"), sOff = card.querySelector(".seg-off");
+    if (sOn && sOff) {
+      sOn.classList.toggle("sel", on);   sOn.textContent = on ? "✓ 採用する" : "採用する";
+      sOff.classList.toggle("sel", !on); sOff.textContent = !on ? "✓ 無しにする" : "無しにする";
+    }
+  }
+  function setPattern(card, key, on) {
+    paintToggle(card, on);  // 楽観反映
+    if (CFG.SAMPLES) {   // 静的見本：端末内へ即時反映しつつ、共有GASにも account 付きで通知（best-effort）
+      toast(on ? "採用にしました" : "無しにしました");
+      jsonp({ api: "pattern", pattern: key, on: on ? 1 : 0 }).catch(function () {});
+      return;
+    }
+    pendingPat[key] = on ? "1" : "0";  // ポーリングで戻されないよう保持
+    toast(on ? "採用にしました" : "無しにしました");
+    jsonp({ api: "pattern", pattern: key, on: on ? 1 : 0 }).then(function (res) {
+      if (res && res.error === "owner") { toast("管理者コードが必要です"); delete pendingPat[key]; paintToggle(card, !on); lockAdmin(); return; }
+      if (res && res.error) { toast("反映できませんでした"); delete pendingPat[key]; paintToggle(card, !on); }
+    }).catch(function () { toast("通信エラー。元に戻します"); delete pendingPat[key]; paintToggle(card, !on); });
+  }
+  function applyAdminClass() {
+    // 静的見本（ぎふや等）は採用/無しを常時表示（端末内保存）。管理者ロック概念は使わない。
+    if (galleryEl) galleryEl.classList.toggle("admin", CFG.SAMPLES ? true : (!!ADMIN && !KAR));
+    refreshAdminBar();
+  }
+  function refreshAdminBar() {
+    var bar = document.getElementById("adminBar"); if (!bar) return;
+    if (CFG.SAMPLES) { bar.innerHTML = ""; return; }   // 静的見本では管理者バーを出さない
+    if (ADMIN) {
+      bar.innerHTML = '<span class="abadge">🔓 管理者モード</span><button class="alink" id="adminLock">解除する</button>';
+      var lk = bar.querySelector("#adminLock"); if (lk) lk.onclick = lockAdmin;
+    } else {
+      bar.innerHTML = '<button class="alink" id="adminUnlock">🔑 管理者モード（採用／無しを変更）</button>';
+      var ul = bar.querySelector("#adminUnlock"); if (ul) ul.onclick = unlockAdmin;
+    }
+  }
+  function unlockAdmin() {
+    var code = window.prompt("管理者コードを入力（採用／無しを変更できます）", "");
+    if (code == null) return;
+    code = String(code).trim(); if (!code) return;
+    jsonp({ api: "owner", owner: code }).then(function (res) {
+      if (res && res.error === "auth") { askKey("確認コードを入力してください", res._gen); return; }
+      if (res && res.owner) { ADMIN = code; localStorage.setItem("sb_admin", code); toast("管理者モードON"); applyAdminClass(); }
+      else { toast("管理者コードが違います"); }
+    }).catch(function () { toast("通信エラー"); });
+  }
+  function lockAdmin() {
+    // 採用ボタン群が消えて全カードの高さが縮む＝スクロール位置が飛ぶので、位置を保って戻す
+    var d = document.documentElement;
+    var sy = window.pageYOffset || d.scrollTop || 0;
+    ADMIN = ""; localStorage.removeItem("sb_admin"); applyAdminClass();
+    if (sy > 0) window.scrollTo(0, sy);
+  }
+  // 「動画／画像」切替（固定ボタン）。選択は端末に記憶する
+  var GFILTER = localStorage.getItem("sb_gfilter") || "vid";
+  function applyGalleryFilter() {
+    if (!galleryEl) return;
+    galleryEl.classList.toggle("fvid", GFILTER === "vid");
+    galleryEl.classList.toggle("fimg", GFILTER === "img");
+    var fb = document.getElementById("gFilter");
+    if (fb) {
+      // ヘッダー（固定バー）のすぐ下に貼り付ける
+      var tb = document.querySelector(".topbar");
+      if (tb) fb.style.top = (tb.offsetHeight + 8) + "px";
+      var bv = fb.querySelector(".fv"), bi = fb.querySelector(".fi");
+      if (bv) bv.classList.toggle("sel", GFILTER === "vid");
+      if (bi) bi.classList.toggle("sel", GFILTER === "img");
+    }
+  }
+  window.addEventListener("resize", applyGalleryFilter);
+  function setGalleryFilter(v) {
+    GFILTER = v;
+    try { localStorage.setItem("sb_gfilter", v); } catch (e) {}
+    applyGalleryFilter();
+    updateNp();   // 再生中の動画が隠れたらミニバーを出す
+  }
+  function buildFilterBar(items) {
+    var fb = document.createElement("div");
+    fb.className = "gfilter"; fb.id = "gFilter";
+    fb.innerHTML = '<button class="fv"></button><button class="fi"></button>';
+    fb.querySelector(".fv").onclick = function () { setGalleryFilter("vid"); };
+    fb.querySelector(".fi").onclick = function () { setGalleryFilter("img"); };
+    updateFilterCounts(items, fb);
+    return fb;
+  }
+  function updateFilterCounts(items, fb) {
+    fb = fb || document.getElementById("gFilter"); if (!fb) return;
+    var nv = 0, ni = 0;
+    items.forEach(function (it) { if (!it.url || isVideo(it)) nv++; if (!it.url || !isVideo(it)) ni++; });
+    var bv = fb.querySelector(".fv"), bi = fb.querySelector(".fi");
+    if (bv) bv.textContent = "🎬 動画 " + nv;
+    if (bi) bi.textContent = "🖼 画像 " + ni;
+  }
+  // ── 見本のOP案は末尾の「OPフォルダ」にまとめる ───────────────────────
+  // yoshokuop4〜9 / opblur / opmortar / opwine は“本編テンプレ”ではなく
+  // オープニングの見た目を見比べるための素材。本編と混ざると探しにくいので、
+  // 一覧の一番下に畳んでおき、押した時だけ開く。
+  // ※ No.10 の yoshokuopen は本編テンプレなので含めない（数字/blur/mortar/wine のみ）。
+  var OP_RE = /^yoshokuop(\d+|blur|mortar|wine)$/;
+  function isOpPat(it) { return OP_RE.test(String((it && it.pattern) || "")); }
+  var OPOPEN = false;
+  try { OPOPEN = localStorage.getItem("sb_opfold") === "1"; } catch (e) {}
+  function placeOpFolder() {
+    if (!galleryEl) return;
+    var old = galleryEl.querySelector(".opfold");
+    if (old && old.parentNode) old.parentNode.removeChild(old);
+    var cards = galleryEl.querySelectorAll(".card");
+    var first = null, n = 0;
+    for (var i = 0; i < cards.length; i++) {
+      var isop = OP_RE.test(cards[i].getAttribute("data-pattern") || "");
+      if (cards[i].classList) cards[i].classList.toggle("opitem", isop);
+      if (isop) { n++; if (!first) first = cards[i]; }
+    }
+    galleryEl.classList.toggle("opopen", OPOPEN);
+    if (!first) return;
+    var h = document.createElement("div");
+    h.className = "opfold" + (OPOPEN ? " open" : "");
+    h.innerHTML = '<button class="opfoldb"><span class="opcar">▶</span> 📁 OP・クローズ案 <b>' + n + '</b>本</button>';
+    h.querySelector(".opfoldb").onclick = function () {
+      OPOPEN = !OPOPEN;
+      try { localStorage.setItem("sb_opfold", OPOPEN ? "1" : "0"); } catch (e) {}
+      galleryEl.classList.toggle("opopen", OPOPEN);
+      h.classList.toggle("open", OPOPEN);
+    };
+    first.parentNode.insertBefore(h, first);
+  }
+
+  // カード1枚ぶんの内容署名（enabledは含めない＝採用切替では作り直さずその場で塗り替える）
+  function cardSig(it) {
+    return JSON.stringify([it.pattern, it.url || "", it.label || "", it.poster || "", it.blur || "", it.caption || "", it.music || ""]);
+  }
+  var lastGallerySig = "";
+  function patternsCacheGet() { try { return JSON.parse(localStorage.getItem("sb_patterns") || "null"); } catch (e) { return null; } }
+  function patternsCacheSet(items) { try { localStorage.setItem("sb_patterns", JSON.stringify(items)); } catch (e) {} }
+  function hasCards() { return !!galleryEl.querySelector(".card"); }
+  // 描画でスクロール位置が動いたら元に戻す（「採用する」押下後の自動更新などで先頭に戻さない）
+  function renderGallery(items) {
+    var d = document.documentElement;
+    var sy = window.pageYOffset || d.scrollTop || 0;
+    renderGalleryCore(items);
+    var ny = window.pageYOffset || d.scrollTop || 0;
+    if (ny !== sy && sy > 0) window.scrollTo(0, sy);
+  }
+  // 見本の動画がいま再生中か（再生中は画面に一切触らない）
+  function galleryPlaying() {
+    if (!galleryEl) return false;
+    var vs = galleryEl.getElementsByTagName("video");
+    for (var i = 0; i < vs.length; i++) { if (!vs[i].paused && !vs[i].ended) return true; }
+    return false;
+  }
+  function renderGalleryCore(items) {
+    // 再生中は何もしない（触ると再生が止まるため。止まった後の更新で追いつく）
+    if (hasCards() && galleryPlaying()) return;
+    // 一時的にサーバが空を返しても、表示済みの一覧は消さない
+    if (!items.length && hasCards()) return;
+    // 自分が今押した採用/無し（楽観）はサーバ反映までキープ。追いついたら解除。
+    items = items.map(function (it) {
+      var want = pendingPat[it.pattern];
+      if (want === undefined) return it;
+      if (normOn(it.enabled) === want) { delete pendingPat[it.pattern]; return it; }
+      var c = {}; for (var k in it) c[k] = it[k]; c.enabled = want; return c;
+    });
+    // 内容が前回と同じなら何もしない（動画の再読込＝カクつきを防ぐ）
+    var sig = JSON.stringify(items.map(function (it) { return [it.pattern, it.url, it.enabled, it.label, it.poster ? 1 : 0]; }));
+    if (sig === lastGallerySig && hasCards()) { applyAdminClass(); applyGalleryFilter(); return; }
+    lastGallerySig = sig;
+    // 店舗ページで振り分け：烏丸=【鮨処】のみ／三条=それ以外のみ
+    var normal = items.filter(function (it) { return !isKarPat(it); });
+    var stored = items.filter(isKarPat);
+    // OP案は末尾へ回す（本編どうしの順番は元のまま）
+    normal = normal.filter(function (it) { return !isOpPat(it); })
+                   .concat(normal.filter(isOpPat));
+    var list = KAR ? stored : normal;
+
+    // ── 差分更新：既にカードが並んでいるなら丸ごと作り直さない ──
+    // （全消し→再構築するとスクロール位置が先頭に戻ってしまうため、
+    //   変わったカードだけ差し替え、増減や並び替えも最小限の移動で反映する）
+    var fbar = document.getElementById("gFilter");
+    if (hasCards() && fbar && list.length) {
+      updateFilterCounts(list);
+      var have = {};
+      var cur = galleryEl.querySelectorAll(".card");
+      for (var ci = 0; ci < cur.length; ci++) have[cur[ci].getAttribute("data-pattern")] = cur[ci];
+      var prev = fbar;
+      list.forEach(function (it) {
+        var card = have[it.pattern];
+        if (card && card.getAttribute("data-csig") !== cardSig(it)) {
+          var nc = galleryCard(it); card.parentNode.replaceChild(nc, card); card = nc;
+        } else if (card) {
+          paintToggle(card, normOn(it.enabled) === "1");   // 採用/無しだけその場で塗り替え
+        } else {
+          card = galleryCard(it);
+        }
+        if (card.previousElementSibling !== prev) galleryEl.insertBefore(card, prev.nextSibling);
+        delete have[it.pattern];
+        prev = card;
+      });
+      for (var k in have) { if (have[k].parentNode) have[k].parentNode.removeChild(have[k]); }
+      placeOpFolder();
+      applyAdminClass();
+      applyGalleryFilter();
+      return;
+    }
+
+    // ── 初回（またはカードが無い/空になった）は丸ごと構築 ──
+    galleryEl.innerHTML = "";
+    var hint = document.createElement("div"); hint.className = "ghint";
+    hint.innerHTML = "各動画パターンの見本です。<b style='color:#7fd1a0'>採用する</b>を選ぶと、その型だけが日々の投稿ローテーションに使われます。<br>（店舗ごとの好みに合わせて選べます）";
+    galleryEl.appendChild(hint);
+    var bar = document.createElement("div"); bar.className = "adminbar"; bar.id = "adminBar"; galleryEl.appendChild(bar);
+    if (!items.length) {
+      var e = document.createElement("div"); e.className = "empty";
+      e.innerHTML = "見本がまだありません。<br>サンプル生成（samples）を実行すると、ここに各パターンの動画が並びます。";
+      galleryEl.appendChild(e); applyAdminClass(); return;
+    }
+    if (KAR) {
+      hint.innerHTML = "🍣 <b>鮨処すさび湯 四条烏丸</b>（準備中）の見本置き場です。このページは入口PASSを知る人だけが開けます。<br>Instagram連携はアカウント情報が揃ってから。<b>採用ボタンはまだ使いません</b>。 <button class='alink' id='karBack'>三条ページへ戻る</button>";
+      if (stored.length) galleryEl.appendChild(buildFilterBar(stored));
+      stored.forEach(function (it) { galleryEl.appendChild(galleryCard(it)); });
+      if (!stored.length) {
+        var ke = document.createElement("div"); ke.className = "empty";
+        ke.innerHTML = "保管中の見本はまだありません。";
+        galleryEl.appendChild(ke);
+      }
+      var kb = hint.querySelector("#karBack");
+      if (kb) kb.onclick = function () { try { localStorage.removeItem("sb_store"); } catch (e) {} location.reload(); };
+    } else {
+      if (normal.length) galleryEl.appendChild(buildFilterBar(normal));
+      normal.forEach(function (it) { galleryEl.appendChild(galleryCard(it)); });
+      placeOpFolder();
+    }
+    applyAdminClass();
+    applyGalleryFilter();
+  }
+  function loadPatterns() {
+    // 店舗が静的見本（CFG.SAMPLES）を持つ場合はGASを叩かず、その見本をそのまま表示（ぎふや等）。
+    if (CFG.SAMPLES) { renderGallery(CFG.SAMPLES); return Promise.resolve(); }
+    var cached = patternsCacheGet();
+    if (cached && !hasCards()) renderGallery(cached);                 // 前回内容を即表示（待たせない）
+    else if (!cached && !hasCards()) galleryEl.innerHTML = '<div class="ghint">見本を読み込んでいます…</div>';
+    return jsonp({ api: "patterns" }).then(function (data) {
+      if (data && data.error === "auth") { askKey("確認コードを入力してください", data._gen); return loadPatterns(); }
+      var items = (data && data.items) || [];
+      patternsCacheSet(items);
+      renderGallery(items);                                            // 変化が無ければ作り直さない
+    }).catch(function (e) {
+      if (!hasCards()) galleryEl.innerHTML = '<div class="empty">見本を取得できませんでした。<br><small>' + esc(e.message) + '</small></div>';
+    });
+  }
+  var reportEl = document.getElementById("report");
+  var tabReport = document.getElementById("tabReport");
+  function startGalleryPoll() { if (CFG.SAMPLES) return; stopGalleryPoll(); galleryTimer = setInterval(loadPatterns, 5000); }
+  function stopGalleryPoll() { if (galleryTimer) { clearInterval(galleryTimer); galleryTimer = null; } }
+  // 見本の動画を再生し始めたら自動更新ごと停止（通信もDOM操作も走らせない）。
+  // 止めたり見終わったら再開する。
+  if (galleryEl) {
+    galleryEl.addEventListener("play", function (ev) {
+      stopGalleryPoll();
+      if (ev.target && ev.target.tagName === "VIDEO") npVid = ev.target;
+      updateNp();
+    }, true);
+    var resumePoll = function () {
+      if (currentTab === "gallery" && !document.hidden && !galleryPlaying()) startGalleryPoll();
+      updateNp();
+    };
+    galleryEl.addEventListener("pause", resumePoll, true);
+    galleryEl.addEventListener("ended", resumePoll, true);
+  }
+
+  /* ---------- 再生中ミニバー ----------
+     動画を再生したまま「画像」表示や別タブへ移ると、動画は隠れても音は流れ続ける。
+     その時だけ画面下に「〜を再生中」のバーを出す（戻るボタン＋停止ボタン付き）。 */
+  var npBar = null, npVid = null;
+  function npLabel(v) {
+    var c = v && v.closest && v.closest(".card");
+    var p = c && c.querySelector(".pat");
+    return (p && p.textContent) || "見本動画";
+  }
+  function ensureNpBar() {
+    if (npBar) return npBar;
+    npBar = document.createElement("div");
+    npBar.className = "npbar";
+    npBar.style.display = "none";
+    npBar.innerHTML = '<span class="npdot"></span><span class="nptxt"></span><button class="npgo">見る</button><button class="npstop">停止</button>';
+    npBar.querySelector(".npstop").onclick = function () {
+      if (npVid) { try { npVid.pause(); } catch (e) {} }
+      updateNp();
+    };
+    npBar.querySelector(".npgo").onclick = function () {
+      if (!npVid) return;
+      if (currentTab !== "gallery") switchTo("gallery");
+      if (GFILTER !== "vid") setGalleryFilter("vid");
+      var c = npVid.closest && npVid.closest(".card");
+      if (c) c.scrollIntoView({ behavior: "auto", block: "center" });
+      updateNp();
+    };
+    document.body.appendChild(npBar);
+    return npBar;
+  }
+  function updateNp() {
+    // 「再生中」かつ「画面上で隠れている」時だけ表示（offsetParent=nullは非表示中の印）
+    var show = npVid && !npVid.paused && !npVid.ended && npVid.offsetParent === null;
+    if (!show) { if (npBar) npBar.style.display = "none"; return; }
+    ensureNpBar();
+    npBar.querySelector(".nptxt").textContent = npLabel(npVid) + " を再生中";
+    npBar.style.display = "flex";
+  }
+  var currentTab = "feed";
+  function loaderFor(name) { return name === "gallery" ? loadPatterns : (name === "report" ? loadReport : load); }
+  function switchTo(name) {
+    currentTab = name;
+    tabFeed.classList.toggle("on", name === "feed");
+    tabGallery.classList.toggle("on", name === "gallery");
+    if (tabReport) tabReport.classList.toggle("on", name === "report");
+    feed.style.display = name === "feed" ? "" : "none";
+    galleryEl.style.display = name === "gallery" ? "" : "none";
+    if (reportEl) reportEl.style.display = name === "report" ? "" : "none";
+    var rmb = document.getElementById("repmodeBar");
+    if (rmb) rmb.style.display = name === "report" ? "" : "none";   // レポート時だけ上部固定バー表示
+    if (name === "report") { updateRepModeBar(); preloadPdfLib(); }
+    if (name === "gallery") { galleryLoaded = true; if (!galleryPlaying()) startGalleryPoll(); }
+    else { stopGalleryPoll(); }
+    updateNp();   // 再生中の動画が隠れたらミニバーを出す
+  }
+  // そのタブに表示内容がもうあるか（＝切替時に再読込しなくてよいか）
+  function tabHasContent(name) {
+    if (name === "gallery") return galleryLoaded;
+    if (name === "report") return !!reportData;
+    return true;   // 確認は常時ポーリングで最新
+  }
+  // タブの動き：
+  //  ・別のタブ（カテゴリ切替）＝静かに表示するだけ（更新の演出は出さない）。初回だけ読み込む。
+  //  ・今開いているのと同じタブを再タップ＝その場で更新（振動＋更新中→✓）
+  function selectTab(tab, name, loader) {
+    if (tab) { tab.classList.remove("tapped"); void tab.offsetWidth; tab.classList.add("tapped"); }  // 押せた感（1回）
+    if (currentTab === name) {
+      haptic(18);
+      toastBusy("更新中…");
+      var done = function () { haptic(8); toast("✓ 最新にしました"); };
+      Promise.resolve(loader()).then(done, done);
+    } else {
+      var had = tabHasContent(name);
+      switchTo(name);
+      if (!had) loader();   // 初回表示のときだけ読み込む（カテゴリ切替で毎回“更新”しない）
+    }
+  }
+  if (tabFeed) tabFeed.onclick = function () { selectTab(tabFeed, "feed", load); };
+  if (tabGallery) tabGallery.onclick = function () { selectTab(tabGallery, "gallery", loadPatterns); };
+  if (tabReport) tabReport.onclick = function () { selectTab(tabReport, "report", loadReport); };
+  // 上部固定の前日/週間/月間バー（レポート時のみ表示）
+  (function () {
+    var bar = document.getElementById("repmodeBar");
+    if (!bar) return;
+    var bs = bar.querySelectorAll(".rm");
+    for (var i = 0; i < bs.length; i++) {
+      bs[i].onclick = function () {
+        var m = this.getAttribute("data-m");
+        if (m && m !== repMode) { repMode = m; haptic(10); updateRepModeBar(); if (reportData) renderReport(reportData); }
+      };
+    }
+  })();
+
+  /* ---------- 引っ張って更新（pull-to-refresh）：最上部で下スワイプ→振動→更新 ---------- */
+  (function () {
+    var ptr = document.getElementById("ptr");
+    var appEl = document.getElementById("app");
+    if (!ptr || !appEl) return;
+    var arrow = ptr.querySelector("i");
+    var startY = null, ready = false, busy = false;
+    var TRIGGER = 70;   // この距離まで引いたら発動
+    function atTop() { return (window.scrollY || document.documentElement.scrollTop || 0) <= 0; }
+    function setPull(dy) {
+      var y = Math.min(dy * 0.5, 120);        // 抵抗感を出す
+      appEl.style.transition = "none";
+      appEl.style.transform = "translateY(" + y + "px)";   // 画面の中身も一緒に下がる
+      ptr.style.transition = "none";
+      ptr.style.opacity = String(Math.min(y / 32, 1));
+      ptr.style.transform = "translateY(" + (Math.min(y, 92) - 46) + "px)";   // 開いた隙間にスピナー
+      arrow.style.transform = "rotate(" + Math.min(y * 3, 270) + "deg)";
+      var nowReady = dy >= TRIGGER;
+      if (nowReady && !ready) haptic(12);      // 発動ラインを越えた瞬間に軽く振動
+      ready = nowReady;
+    }
+    function springBack() {
+      appEl.style.transition = "transform .3s cubic-bezier(.2,.8,.3,1)";
+      appEl.style.transform = "translateY(0)";
+      ptr.style.transition = "transform .25s ease, opacity .25s ease";
+      ptr.style.opacity = "0"; ptr.style.transform = "translateY(-54px)";
+      arrow.style.transform = "";
+    }
+    function refreshing() {
+      busy = true; ptr.classList.add("spin"); arrow.style.transform = "";
+      appEl.style.transition = "transform .2s ease";
+      appEl.style.transform = "translateY(54px)";          // 更新中は少し開けたまま
+      ptr.style.transition = "transform .2s ease, opacity .2s ease";
+      ptr.style.opacity = "1"; ptr.style.transform = "translateY(10px)";
+    }
+    document.addEventListener("touchstart", function (e) {
+      if (busy || e.touches.length !== 1 || document.querySelector(".modalOv")) { startY = null; return; }
+      startY = atTop() ? e.touches[0].clientY : null;
+    }, { passive: true });
+    document.addEventListener("touchmove", function (e) {
+      if (busy || startY == null) return;
+      var dy = e.touches[0].clientY - startY;
+      if (dy > 0 && atTop()) { e.preventDefault(); setPull(dy); }
+      else { startY = null; ready = false; springBack(); }
+    }, { passive: false });
+    document.addEventListener("touchend", function () {
+      if (busy || startY == null) return;
+      var go = ready; startY = null; ready = false;
+      if (!go) { springBack(); return; }
+      haptic(25);                              // 更新確定で“しっかり”振動
+      refreshing();
+      toastBusy("更新中…");
+      var done = function () {
+        busy = false; ptr.classList.remove("spin"); springBack();
+        haptic(8); toast("✓ 最新にしました");
+      };
+      Promise.resolve(loaderFor(currentTab)()).then(done, done);
+    });
+  })();
+
+  /* ---------- レポート（インサイト・全員閲覧可・操作なし） ---------- */
+  var reportData = null;
+  var lastRep = null;      // 直近レンダリング時の要点を退避（PDF等で参照）
+  var repMode = "month";   // 比較期間: week(7日) / biweek(14日) / month(30日)
+  var repMetric = "reach"; // 推移グラフの指標: reach / views / pviews / followers
+  var REP_METRICS = { reach: "リーチ", views: "閲覧数", pviews: "プロフィール表示", followers: "フォロワー" };
+  var repTopPosts = [];    // ベスト投稿（拡大表示用）
+  function repDateMs(s) { var t = Date.parse(String(s)); return isNaN(t) ? 0 : t; }
+  // 選択期間（win日）でベスト投稿・ストーリーズ平均を集計（週間→7日／14日間→14日／月間→30日）
+  function computePostsWindow(pd, win) {
+    if (!pd) return { top: [], storyAvg: {}, storyN: 0, feedN: 0 };
+    var all = (pd.all && pd.all.length) ? pd.all : (pd.top || []);
+    if (!all.length) return { top: pd.top || [], storyAvg: pd.storyAvg || {}, storyN: pd.storyN || 0, feedN: pd.feedN || 0 };
+    var cutoff = Date.now() - win * 86400000;
+    var inWin = all.filter(function (p) { return repDateMs(p.date) >= cutoff; });
+    if (!inWin.length) inWin = all;
+    var stories = inWin.filter(function (p) { return p.kind === "story"; });
+    var feeds = inWin.filter(function (p) { return p.kind !== "story"; });
+    function avg(list, k) { if (!list.length) return 0; var s = 0; for (var i = 0; i < list.length; i++) s += Number(list[i][k]) || 0; return Math.round(s / list.length); }
+    function sum(list, k) { var s = 0; for (var i = 0; i < list.length; i++) s += Number(list[i][k]) || 0; return s; }
+    function rate(n, d, dp) { return d > 0 ? Math.round(n / d * (dp ? 1000 : 100)) / (dp ? 10 : 1) : null; }
+    function byReach(a, b) { return (Number(b.reach) || 0) - (Number(a.reach) || 0); }
+    var top = inWin.slice().sort(byReach).slice(0, 5);
+    var topStory = stories.slice().sort(byReach).slice(0, 5);   // ストーリーだけのTOP5
+    var topFeed = feeds.slice().sort(byReach).slice(0, 5);      // フィード(＋リール)だけのTOP5
+    var stReach = sum(stories, "reach"), feedReach = sum(feeds, "reach");
+    var navExit = sum(stories, "navExit");
+    var hasNav = (navExit + sum(stories, "navFwd") + sum(stories, "navBack") + sum(stories, "navAuto")) > 0;
+    return {
+      top: top, topStory: topStory, topFeed: topFeed, storyN: stories.length, feedN: feeds.length,
+      storyAvg: { reach: avg(stories, "reach"), views: avg(stories, "views"), navigation: avg(stories, "navigation"), replies: avg(stories, "replies") },
+      exitRate: hasNav ? rate(navExit, stReach, false) : null,                                  // 離脱率
+      compRate: hasNav ? rate(sum(stories, "navFwd") + sum(stories, "navAuto"), stReach, false) : null,  // 完了率(近似)
+      stShareRate: rate(sum(stories, "shares"), stReach, true),
+      saveRate: rate(sum(feeds, "saved"), feedReach, true),
+      shareRate: rate(sum(feeds, "shares"), feedReach, true)
+    };
+  }
+  // 上部固定の前日/週間/月間バーの表示・選択状態を同期
+  function updateRepModeBar() {
+    var bar = document.getElementById("repmodeBar");
+    if (!bar) return;
+    var bs = bar.querySelectorAll(".rm");
+    for (var i = 0; i < bs.length; i++) bs[i].classList.toggle("on", bs[i].getAttribute("data-m") === repMode);
+  }
+  // ベスト投稿の拡大表示（画像はそのまま／動画は再生）。タップで閉じる。
+  function openPostLightbox(p) {
+    if (!p) return;
+    haptic(10);
+    var ov = document.createElement("div"); ov.className = "lbov";
+    var inner;
+    if (p.mtype === "video" && p.full) {
+      inner = '<video class="lbm" src="' + esc(p.full) + '" controls autoplay playsinline webkit-playsinline loop></video>';
+    } else if (p.full || p.thumb) {
+      // 一覧で読み込み済みのサムネを即表示→裏で高解像度に差し替え（体感を速く）
+      inner = '<img class="lbm" src="' + esc(p.thumb || p.full) + '" alt="" decoding="async">';
+    } else {
+      inner = '<div class="lbnone">画像を準備中です</div>';
+    }
+    var link = p.link ? '<a class="lblink" href="' + esc(p.link) + '" target="_blank" rel="noopener">Instagramで開く ↗</a>' : '';
+    var meta = '<div class="lbmeta"><b>リーチ ' + fmtN(p.reach) + '</b>　閲覧 ' + fmtN(p.views) +
+      (p.kind === "story" ? '　タップ ' + fmtN(p.navigation) + '　返信 ' + fmtN(p.replies)
+        : '　いいね ' + fmtN(p.likes) + '　保存 ' + fmtN(p.saved)) + '</div>';
+    ov.innerHTML = '<div class="lbbox" onclick="event.stopPropagation()"><button class="lbx">✕</button>' + inner + meta + link + '</div>';
+    ov.onclick = function () { close(); };
+    function close() { var v = ov.querySelector("video"); if (v) { try { v.pause(); } catch (e) {} } ov.classList.remove("show"); setTimeout(function () { if (ov.parentNode) ov.parentNode.removeChild(ov); }, 200); }
+    ov.querySelector(".lbx").onclick = function (e) { e.stopPropagation(); close(); };
+    document.body.appendChild(ov);
+    // 画像は高解像度を裏で読み込み、完了したら差し替え（最初はサムネが一瞬で出る）
+    if (p.mtype !== "video" && p.full && p.thumb && p.full !== p.thumb) {
+      var hi = new Image();
+      hi.onload = function () { var im = ov.querySelector("img.lbm"); if (im) im.src = p.full; };
+      hi.src = p.full;
+    }
+    requestAnimationFrame(function () { ov.classList.add("show"); });
+  }
+  function repAgg(list) {
+    if (!list || !list.length) return null;
+    var s = { reach: 0, views: 0, pviews: 0, links: 0, eng: 0 };
+    var fs = null, fe = null;
+    for (var i = 0; i < list.length; i++) {
+      var r = list[i];
+      s.reach += Number(r.reach) || 0; s.views += Number(r.views) || 0;
+      s.pviews += Number(r.pviews) || 0; s.links += Number(r.links) || 0; s.eng += Number(r.eng) || 0;
+      var f = Number(r.followers) || 0;       // 0/空は「未取得」とみなす（実フォロワーは0にならない）
+      if (f > 0) { if (fs === null) fs = f; fe = f; }
+    }
+    s.followersStart = fs === null ? 0 : fs;
+    s.followersEnd = fe === null ? 0 : fe;
+    s.n = list.length;
+    return s;
+  }
+  function loadReport() {
+    if (!reportEl) return;
+    if (!reportData) reportEl.innerHTML = '<div class="rephint">レポートを読み込んでいます…</div>';
+    return jsonp({ api: "report" }).then(function (data) {
+      if (data && data.error === "auth") { askKey("確認コードを入力してください", data._gen); return; }
+      reportData = data || {};
+      renderReport(reportData);
+    }).catch(function (e) {
+      if (!reportData) reportEl.innerHTML = '<div class="rephint">レポートを取得できませんでした。<br>' + esc((e && e.message) || e) + '</div>';
+    });
+  }
+  function fmtN(n) { n = Math.round(Number(n) || 0); return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+  function deltaHtml(cur, prev) {
+    if (prev == null || prev === 0) return '<span class="d flat">—</span>';
+    var pct = Math.round((cur - prev) / prev * 1000) / 10;
+    var cls = pct > 0 ? "up" : (pct < 0 ? "down" : "flat");
+    var ar = pct > 0 ? "▲ +" : (pct < 0 ? "▼ " : "± ");
+    return '<span class="d ' + cls + '">' + ar + Math.abs(pct) + '%</span>';
+  }
+  function renderReport(d) {
+    var store = CFG.STORE_NAME || "すさび湯三条";
+    var head = '<div class="rephd"><div class="t">Instagram インサイトレポート</div><div class="s">' + esc(store) + '　' + esc(CFG.HANDLE || "@susabiyu_sanjyo") + '</div>';
+    if (!d || !d.days || !d.cur) {
+      reportEl.innerHTML = '<div class="repbar"><button id="repReload">↻ 更新</button></div>' +
+        '<div class="repdoc">' + head + '</div></div>' +
+        '<div class="rephint">データを集計中です。毎日自動で蓄積され、数日たつとレポートが表示されます。<br>30日たつと「直近30日 vs 前30日」の比較が満額になります。</div>';
+      var rb0 = document.getElementById("repReload"); if (rb0) rb0.onclick = loadReport;
+      return;
+    }
+    // 比較期間（週間/14日間/月間）を日次データから計算。daily が無い旧GASなら従来値。
+    var WIN = repMode === "week" ? 7 : (repMode === "biweek" ? 14 : 30);
+    var modeLbl = WIN === 7 ? "週間" : (WIN === 14 ? "14日間" : "月間");
+    var perWord = WIN === 7 ? "週" : (WIN + "日");   // 「前週」「前14日」などの語幹
+    var cur, prev, series, days, latestDate, curList = null;
+    if (d.daily && d.daily.length) {
+      var dly = d.daily;
+      curList = dly.slice(Math.max(0, dly.length - WIN));
+      var prevList = dly.slice(Math.max(0, dly.length - 2 * WIN), Math.max(0, dly.length - WIN));
+      cur = repAgg(curList) || d.cur; prev = repAgg(prevList);
+      series = curList.map(function (r) { return { date: String(r.date), val: Number(r[repMetric]) || 0 }; });
+      days = curList.length;
+      latestDate = curList.length ? String(curList[curList.length - 1].date) : (d.latestDate || "");
+    } else {
+      cur = d.cur; prev = d.prev || {}; series = (d.series || []).map(function (s) { return { date: String(s.date), val: Number(s.reach) || 0 }; }); days = d.days; latestDate = d.latestDate;
+    }
+    prev = prev || {};
+    var fNet = cur.followersEnd - cur.followersStart;
+    var pNet = (prev && prev.followersEnd != null) ? (prev.followersEnd - prev.followersStart) : null;
+    function p_(k) { return (prev && prev[k] != null) ? prev[k] : null; }
+    // 指標ごとの日別推移（スパークライン用）。daily が無い旧GASでは空。
+    var METRIC_COLOR = { reach: "#c8a24a", views: "#3b6fd6", pviews: "#7a4fd6", followers: "#1f9d55" };
+    function colSeries(m) { return curList ? curList.map(function (rr) { return Number(rr[m]) || 0; }) : []; }
+    var sparks = { reach: colSeries("reach"), views: colSeries("views"), pviews: colSeries("pviews"), followers: colSeries("followers") };
+    // 小さな棒スパークライン（インラインstyleでPWA/PDF両対応）
+    function sparkBars(vals, color, h) {
+      if (!vals || !vals.length) return "";
+      var mx = Math.max.apply(null, vals.concat([1]));
+      var bars = vals.map(function (v) { v = Number(v) || 0; return '<i style="display:inline-block;width:' + (100 / vals.length) + '%;height:' + Math.max(8, Math.round(v / mx * 100)) + '%;background:' + color + ';opacity:.9;vertical-align:bottom;border-radius:1px 1px 0 0"></i>'; }).join("");
+      return '<div class="repspark" style="height:' + (h || 30) + 'px;display:flex;align-items:flex-end;gap:1px;margin-top:8px">' + bars + '</div>';
+    }
+    function kpi(label, c, p, metric, opts) {
+      opts = opts || {};
+      var vs = (opts.plus && c > 0 ? "+" : "") + fmtN(c);
+      var ps = p == null ? null : ((opts.plus && p > 0 ? "+" : "") + fmtN(p));
+      var on = metric === repMetric ? " on" : "";
+      return '<div class="repkpi tap' + on + '" data-metric="' + metric + '"><div class="l">' + esc(label) + '</div><div class="v">' + vs +
+        (opts.sub ? ' <small>' + esc(opts.sub) + '</small>' : '') + '</div>' + deltaHtml(c, p) +
+        (ps != null ? '<div class="prev">前期間 ' + ps + '</div>' : '') +
+        sparkBars(sparks[metric], METRIC_COLOR[metric] || "#c8a24a", 28) + '</div>';
+    }
+    var kpis = kpi("リーチ", cur.reach, p_("reach"), "reach") + kpi("閲覧数", cur.views, p_("views"), "views") +
+      kpi("プロフィール表示", cur.pviews, p_("pviews"), "pviews") +
+      kpi("フォロワー純増", fNet, pNet, "followers", { plus: true, sub: "計 " + fmtN(cur.followersEnd) });
+    var vals = (series || []).map(function (s) { return Number(s.val) || 0; });
+    var mx = Math.max.apply(null, vals.concat([1]));
+    var bars = series.map(function (s) {
+      var v = Number(s.val) || 0;
+      return '<i style="height:' + Math.max(2, Math.round(v / mx * 100)) + '%" data-d="' + esc(String(s.date)) + '" data-v="' + v + '"></i>';
+    }).join("");
+    var trendLbl = (REP_METRICS[repMetric] || "リーチ") + "の推移（日別）";
+    var firstD = vals.length ? series[0].date.slice(5) : "", lastD = vals.length ? series[series.length - 1].date.slice(5) : "";
+    function pctOf(c, p) { return (p == null || p === 0) ? null : Math.round((c - p) / p * 1000) / 10; }
+    var reachPct = pctOf(cur.reach, p_("reach"));
+    var linkRate = cur.pviews ? Math.round(cur.links / cur.pviews * 1000) / 10 : null;
+    // 投稿（ストーリーズ/フィード）を選択期間に連動（週間→直近7日／14日間→直近14日／月間→直近30日）
+    var pd = d.posts;
+    var bestWin = WIN;
+    var bestLbl = "直近" + WIN + "日";
+    var pwin = computePostsWindow(pd, bestWin);
+    function fmtPost(p, i) {
+      var badge = p.kind === "story" ? "ストーリーズ" : (p.kind === "reel" ? "リール" : "フィード");
+      var cap = p.caption ? esc(String(p.caption).slice(0, 38)) : "（キャプションなし）";
+      var sub = p.kind === "story"
+        ? ("閲覧 " + fmtN(p.views) + "・タップ " + fmtN(p.navigation) + "・返信 " + fmtN(p.replies))
+        : ("閲覧 " + fmtN(p.views) + "・いいね " + fmtN(p.likes) + "・保存 " + fmtN(p.saved));
+      var img = p.thumb || p.full || "";
+      var thumb = img ? '<img class="rt" src="' + esc(img) + '" alt="" loading="lazy" crossorigin="anonymous" onerror="this.style.display=\'none\'">' : '<div class="rt none">🍶</div>';
+      var play = (p.mtype === "video") ? '<span class="rtplay">▶</span>' : '';
+      return '<div class="reppost tap" data-pi="' + i + '"><div class="rtwrap">' + thumb + play + '</div><div class="ri">' +
+        '<div class="rl"><span class="rb ' + esc(p.kind) + '">' + badge + '</span>' +
+        '<span class="rd">' + esc(p.date) + '</span></div>' +
+        '<div class="rc">' + cap + '</div>' +
+        '<div class="rr"><b>リーチ ' + fmtN(p.reach) + '</b><small>' + sub + '</small></div>' +
+        '</div></div>';
+    }
+    var postsHtml = "";
+    var topS = pwin.topStory || [], topF = pwin.topFeed || [];
+    // フィード投稿は頻度が低く、前日/週間だと期間内に無いことが多い。空なら全期間から直近ベストを補う。
+    var feedLbl = bestLbl, feedWide = false;
+    if (!topF.length) {
+      var pwAll = computePostsWindow(pd, 3650);
+      topF = pwAll.topFeed || [];
+      feedWide = topF.length > 0;
+      if (feedWide) feedLbl = "直近のフィード";
+    }
+    repTopPosts = topS.concat(topF);   // ライトボックス用インデックス（ストーリー→フィードの順）
+    if ((topS.length + topF.length) > 0) {
+      var sa = pwin.storyAvg || {};
+      var storyKpis = pwin.storyN ? ('<div class="repkpis">' +
+        '<div class="repkpi"><div class="l">平均リーチ</div><div class="v">' + fmtN(sa.reach) + '</div></div>' +
+        '<div class="repkpi"><div class="l">平均閲覧</div><div class="v">' + fmtN(sa.views) + '</div></div>' +
+        '<div class="repkpi"><div class="l">平均タップ</div><div class="v">' + fmtN(sa.navigation) + '</div></div>' +
+        '<div class="repkpi"><div class="l">平均返信</div><div class="v">' + fmtN(sa.replies) + '</div></div>' +
+        '</div>') : "";
+      // 離脱率/完了率・保存率/シェア率（データが揃った分だけ表示）
+      var rateChips = [];
+      if (pwin.compRate != null) rateChips.push('<span class="rchip good">完了率 ' + pwin.compRate + '%</span>');
+      if (pwin.exitRate != null) rateChips.push('<span class="rchip warn">離脱率 ' + pwin.exitRate + '%</span>');
+      if (pwin.saveRate != null) rateChips.push('<span class="rchip">投稿 保存率 ' + pwin.saveRate + '%</span>');
+      if (pwin.shareRate != null) rateChips.push('<span class="rchip">投稿 シェア率 ' + pwin.shareRate + '%</span>');
+      var rateBox = rateChips.length ? ('<div class="repsec"><h3>反応の質（' + bestLbl + '）</h3><div class="rchips">' + rateChips.join("") +
+        '</div><div class="repnote"><b>完了率</b>＝ストーリーズを離脱せず最後（次へ送り・自動送り含む）まで見られた割合の目安。<b>離脱率</b>＝途中で閉じられた割合。完了率が高く・離脱率が低いほど良い。保存率／シェア率＝投稿が保存・拡散された割合（口コミの起点）。</div></div>') : "";
+      // ストーリー／フィードで別々のベスト5（リーチ順）。data-pi は repTopPosts(ストーリー→フィード)の通し番号。
+      var storyTop = topS.length ? ('<div class="repsec"><h3>ストーリー ベスト' + topS.length + '（' + bestLbl + '・リーチ順）</h3><div class="repposts">' +
+        topS.map(function (p, i) { return fmtPost(p, i); }).join("") + '</div></div>') : "";
+      var feedTop = topF.length
+        ? ('<div class="repsec"><h3>フィード ベスト' + topF.length + '（' + feedLbl + '・リーチ順）</h3><div class="repposts">' +
+            topF.map(function (p, i) { return fmtPost(p, topS.length + i); }).join("") +
+            '</div><div class="repnote">フィード投稿はリール含む。リーチ順で表示。' + (feedWide ? '　※選択期間内に投稿が無いため、直近のフィード投稿を表示しています。' : '') + '</div></div>')
+        : '<div class="repsec"><h3>フィード ベスト</h3><div class="repnote">まだフィード投稿のデータがありません。</div></div>';
+      postsHtml =
+        (pwin.storyN ? '<div class="repsec"><h3>ストーリーズの反応（' + bestLbl + '・1本あたり平均）</h3>' + storyKpis +
+          '<div class="repnote">' + pwin.storyN + '本の平均。タップ＝次へ/前へ/外部リンク等の操作数。</div></div>' : "") +
+        rateBox + storyTop + feedTop;
+    }
+
+    // ---- 分析・まとめ（期間ごとの実数値で具体化）----
+    var good = [], warn = [], act = [];
+    var cmpWord = "前" + perWord + "比";
+    var viewsPct = pctOf(cur.views, p_("views"));
+    var pviewsPct = pctOf(cur.pviews, p_("pviews"));
+    var bestDay = "", bestDayV = -1;
+    for (var bi = 0; bi < series.length; bi++) { if ((Number(series[bi].val) || 0) > bestDayV) { bestDayV = Number(series[bi].val) || 0; bestDay = series[bi].date; } }
+    var metricLbl = REP_METRICS[repMetric] || "リーチ";
+    // リーチの増減
+    if (reachPct != null) {
+      if (reachPct > 0) good.push(modeLbl + "のリーチは <b>" + fmtN(cur.reach) + "</b>（" + cmpWord + " <b>+" + reachPct + "%</b>）。露出が伸びています。");
+      else if (reachPct < 0) warn.push(modeLbl + "のリーチは <b>" + fmtN(cur.reach) + "</b>（" + cmpWord + " <b>" + reachPct + "%</b>）。投稿の時間帯・内容を見直し。");
+      else good.push(modeLbl + "のリーチは <b>" + fmtN(cur.reach) + "</b>（" + cmpWord + " 横ばい）。");
+    } else {
+      good.push(modeLbl + "のリーチは <b>" + fmtN(cur.reach) + "</b>。比較は前期間のデータが揃うと表示されます。");
+    }
+    if (bestDay) good.push("最も伸びた日は <b>" + esc(bestDay.slice(5)) + "</b>（" + metricLbl + " <b>" + fmtN(bestDayV) + "</b>）。この日の内容・時間を再現したい。");
+    if (cur.reach) { var vr = Math.round(cur.views / cur.reach * 10) / 10; if (vr >= 1.5) good.push("1人あたり約 <b>" + vr + "回</b>見られています（リピート視聴が良好）。"); }
+    // プロフィール表示・誘導率
+    if (pviewsPct != null && pviewsPct < 0) warn.push("プロフィール表示が " + cmpWord + " <b>" + pviewsPct + "%</b>。1枚目の訴求と固定リンクを強化。");
+    if (linkRate != null) { if (linkRate < 4) warn.push("誘導率（リンク÷プロフ表示）が <b>" + linkRate + "%</b> と低め。予約リンクを毎回明示。"); else good.push("誘導率 <b>" + linkRate + "%</b>。プロフィールから行動につながっています。"); }
+    // フォロワー
+    if (fNet > 0) good.push("フォロワー <b>+" + fNet + "</b>（計 " + fmtN(cur.followersEnd) + "）。");
+    else if (pNet != null) warn.push("フォロワー純増 <b>" + fNet + "</b>。投稿頻度・導線を確認。");
+    // ストーリーズのタップ率
+    var tapRate = (pwin.storyN && pwin.storyAvg && pwin.storyAvg.reach) ? Math.round(pwin.storyAvg.navigation / pwin.storyAvg.reach * 100) : null;
+    if (tapRate != null) {
+      good.push("ストーリーズ平均リーチ <b>" + fmtN(pwin.storyAvg.reach) + "</b>／タップ率 <b>" + tapRate + "%</b>（" + bestLbl + "・" + pwin.storyN + "本）。");
+      if (tapRate < 30) warn.push("ストーリーズのタップ率が <b>" + tapRate + "%</b> と低め。1枚目を強い引き＋リンク明確に。");
+    }
+    // 離脱率/完了率（データが揃った分だけ）
+    if (pwin.exitRate != null) {
+      if (pwin.compRate != null) good.push("ストーリーズ完了率 <b>" + pwin.compRate + "%</b>／離脱率 <b>" + pwin.exitRate + "%</b>。");
+      if (pwin.exitRate >= 40) { warn.push("離脱率が <b>" + pwin.exitRate + "%</b> と高め。冒頭2秒で内容が伝わる構成に。"); act.push("ストーリーズ1枚目を<b>結論ファースト</b>（何の告知か一目で）にして離脱を減らす。"); }
+    }
+    // 保存率/シェア率
+    if (pwin.saveRate != null && pwin.saveRate >= 1) good.push("投稿の保存率 <b>" + pwin.saveRate + "%</b>。保存される＝後で来店検討の良い兆候。");
+    if ((pwin.saveRate != null && pwin.saveRate < 0.5) && (pwin.shareRate != null && pwin.shareRate < 0.5)) act.push("<b>保存版（メニュー一覧・コース内容）</b>を増やし、保存・シェアを促す。");
+    if (pwin.top && pwin.top.length) {
+      var bp = pwin.top[0];
+      good.push("ベストは" + (bp.kind === "story" ? "ストーリーズ" : "投稿") + "（" + esc(String(bp.date).slice(5)) + "・リーチ <b>" + fmtN(bp.reach) + "</b>）。");
+    }
+    // 今後の施策（データ連動・期間別）
+    if (linkRate != null && linkRate < 4) act.push("各投稿に<b>予約リンク</b>を必ず明示し、誘導率 " + linkRate + "% の底上げを狙う。");
+    if (tapRate != null && tapRate < 30) act.push("ストーリーズ1枚目を<b>料理ドアップ＋一言</b>にしてタップ率UP。");
+    if (reachPct != null && reachPct < 0) act.push("反応が落ちた" + modeLbl + "。<b>投稿時間</b>を反応の良い曜日・時間に寄せる。");
+    if (bestDay) act.push("伸びた <b>" + esc(bestDay.slice(5)) + "</b> の型（内容・時間帯）を<b>再現</b>する。");
+    if (fNet <= 0 && pNet != null) act.push("保存・シェアされやすい<b>保存版（まとめ）投稿</b>を増やしてフォロー転換を狙う。");
+    if (!act.length) act.push("好調を維持。伸びた投稿の型を<b>横展開</b>し、頻度を保つ。");
+    if (!good.length) good.push(modeLbl + "のデータを蓄積中。日数が増えるほど精度が上がります。");
+    if (!warn.length) warn.push(modeLbl + "では大きな課題は見当たりません。継続して様子を見ましょう。");
+    function lis(a) { return a.map(function (x) { return "<li>" + x + "</li>"; }).join(""); }
+    var cmpLbl = "前" + perWord + "と比較";
+    var period = '<div class="p">' + modeLbl + '（直近' + days + '日' + (latestDate ? '〜' + esc(latestDate) : '') + '）' +
+      '<small>' + ((pNet != null || p_("reach") != null) ? cmpLbl : 'データ蓄積中（30日で比較が満額に）') + '</small></div>';
+    updateRepModeBar();   // 上部固定の前日/週間/月間バーの表示を同期
+    // 直近レンダリング時の要点を退避（将来のPDF等で参照）
+    lastRep = {
+      store: store, handle: CFG.HANDLE || "@susabiyu_sanjyo", modeLbl: modeLbl, days: days, latestDate: latestDate,
+      cur: cur, prev: { reach: p_("reach"), views: p_("views"), pviews: p_("pviews") },
+      fNet: fNet, pNet: pNet, followersEnd: cur.followersEnd, series: series, trendLbl: trendLbl,
+      sparks: sparks, topS: topS, topF: topF, good: good, warn: warn, act: act
+    };
+    reportEl.innerHTML =
+      '<div class="repbar"><button id="repReload">↻ 更新</button><button id="repPdf" class="pdf">📄 PDF出力（A4）</button></div>' +
+      '<div class="rephint">この画面は誰でも閲覧できます（操作はありません）。PDF出力（A4・2ページ）ができます。</div>' +
+      '<div class="repdoc">' + head + period + '</div>' +
+      '<div class="repsec"><h3>アカウント全体</h3><div class="repkpis">' + kpis + '</div></div>' +
+      '<div class="repsec"><h3>' + esc(trendLbl) + '</h3><div class="repchart"><div class="repbars">' + bars + '</div><div class="reptip"></div></div><div class="repax"><span>' + firstD + '</span><span>' + lastD + '</span></div><div class="repnote">KPIをタップで指標を切替／グラフを指でなぞると日付と数値が出ます。</div></div>' +
+      postsHtml +
+      '<div class="repsec repbreak"><h3>分析・まとめ（' + esc(modeLbl) + '）</h3><div class="repanal">' +
+        '<div class="repcard good"><h4>強み・良かった点</h4><ul>' + lis(good) + '</ul></div>' +
+        '<div class="repcard warn"><h4>反省点・課題</h4><ul>' + lis(warn) + '</ul></div>' +
+        '<div class="repcard act"><h4>今後の施策</h4><ul>' + lis(act) + '</ul></div>' +
+      '</div></div>' +
+      '<div class="repfoot">データ元：Instagram Graph API（毎日自動収集）／分析は数値から自動生成</div></div>';
+    var rb = document.getElementById("repReload"); if (rb) rb.onclick = loadReport;
+    var pb = document.getElementById("repPdf"); if (pb) pb.onclick = downloadReportPdf;
+    // KPIタップ＝推移グラフの指標を切替
+    var kps = reportEl.querySelectorAll(".repkpi.tap");
+    for (var ik = 0; ik < kps.length; ik++) {
+      kps[ik].onclick = function () {
+        var mt = this.getAttribute("data-metric");
+        if (mt && mt !== repMetric) { repMetric = mt; haptic(10); if (reportData) renderReport(reportData); }
+      };
+    }
+    // ベスト投稿タップ＝拡大表示（画像/動画）
+    var posts = reportEl.querySelectorAll(".reppost.tap");
+    for (var ip = 0; ip < posts.length; ip++) {
+      posts[ip].onclick = function () {
+        var pi = parseInt(this.getAttribute("data-pi"), 10);
+        if (!isNaN(pi) && repTopPosts[pi]) openPostLightbox(repTopPosts[pi]);
+      };
+    }
+    wireChartScrub();
+  }
+  // リーチ推移グラフ：指でなぞると、その日の「日付＋リーチ数」を吹き出し表示（ドラッグでスクラブ）
+  function wireChartScrub() {
+    var chart = reportEl.querySelector(".repchart");
+    if (!chart) return;
+    var barsEl = chart.querySelector(".repbars");
+    var tip = chart.querySelector(".reptip");
+    var lastIdx = -1;
+    function showAt(clientX) {
+      var bs = barsEl.querySelectorAll("i");
+      if (!bs.length) return;
+      var rect = barsEl.getBoundingClientRect();
+      var idx = Math.floor((clientX - rect.left) / rect.width * bs.length);
+      idx = Math.max(0, Math.min(bs.length - 1, idx));
+      if (idx !== lastIdx) { haptic(6); lastIdx = idx; }   // 隣の日に移るたび軽く振動
+      for (var i = 0; i < bs.length; i++) { if (i === idx) bs[i].classList.add("hot"); else bs[i].classList.remove("hot"); }
+      var b = bs[idx], br = b.getBoundingClientRect();
+      tip.innerHTML = '<b>' + fmtN(Number(b.getAttribute("data-v"))) + '</b><span>' + esc(b.getAttribute("data-d")) + '</span>';
+      tip.style.display = "block";
+      var cx = br.left + br.width / 2 - rect.left;
+      tip.style.left = Math.max(34, Math.min(rect.width - 34, cx)) + "px";
+    }
+    function hide() {
+      tip.style.display = "none"; lastIdx = -1;
+      var hot = barsEl.querySelectorAll("i.hot");
+      for (var i = 0; i < hot.length; i++) hot[i].classList.remove("hot");
+    }
+    chart.addEventListener("touchstart", function (e) { e.stopPropagation(); e.preventDefault(); showAt(e.touches[0].clientX); }, { passive: false });
+    chart.addEventListener("touchmove", function (e) { e.stopPropagation(); e.preventDefault(); showAt(e.touches[0].clientX); }, { passive: false });
+    chart.addEventListener("touchend", hide);
+    chart.addEventListener("touchcancel", hide);
+    chart.addEventListener("mousedown", function (e) { showAt(e.clientX); });
+    chart.addEventListener("mousemove", function (e) { if (e.buttons) showAt(e.clientX); });
+    chart.addEventListener("mouseup", hide);
+    chart.addEventListener("mouseleave", hide);
+  }
+  function loadScriptOnce(src, cb, onerr) {
+    var s = document.createElement("script"); s.src = src;
+    s.onload = cb; s.onerror = onerr || function () { toast("PDFライブラリの読込に失敗"); };
+    document.head.appendChild(s);
+  }
+  var PDF_LIB = "https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.3/dist/html2pdf.bundle.min.js";
+  // レポートを開いた時点でPDFライブラリを裏で先読み（ボタンを押した時に待たせない）
+  function preloadPdfLib() {
+    if (window.html2pdf || window.__pdfPre) return;
+    window.__pdfPre = 1;
+    loadScriptOnce(PDF_LIB, function () {}, function () { window.__pdfPre = 0; });  // 失敗時は次回再試行
+  }
+  function downloadReportPdf() {
+    var src = reportEl.querySelector(".repdoc");
+    if (!src) { toast("レポートがありません"); return; }
+    var btn = document.getElementById("repPdf");
+    if (btn && btn.disabled) return;   // 二度押し防止
+    if (btn) btn.disabled = true;
+    haptic(12);
+    toastBusy("PDF出力を準備中…");   // 押した瞬間に反応を出す
+    var done = false;
+    function finish(msg) { done = true; if (btn) btn.disabled = false; if (msg) toast(msg); }
+    // 15秒たってもライブラリが来なければ諦めて明確に伝える
+    var watchdog = setTimeout(function () {
+      if (!done && !window.html2pdf) { window.__pdfPre = 0; finish("PDF部品を読み込めませんでした。電波の良い場所でもう一度お試しください"); }
+    }, 15000);
+    function go() {
+      if (done) return;
+      clearTimeout(watchdog);
+      if (!window.html2pdf) { finish("PDF生成に失敗"); return; }
+      toastBusy("PDFを出力中…（数秒かかります）");
+      var holder = document.createElement("div");
+      holder.style.cssText = "position:fixed;left:-99999px;top:0;width:794px;background:#fff";
+      var clone = src.cloneNode(true); clone.classList.add("a4");
+      holder.appendChild(clone); document.body.appendChild(holder);
+      // ── A4 2ページに収まるよう自動調整 ──
+      // 1ページ=1123px(A4@96dpi)から上下マージン6mmを引いた約1078pxが使える高さ。
+      // ①圧縮CSS(a4tight) → ②ベスト投稿を後ろから減らす → ③箇条書きを間引く の順で詰める。
+      (function fitA4() {
+        var P1 = 1040, P2 = 1050;   // 1ページに使える高さ(約1078px)から安全マージンを引いた値
+        var br = clone.querySelector(".repbreak");
+        if (!br) return;
+        // 1ページ目: 圧縮①→圧縮②→ベスト投稿を後ろから削る(最少2件)
+        var steps = 0;
+        while (br.offsetTop > P1 && steps < 14) {
+          if (steps === 0) clone.classList.add("a4tight");
+          else if (steps === 1) clone.classList.add("a4tight2");
+          else {
+            var ps = clone.querySelectorAll(".reppost");
+            if (ps.length > 2) ps[ps.length - 1].parentNode.removeChild(ps[ps.length - 1]);
+            else break;
+          }
+          steps++;
+        }
+        // 2ページ目: 圧縮①→圧縮②→一番長いカードの箇条書きを後ろから間引く(最少2行)
+        var guard = 0;
+        while ((clone.scrollHeight - br.offsetTop) > P2 && guard < 14) {
+          if (guard === 0) clone.classList.add("a4tight");
+          else if (guard === 1) clone.classList.add("a4tight2");
+          else {
+            var longest = null, max = 0;
+            var cards = clone.querySelectorAll(".repcard");
+            for (var ci = 0; ci < cards.length; ci++) {
+              var n = cards[ci].querySelectorAll("li").length;
+              if (n > max) { max = n; longest = cards[ci]; }
+            }
+            if (longest && max > 2) {
+              var ls = longest.querySelectorAll("li");
+              ls[ls.length - 1].parentNode.removeChild(ls[ls.length - 1]);
+            } else break;
+          }
+          guard++;
+        }
+      })();
+      window.html2pdf().set({
+        // 左右マージンは0（幅794px=A4 210mmぴったり）。これで右端がページ外に切れない。
+        // 上下のみ6mm。左右の余白は .repdoc.a4 のセクションpaddingで内側に確保している。
+        margin: [6, 0, 6, 0],
+        filename: (CFG.ACCOUNT || "susabiyu") + "_insight_" + ((reportData && reportData.latestDate) || "report") + ".pdf",
+        image: { type: "jpeg", quality: 0.95 },
+        html2canvas: { scale: 2, backgroundColor: "#ffffff", useCORS: true, width: 794, windowWidth: 794, x: 0, scrollX: 0 },
+        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+        // 1枚目＝ダッシュボード、2枚目＝分析・まとめ（.repbreak で改ページ）。カード途中での分断は避ける。
+        pagebreak: { mode: ["css", "legacy"], before: ".repbreak", avoid: [".repsec", ".reppost", ".repkpi", ".repcard"] }
+      }).from(clone).save().then(function () { holder.remove(); finish("✓ PDF出力が完了しました（2ページ）"); })
+        .catch(function () { holder.remove(); finish("PDF作成に失敗しました。もう一度お試しください"); });
+    }
+    if (window.html2pdf) { setTimeout(go, 60); }   // 先に「作成中…」を描画してから重い処理へ
+    else loadScriptOnce(PDF_LIB, go, function () { finish("PDF部品の読込に失敗。通信環境をご確認ください"); });
+  }
+  // 画像/動画が読み込めなかった枠をタップ → その場で再取得
+  if (feed) feed.addEventListener("click", function (e) {
+    var w = e.target && e.target.closest && e.target.closest(".mediaWrap.mediaerr");
+    if (w) { toast("再読み込みします"); load(); }
+  });
+  if (galleryEl) galleryEl.addEventListener("click", function (e) {
+    var w = e.target && e.target.closest && e.target.closest(".mediaWrap.mediaerr");
+    if (w) { toast("再読み込みします"); loadPatterns(); }
+  });
+
+  /* ---------- 店舗屋号をタイトルに ---------- */
+  (function setStoreName() {
+    var el = document.getElementById("storeName");
+    var name = (CFG.STORE_NAME || "").trim();
+    if (el && name) { el.textContent = name; }
+    if (name) { document.title = name; }
+  })();
+
+  /* ---------- 専用プレビュー（完全な隠し機能）----------
+     入口: 店名を3秒以内に7回タップ → コード入力。
+     コードは端末にも公開コードにも埋め込まない。入力文字のSHA-256を計算し、
+     その値の場所(pv-<hash>/)にだけ一覧が存在する＝コードを知らない人は場所すら算出不能。 */
+  var PVB = String(CFG.MEDIA_BASE || "").replace(/\/+$/, "");
+  function pvEsc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function pvHash(code) {
+    return crypto.subtle.digest("SHA-256", new TextEncoder().encode(code)).then(function (h) {
+      var a = new Uint8Array(h), s = "";
+      for (var i = 0; i < a.length; i++) s += ("0" + a[i].toString(16)).slice(-2);
+      return s;
+    });
+  }
+  function pvFetch(code) {
+    return pvHash(code).then(function (h) {
+      return new Promise(function (resolve, reject) {
+        if (!PVB || PVB.indexOf("PASTE_") === 0) { reject(new Error("nobase")); return; }
+        var s = document.createElement("script");
+        var to = setTimeout(function () { cleanup(); reject(new Error("timeout")); }, 12000);
+        function cleanup() { clearTimeout(to); try { delete window.__pvCb; } catch (e) {} if (s.parentNode) s.parentNode.removeChild(s); }
+        window.__pvCb = function (data) { cleanup(); resolve(data); };
+        s.src = PVB + "/pv-" + h + "/index.js?ts=" + Date.now();
+        s.onerror = function () { cleanup(); reject(new Error("notfound")); };
+        document.head.appendChild(s);
+      });
+    });
+  }
+  var pvEl = null;
+  function pvShow(data) {
+    if (pvEl && pvEl.parentNode) pvEl.parentNode.removeChild(pvEl);
+    pvEl = document.createElement("div");
+    pvEl.style.cssText = "position:fixed;inset:0;z-index:99999;background:#0b0f14;color:#fff;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 12px 44px";
+    var vids = (data && data.v) || [];
+    var html = '<div style="display:flex;align-items:center;justify-content:space-between;margin:0 0 12px">' +
+      '<div style="font-weight:700;font-size:16px">🎬 専用プレビュー <span style="opacity:.55;font-size:12px">' + vids.length + '本</span></div>' +
+      '<button id="pvClose" style="background:#26313d;color:#fff;border:0;border-radius:8px;padding:8px 14px;font-size:14px">閉じる</button></div>';
+    if (!vids.length) html += '<div style="opacity:.7;padding:36px 0;text-align:center">まだ動画がありません</div>';
+    vids.forEach(function (v) {
+      html += '<div style="margin:0 0 20px">' +
+        '<div style="font-size:13px;margin:0 0 6px"><b>' + pvEsc(v.t) + '</b> <span style="opacity:.5">' + pvEsc(v.d) + '</span></div>' +
+        '<video controls playsinline preload="metadata" style="width:100%;max-width:420px;border-radius:12px;background:#000;display:block" src="' + pvEsc(v.u) + '"></video></div>';
+    });
+    pvEl.innerHTML = html;
+    document.body.appendChild(pvEl);
+    var c = pvEl.querySelector("#pvClose");
+    if (c) c.onclick = function () { if (pvEl && pvEl.parentNode) pvEl.parentNode.removeChild(pvEl); pvEl = null; };
+  }
+  function pvAsk() {
+    var k = window.prompt("コードを入力", "");
+    if (k == null) return;
+    k = String(k).trim(); if (!k) return;
+    pvFetch(k).then(function (data) {
+      try { localStorage.setItem("sb_pv", k); } catch (e) {}
+      pvShow(data);
+    }).catch(function () { toast("コードが違います"); });
+  }
+  (function pvEntry() {
+    var el = document.getElementById("storeName");
+    if (!el || !window.crypto || !crypto.subtle) return;
+    var n = 0, t0 = 0;
+    el.addEventListener("click", function () {
+      var now = Date.now();
+      if (now - t0 > 3000) n = 0;
+      t0 = now; n++;
+      if (n < 7) return;
+      n = 0;
+      var saved = "";
+      try { saved = localStorage.getItem("sb_pv") || ""; } catch (e) {}
+      if (saved) { pvFetch(saved).then(pvShow).catch(pvAsk); } else { pvAsk(); }
+    });
+  })();
+
+  /* ---------- 左上ロゴ→店舗ホームへ（入場コードで保護・関係者のみ） ---------- */
+  (function logoLink() {
+    var lg = document.querySelector(".logo");
+    if (!lg) return;
+    lg.style.cursor = "pointer";
+    lg.addEventListener("click", function () { location.href = "./home.html"; });
+  })();
+
+  /* ---------- 烏丸ページの画面切替 ---------- */
+  (function karInit() {
+    if (!KAR) return;
+    var el = document.getElementById("storeName");
+    if (el) el.textContent = "鮨処すさび湯 四条烏丸";
+    document.title = "鮨処すさび湯 四条烏丸";
+    if (tabFeed) tabFeed.style.display = "none";
+    if (tabReport) tabReport.style.display = "none";
+    setTimeout(function () { if (tabGallery) tabGallery.click(); }, 80);
+  })();
+
+  /* ---------- アイコンのバッジをクリア（開いた＝未読を見た） ---------- */
+  function clearBadge() {
+    try { if (navigator.clearAppBadge) navigator.clearAppBadge(); } catch (e) {}
+    if (navigator.serviceWorker && navigator.serviceWorker.ready) {
+      navigator.serviceWorker.ready.then(function (reg) {
+        var sw = reg.active || (navigator.serviceWorker && navigator.serviceWorker.controller);
+        if (sw) sw.postMessage({ type: "clearBadge" });
+      }).catch(function () {});
+    }
+  }
+
+  /* ---------- boot ---------- */
+  // 前回のフィードを即表示（ネットワーク待ちゼロで画面を出す）→ 直後にライブ取得で上書き
+  try {
+    var bootFeed = JSON.parse(localStorage.getItem("sb_feed") || "null");
+    if (bootFeed && bootFeed.length) render(bootFeed);
+  } catch (e) {}
+  load().then(function () { setRate(POLL); focusCard(getParam("focus")); });
+  clearBadge();
+  window.addEventListener("focus", clearBadge);
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) {
+      poll();  // 復帰したら即同期
+      clearBadge();
+      if (galleryEl && galleryEl.style.display !== "none") { loadPatterns(); startGalleryPoll(); }
+    } else { stopGalleryPoll(); }
+  });
+  if ("serviceWorker" in navigator && navigator.serviceWorker) {
+    navigator.serviceWorker.addEventListener("message", function (ev) {
+      if (ev.data && ev.data.type === "focus") { poll(); focusCard(ev.data.token); }
+    });
+  }
+  maybeIosHint();
+  refreshPushBtn();
+  // 見本を起動後すぐ裏で先読み（隠れたまま組み立て）→ 初回タップでも即表示。フィード表示を優先して遅延。
+  setTimeout(function () { if (KEY && !galleryLoaded) { galleryLoaded = true; loadPatterns(); } }, 1200);
+})();

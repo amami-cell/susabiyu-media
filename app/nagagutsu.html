@@ -55,8 +55,8 @@
     <span id="verlbl" style="opacity:.7"></span>
     <a id="forceupd" style="color:#8ab4e0;text-decoration:underline;cursor:pointer;margin-left:8px">🔄 最新に更新</a>
   </div>
-  <script src="./config.nagagutsu.js?v=620b1e19"></script>
-  <script src="./app.js?v=620b1e19"></script>
+  <script src="./config.nagagutsu.js?v=ebabee8c"></script>
+  <script src="./app.js?v=ebabee8c"></script>
   <script>
     if ("serviceWorker" in navigator) {
       var __hadCtrl = !!navigator.serviceWorker.controller;
@@ -80,10 +80,10 @@
     // 投稿管理(reels)側と同じ動き。見本を差し替えても古い一覧が残る端末の最終手段。
     (function () {
       // このページは __APPV をどこでも設定していなかったので、いつ見ても「v?」と出ていた。
-      // ＝更新が届いたかどうかの判断に使えない。deploy_pwa が pwa/*.html の 620b1e19 を
+      // ＝更新が届いたかどうかの判断に使えない。deploy_pwa が pwa/*.html の ebabee8c を
       // コミットSHAに置換するので、それをそのまま版数として出す（自動で最新になる）。
       var vl = document.getElementById("verlbl");
-      if (vl) vl.textContent = "バージョン " + (window.__APPV || "620b1e19");
+      if (vl) vl.textContent = "バージョン " + (window.__APPV || "ebabee8c");
       var fu = document.getElementById("forceupd");
       if (!fu) return;
       fu.onclick = function () {

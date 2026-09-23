@@ -1,0 +1,38 @@
+[
+  {
+    "pattern": "yoshokusumiwa",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@05082f95eeea315a9a5aa5d63547223d9df598f7/preview/20260923202423_1030.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@959518837bc7b8ec366924d377e4a7bbb3673460/preview/20260923202426_4370.jpg",
+    "label": "洋食おしゃれ・和・水墨",
+    "caption": "いい夜の、はじまり。",
+    "music": "祭りビート",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokukinsujiwa",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@2ea74c1b8a76a0487e1db5dd6b13982fb7b71d2c/preview/20260923202555_0964.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@6a270b31c036e30376e0e040c43005c3386170d3/preview/20260923202559_1862.jpg",
+    "label": "洋食おしゃれ・和・金箔ひとすじ",
+    "caption": "〜京町家で、旬の鮨と和食を〜",
+    "music": "祭りヤグラ",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokukintsugiwa",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@a3a684e5530bcdd6cfb67078fca97d776422ee6c/preview/20260923202730_4936.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@1287c9b0f52e68e0cdb557c3b3d73e42fcfbc97f/preview/20260923202733_0863.jpg",
+    "label": "洋食おしゃれ・和・金継ぎ",
+    "caption": "今宵は、鮨と。",
+    "music": "花笠音頭 (1)",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokumasuwa",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@f372def656aca0e8d6817b6d166564d6ccc71097/preview/20260923202843_1465.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@0b694382da16810fe465c24415109d3e645ce51a/preview/20260923202846_4379.jpg",
+    "label": "洋食おしゃれ・和・枡グリッド",
+    "caption": "旬を、ひと貫。",
+    "music": "銭湯に行こう (1)",
+    "enabled": 1
+  }
+]

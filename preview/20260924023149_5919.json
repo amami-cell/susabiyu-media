@@ -1,0 +1,47 @@
+[
+  {
+    "pattern": "yoshokuhakuwa",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@c11901955cddc282cb6ec4bbf5dd2916f1ff3da9/preview/20260924022653_9397.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@6c73be7954cc175bba91a545fe976c913ccbad6e/preview/20260924022657_8314.jpg",
+    "label": "洋食おしゃれ・和・箔押し",
+    "caption": "四条烏丸、京の夜。",
+    "music": "日本式風景",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuichiwa",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@de47bc88092648b09c2e4f17f2b43d7b7c7e5709/preview/20260924022805_5671.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@49f8c898ce90a3c2acdba3bb27342ca1340bdff2/preview/20260924022809_8117.jpg",
+    "label": "洋食おしゃれ・和・一行",
+    "caption": "職人の、手しごと。",
+    "music": "橙アップテンポ (1)",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuougiwa",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@57cd4c3fd9f129918e36f8e673a6c9ff976d2e84/preview/20260924022920_7145.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@7aa19c1c310322a3ca7345fe97b0107c65340b71/preview/20260924022924_9803.jpg",
+    "label": "洋食おしゃれ・和・扇",
+    "caption": "いい夜の、はじまり。",
+    "music": "津軽三味線独奏貝殻節 (1)",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuichimatsuwa",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@7130344b3baab7690ad89ab4e7bd8ac26da5ef5c/preview/20260924023031_9710.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@4f7b8526bcf827ab8e193f09fd4f927029e615e6/preview/20260924023033_6755.jpg",
+    "label": "洋食おしゃれ・和・市松",
+    "caption": "〜京町家で、旬の鮨と和食を〜",
+    "music": "祭りビート",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokubyoubuwa",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@bdd1106b603b5d51b89a8f8e3970862565b6ba84/preview/20260924023143_9539.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@fb6c5dd987c6dfe4f1aa47d25ee38f5c0e513299/preview/20260924023147_8363.jpg",
+    "label": "洋食おしゃれ・和・金屏風",
+    "caption": "今宵は、鮨と。",
+    "music": "祭りヤグラ",
+    "enabled": 1
+  }
+]

@@ -1,0 +1,92 @@
+[
+  {
+    "pattern": "yoshokudish",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@b0e6d1519e09b8fb475e7215a3498b94c7b3f7f2/preview/20260923175249_3470.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@f0058ea8e24669cc44e3ce2537a99dffcf70830d/preview/20260923175252_2397.jpg",
+    "label": "洋食おしゃれ・本日の一皿",
+    "caption": "今宵は、鮨と。",
+    "music": "bgm (1)",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokusizzle",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@068135ada822221f13a5a06e2dc56e8b14600013/preview/20260923175543_1797.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@0fc4de73946cd16280979d89ff93ab8385688daf/preview/20260923175545_7415.jpg",
+    "label": "洋食おしゃれ・鉄板ジュ〜っと",
+    "caption": "町家で、静かに一献。",
+    "music": "四条通",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokumag",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@4264797fa6c1469ab8b1219a0c68a575a2ddd992/preview/20260923175703_1584.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@e47eb84b301309a1e3d4dcc173ea4d4de0d5f975/preview/20260923175705_3112.jpg",
+    "label": "洋食おしゃれ・雑誌エディトリアル",
+    "caption": "京の粋を、ひと皿に。",
+    "music": "宵風灯路",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokucine",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@3849a7505cb195d1a16a8d27e29c4806f5ea74d6/preview/20260923175908_9809.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@ab3e067d85898cdfd677961fe1777203f25ab450/preview/20260923175911_4507.jpg",
+    "label": "洋食おしゃれ・シネマ",
+    "caption": "握りたてを、どうぞ。",
+    "music": "日本式風景",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuwine",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@9dc130acb6b4dcfe358ae63f3fb932f57141a0f6/preview/20260923180124_6410.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@4498e95a181b1388e6edc28c5efb2d23f07bd7dc/preview/20260923180127_2290.jpg",
+    "label": "洋食おしゃれ・ワインと共に",
+    "caption": "上質を、気軽に。",
+    "music": "橙アップテンポ (1)",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokutrio",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@2db93bfaf38328a9421666e28c8f2cd9b20899d9/preview/20260923180316_2545.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@4d2ad9bc4b51bc68852705eaa4b7bfc1ebf9d626/preview/20260923180318_8834.jpg",
+    "label": "洋食おしゃれ・おすすめ3品",
+    "caption": "日常に、ひと皿の贅沢。",
+    "music": "津軽三味線独奏貝殻節 (1)",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokupola",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@bcdc2200728b1aa5240b5bd52876a44d30833b63/preview/20260923180401_8349.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@3893ee3475236a37d3b5bc8241d5c45f741a0b86/preview/20260923180403_3554.jpg",
+    "label": "洋食おしゃれ・ポラロイド重ね",
+    "caption": "職人の、手しごと。",
+    "music": "祭りビート",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokutype",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@bd9a5af53a83ff5c7291d128af68fcfb2aaf7fcd/preview/20260923180512_3924.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@96d19d04d7cd3490da26196efe3af16e09ab5059/preview/20260923180514_4714.jpg",
+    "label": "洋食おしゃれ・大見出しタイポ",
+    "caption": "いい夜の、はじまり。",
+    "music": "祭りヤグラ",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuopen",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@b1f87822a9e410eff03b2ee3d066fc520bc9c239/preview/20260923180557_5491.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@0d89e5f79ead03672b99ee0aa6d295945dd97ad7/preview/20260923180558_1549.jpg",
+    "label": "洋食おしゃれ・本日OPEN案内",
+    "caption": "〜京町家で、旬の鮨と和食を〜",
+    "music": "花笠音頭 (1)",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokumagazine",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@0822ab8dad0ba33fc8234e57a2a2fd8e680cb1e0/preview/20260923180727_0857.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@247f396658fb800a1fe62960b94fe3e9827d08bb/preview/20260923180730_3402.jpg",
+    "label": "洋食おしゃれ・雑誌ストーリー",
+    "caption": "今宵は、鮨と。",
+    "music": "銭湯に行こう (1)",
+    "enabled": 1
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "pattern": "yoshokutatewa",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@6a62b768013ae37595c14b18ef5e761533be6209/preview/20260923195038_7651.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@d91e206adfba3224c1463f44c1ec191394d432fb/preview/20260923195041_5414.jpg",
+    "label": "洋食おしゃれ・和・縦書き大明朝",
+    "caption": "町家で、静かに一献。",
+    "music": "あじさい茶屋",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuhitowa",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@c398c08175555126a581352df2b78112c367ce76/preview/20260923195212_8640.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@5c541bed14dca3ac1e1c44ff85a0a4ea336ce43f/preview/20260923195214_4250.jpg",
+    "label": "洋食おしゃれ・和・本日の一皿(落款)",
+    "caption": "京の粋を、ひと皿に。",
+    "music": "四条通",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuwine",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@e581cd4007097744a714784e195ff7a87339e52a/preview/20260923195433_8268.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@58f8662f0abafabecb440ee8c1aed4f5fbfd637e/preview/20260923195436_0993.jpg",
+    "label": "洋食おしゃれ・ワインと共に",
+    "caption": "上質を、気軽に。",
+    "music": "橙アップテンポ (1)",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokutrio",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@3e8f0c2c5081decf949c85da1f31ca80123658f2/preview/20260923195628_9195.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@f0d952006ee89f4b4d6d57b183db39af0b3f80e1/preview/20260923195631_1032.jpg",
+    "label": "洋食おしゃれ・おすすめ3品",
+    "caption": "日常に、ひと皿の贅沢。",
+    "music": "津軽三味線独奏貝殻節 (1)",
+    "enabled": 1
+  }
+]

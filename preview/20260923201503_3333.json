@@ -1,0 +1,38 @@
+[
+  {
+    "pattern": "yoshokumaruwa",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@a6755493b5f0721a4db0f2d47394849b7d6599db/preview/20260923201025_4844.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@c7baa3c7f668f345a3d1eb598d9ecf3794bf1610/preview/20260923201028_3774.jpg",
+    "label": "洋食おしゃれ・和・円窓",
+    "caption": "握りたてを、どうぞ。",
+    "music": "宵風灯路",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokunorenwa",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@55ea28b22a7ab62d7e2515de2cd6d02f791da8bc/preview/20260923201157_0416.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@c68534dbb3ded8cad7d42ce723c44e638527b95e/preview/20260923201201_9146.jpg",
+    "label": "洋食おしゃれ・和・暖簾くぐり",
+    "caption": "上質を、気軽に。",
+    "music": "日本式風景",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokutsuiwa",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@42629b101c0cedc09a78b7e4d93c5261da01bc06/preview/20260923201325_5263.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@4f1dcea145b466a08d12a5677b95c1a6d6f9d584/preview/20260923201329_7203.jpg",
+    "label": "洋食おしゃれ・和・対二枚組",
+    "caption": "四条烏丸、京の夜。",
+    "music": "橙アップテンポ (1)",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokutanzakuwa",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@27b28c0dfbb37720d8300172658215f010f95357/preview/20260923201458_1140.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@5fa24aab34ddca28f30de34113805d4e823a8105/preview/20260923201501_4764.jpg",
+    "label": "洋食おしゃれ・和・短冊",
+    "caption": "職人の、手しごと。",
+    "music": "津軽三味線独奏貝殻節 (1)",
+    "enabled": 1
+  }
+]

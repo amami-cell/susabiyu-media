@@ -1,0 +1,38 @@
+[
+  {
+    "pattern": "yoshokushojiwa",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@03f5e69cf86723e76b8fd7b1a441486f388b0ee6/preview/20260923221633_8058.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@c762082f953ad0c89e3d672b5ee182452968ad91/preview/20260923221636_1376.jpg",
+    "label": "洋食おしゃれ・和・障子越し",
+    "caption": "町家で、静かに一献。",
+    "music": "bgm (1)",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokujubakowa",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@4c9672c0d92831937fb506702972a061340032e8/preview/20260923221735_2123.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@5b674be1ca12ff3e1b7154020e1d495b0982cb05/preview/20260923221738_1293.jpg",
+    "label": "洋食おしゃれ・和・重箱三段",
+    "caption": "京の粋を、ひと皿に。",
+    "music": "あじさい茶屋",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuminamowa",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@c71a38af3a3d66ad26f7f40b683d53a2b7636ecc/preview/20260923221853_9136.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@6f49ff9b19d162d18a17e3829ed061f197754545/preview/20260923221856_6457.jpg",
+    "label": "洋食おしゃれ・和・水面",
+    "caption": "握りたてを、どうぞ。",
+    "music": "四条通",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokukoushiwa",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@e647c62f058e6ee9f4d1dfa6a91902ba25b900b8/preview/20260923222006_5506.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@93a696043b6c9eeec8839fc9dc9dd79721027fb5/preview/20260923222010_3554.jpg",
+    "label": "洋食おしゃれ・和・縦格子",
+    "caption": "上質を、気軽に。",
+    "music": "宵風灯路",
+    "enabled": 1
+  }
+]

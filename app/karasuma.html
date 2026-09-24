@@ -50,8 +50,8 @@
     📲 ホーム画面に追加すると<b>一瞬で起動</b>＆<b>通知</b>が使えます。<br>
     共有ボタン <b>⬆️</b> →「ホーム画面に追加」
   </div>
-  <script src="./config.karasuma.js?v=b2767b8f"></script>
-  <script src="./app.js?v=b2767b8f"></script>
+  <script src="./config.karasuma.js?v=663ad37e"></script>
+  <script src="./app.js?v=663ad37e"></script>
   <script>
     if ("serviceWorker" in navigator) {
       var __hadCtrl = !!navigator.serviceWorker.controller;
@@ -71,6 +71,18 @@
         }).catch(function () {});
       });
     }
+  </script>
+  
+  <script>
+    (function () {
+      try {
+        var n = (window.GIFUYA && window.GIFUYA.SAMPLES && window.GIFUYA.SAMPLES.length) || 0;
+        var b = document.createElement("div");
+        b.textContent = "build 663ad37e ・ 見本 " + n + "本";
+        b.style.cssText = "position:fixed;left:6px;bottom:6px;z-index:9999;font:11px/1.4 -apple-system,sans-serif;color:#CBBE9F;background:rgba(20,16,16,.72);padding:3px 8px;border-radius:8px;pointer-events:none;opacity:.85";
+        document.body.appendChild(b);
+      } catch (e) {}
+    })();
   </script>
 </body>
 </html>

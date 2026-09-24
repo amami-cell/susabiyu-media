@@ -1,0 +1,38 @@
+[
+  {
+    "pattern": "yoshokutatewa",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@a7f88a02d22d8d354b882b7d5517fb49d27bb5f9/preview/20260924221724_6793.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@764c7d8741195437ecd4329a2a5577a8aa1e75bf/preview/20260924221727_9592.jpg",
+    "label": "洋食おしゃれ・和・縦書き大明朝",
+    "caption": "町家で、静かに一献。",
+    "music": "あじさい茶屋",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokusumiwa",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@6cdf8d878f1197df816dd545dae93fc46f678ceb/preview/20260924221851_0365.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@23cc9dd6fc2b5af30bf0c680cbdad4e08d85ce75/preview/20260924221854_3555.jpg",
+    "label": "洋食おしゃれ・和・水墨",
+    "caption": "いい夜の、はじまり。",
+    "music": "祭りビート",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuichiwa",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@0eb62266fd1a16f237ed85b4dde083a54641ece8/preview/20260924221955_8311.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@bfa60e2a8b4297a8cf31c4f8c2248e4753b71746/preview/20260924221959_3380.jpg",
+    "label": "洋食おしゃれ・和・一行",
+    "caption": "職人の、手しごと。",
+    "music": "橙アップテンポ (1)",
+    "enabled": 1
+  },
+  {
+    "pattern": "yoshokuwine",
+    "url": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@0c3d9a59c53a475b25ef75d51c696fda4200a560/preview/20260924222117_1393.mp4",
+    "poster": "https://cdn.jsdelivr.net/gh/amami-cell/susabiyu-media@bfefa4408b0865c0abbe7ad31cd03ecd6d14cb6d/preview/20260924222120_8544.jpg",
+    "label": "洋食おしゃれ・ワインと共に",
+    "caption": "上質を、気軽に。",
+    "music": "橙アップテンポ (1)",
+    "enabled": 1
+  }
+]

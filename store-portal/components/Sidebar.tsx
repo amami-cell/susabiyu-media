@@ -11,13 +11,16 @@ interface Props {
   onToggleCollapse: () => void;
   onCloseMobile: () => void;
   onSetTheme: (t: "ai-dark" | "ai") => void;
+  onLogout: () => void;
   build: { commit: string; builtAt: string };
 }
 
 export default function Sidebar({
-  page, collapsed, appTheme, onNavigate, onToggleCollapse, onCloseMobile, onSetTheme, build,
+  page, collapsed, appTheme, onNavigate, onToggleCollapse, onCloseMobile, onSetTheme, onLogout, build,
 }: Props) {
   const user = useStore((s) => s.collections.user);
+  const pageAccess = useStore((s) => s.collections.pageAccess) ?? {};
+  const alerts = useStore((s) => s.collections.alerts);
 
   return (
     <aside className="sb">
@@ -45,6 +48,9 @@ export default function Sidebar({
         {NAV.map((n, i) => {
           if ("sec" in n) return <div key={i} className="sb-sec">{n.sec}</div>;
           if ("line" in n) return <div key={i} className="sb-line" />;
+          // pageAccess（仕様書 6）で明示的に false の項目は非表示
+          if (pageAccess[n.k] === false) return null;
+          const cnt = n.k === "alerts" && alerts ? alerts.filter((a) => a.level === "critical").length || alerts.length : n.cnt;
           return (
             <button
               key={n.k}
@@ -56,7 +62,7 @@ export default function Sidebar({
               <span className="ic"><Icon name={n.icon} /></span>
               <span className="lbl">{n.t}</span>
               {n.g && <span className="gicon">G</span>}
-              {n.cnt != null && <span className="cnt">{n.cnt}</span>}
+              {cnt != null && <span className="cnt">{cnt}</span>}
               {n.ext && <span className="extic"><Icon name="ExternalLink" size={14} /></span>}
               {n.soon && <span className="soon">（準備中）</span>}
             </button>
@@ -66,7 +72,7 @@ export default function Sidebar({
 
       <div className="sb-foot">
         <button className="sb-btn"><Icon name="KeyRound" size={14} /><span className="lbl">パスワード変更</span></button>
-        <button className="sb-btn"><Icon name="LogOut" size={14} /><span className="lbl">ログアウト</span></button>
+        <button className="sb-btn" onClick={onLogout}><Icon name="LogOut" size={14} /><span className="lbl">ログアウト</span></button>
         <div className="sb-theme">
           <button className={appTheme === "ai-dark" ? "on" : ""} onClick={() => onSetTheme("ai-dark")}>ダーク</button>
           <button className={appTheme === "ai" ? "on" : ""} onClick={() => onSetTheme("ai")}>ライト</button>

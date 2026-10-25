@@ -4,15 +4,45 @@ import { useSync } from "@/lib/useSync";
 import { PAGE_TITLES, NAV } from "@/lib/nav";
 import Sidebar from "@/components/Sidebar";
 import Drawer from "@/components/Drawer";
+import Login from "@/components/Login";
 import Dashboard from "@/components/pages/Dashboard";
 import Stores from "@/components/pages/Stores";
+import Schedule from "@/components/pages/Schedule";
+import Media from "@/components/pages/Media";
+import Reviews from "@/components/pages/Reviews";
+import Changes from "@/components/pages/Changes";
+import Tasks from "@/components/pages/Tasks";
+import Alerts from "@/components/pages/Alerts";
 import Placeholder from "@/components/pages/Placeholder";
 import { Icon } from "@/components/Icon";
 import type { Store, BuildInfo } from "@/lib/types";
 
-const VALID = new Set(NAV.filter((n): n is Extract<typeof NAV[number], { k: string }> => "k" in n).map((n) => n.k));
+const VALID = new Set(
+  NAV.filter((n): n is Extract<(typeof NAV)[number], { k: string }> => "k" in n).map((n) => n.k)
+);
 
 export default function Page() {
+  const [auth, setAuth] = useState<"loading" | "in" | "out">("loading");
+
+  useEffect(() => {
+    fetch("/api/session", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((d) => setAuth(d.authed ? "in" : "out"))
+      .catch(() => setAuth("out"));
+  }, []);
+
+  if (auth === "loading") {
+    return (
+      <div className="login">
+        <div style={{ color: "#fff", fontSize: 13, opacity: 0.8 }}>読み込み中…</div>
+      </div>
+    );
+  }
+  if (auth === "out") return <Login onDone={() => setAuth("in")} />;
+  return <AppShell onLogout={() => setAuth("out")} />;
+}
+
+function AppShell({ onLogout }: { onLogout: () => void }) {
   useSync();
 
   const [page, setPage] = useState("dashboard");
@@ -22,7 +52,6 @@ export default function Page() {
   const [drawerStore, setDrawerStore] = useState<Store | null>(null);
   const [build, setBuild] = useState<{ commit: string; builtAt: string }>({ commit: "3ad5c9b", builtAt: "10/24 19:45" });
 
-  // ハッシュルーティング
   useEffect(() => {
     const read = () => {
       const h = location.hash.slice(1);
@@ -35,14 +64,12 @@ export default function Page() {
     return () => window.removeEventListener("hashchange", read);
   }, []);
 
-  // 折りたたみ状態の復元（inline script が html にセット済み）
   useEffect(() => {
     try {
       if (document.documentElement.hasAttribute("data-nav-collapsed")) setCollapsed(true);
     } catch {}
   }, []);
 
-  // ビルド情報（仕様書 5-4）
   useEffect(() => {
     fetch("/api/build", { cache: "no-store" })
       .then((r) => r.json())
@@ -66,16 +93,32 @@ export default function Page() {
     });
   }, []);
 
+  const doLogout = useCallback(async () => {
+    try {
+      await fetch("/api/logout", { method: "POST" });
+    } catch {}
+    onLogout();
+  }, [onLogout]);
+
   const renderPage = () => {
-    if (page === "dashboard") return <Dashboard />;
-    if (page === "stores") return <Stores onOpen={setDrawerStore} />;
-    const meta = NAV.find((n) => "k" in n && n.k === page) as { icon: string } | undefined;
-    return <Placeholder title={PAGE_TITLES[page] ?? "ダッシュボード"} icon={meta?.icon ?? "Square"} />;
+    switch (page) {
+      case "dashboard": return <Dashboard />;
+      case "stores": return <Stores onOpen={setDrawerStore} />;
+      case "schedule": return <Schedule />;
+      case "media": return <Media />;
+      case "reviews": return <Reviews />;
+      case "change": return <Changes />;
+      case "tasks": return <Tasks />;
+      case "alerts": return <Alerts />;
+      default: {
+        const meta = NAV.find((n) => "k" in n && n.k === page) as { icon: string } | undefined;
+        return <Placeholder title={PAGE_TITLES[page] ?? "ダッシュボード"} icon={meta?.icon ?? "Square"} />;
+      }
+    }
   };
 
   return (
     <div className={`app${mobileOpen ? " mobile-open" : ""}`} data-apptheme={appTheme} {...(collapsed ? { "data-collapsed": "" } : {})}>
-      {/* モバイル上部バー */}
       <div className="mbar">
         <button onClick={() => setMobileOpen(true)} aria-label="メニューを開く"><Icon name="Menu" size={18} /></button>
         <span className="t">店舗情報管理</span>
@@ -90,12 +133,12 @@ export default function Page() {
         onToggleCollapse={toggleCollapse}
         onCloseMobile={() => setMobileOpen(false)}
         onSetTheme={setAppTheme}
+        onLogout={doLogout}
         build={build}
       />
 
       <main className="main">{renderPage()}</main>
 
-      {/* モバイル時オーバーレイ（サイドバー背後） */}
       {mobileOpen && <div className="scrim show" onClick={() => setMobileOpen(false)} style={{ zIndex: 35 }} />}
 
       <Drawer store={drawerStore} onClose={() => setDrawerStore(null)} />

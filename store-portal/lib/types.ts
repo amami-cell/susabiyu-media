@@ -23,10 +23,79 @@ export interface Notice {
   tag: "NEW" | "更新" | "期限" | "完了";
 }
 
+export interface ScheduleEvent {
+  id: string;
+  date: string; // MM/DD
+  time: string;
+  title: string;
+  store: string;
+  kind: "MS" | "試食" | "会議" | "点検" | "その他";
+}
+
+export interface MediaRow {
+  id: string;
+  store: string;
+  source: "食べログ" | "ぐるなび" | "Google" | "Instagram";
+  rating: number; // 0-5
+  reviews: number;
+  synced: boolean;
+}
+
+export interface Review {
+  id: string;
+  store: string;
+  source: MediaRow["source"];
+  rating: number;
+  date: string;
+  author: string;
+  text: string;
+}
+
+export interface ChangeRequest {
+  id: string;
+  store: string;
+  field: string;
+  to: string;
+  applicant: string;
+  status: "申請中" | "承認" | "差戻し";
+  date: string;
+}
+
+export interface Task {
+  id: string;
+  title: string;
+  assignee: string;
+  due: string;
+  status: "未着手" | "進行中" | "完了";
+  priority: "高" | "中" | "低";
+}
+
+export interface Alert {
+  id: string;
+  store: string;
+  kind: string;
+  due: string;
+  level: "critical" | "warn";
+}
+
+export interface User {
+  name: string;
+  dept: string;
+  initial: string;
+  role: string;
+}
+
 export interface Collections {
-  user: { name: string; dept: string; initial: string };
+  user: User;
+  pageAccess: Record<string, boolean>;
   stores: Store[];
   notices: Notice[];
+  schedule: ScheduleEvent[];
+  media: MediaRow[];
+  reviews: Review[];
+  changes: ChangeRequest[];
+  tasks: Task[];
+  alerts: Alert[];
 }
 
 export type CollectionKey = keyof Collections;
@@ -37,4 +106,9 @@ export interface BuildInfo {
   commit: string;
   message: string;
   builtAt: string;
+}
+
+export interface SessionInfo {
+  authed: boolean;
+  user: User | null;
 }

@@ -121,6 +121,60 @@ export const collections: Collections = {
     { id: "mi2", date: "10/17", title: "媒体運用ミーティング", attendees: "本部 情報システム ほか 3名", summary: "Google ビジネスの口コミ返信フローを統一。ぐるなび連携の再認証を依頼。" },
     { id: "mi3", date: "10/10", title: "本部 月次会議", attendees: "各営業部長・本部", summary: "9月実績レビュー。未入力項目の削減目標を 164→50 に設定。" },
   ],
+  drawings: [
+    { id: "d1", store: "すさび湯 烏丸店", kind: "見積", title: "客席改装 A工事", amount: 8650000, date: "10/23", status: "確認待ち" },
+    { id: "d2", store: "すさび湯 烏丸店", kind: "図面", title: "1F レイアウト図 rev.3", amount: null, date: "10/22", status: "作成中" },
+    { id: "d3", store: "お初天神GOLD", kind: "見積", title: "厨房排気ダクト更新", amount: 1240000, date: "10/18", status: "確定" },
+    { id: "d4", store: "ARATA", kind: "図面", title: "看板デザイン提案", amount: null, date: "10/15", status: "確定" },
+    { id: "d5", store: "すさび湯 三条店", kind: "見積", title: "新規内装 一式", amount: 23800000, date: "10/12", status: "確認待ち" },
+  ],
+  capex: [
+    { id: "cx1", store: "すさび湯 烏丸店", title: "客席改装", category: "改装", amount: 8650000, applicant: "第三営業部 森", status: "一次承認" },
+    { id: "cx2", store: "お初天神GOLD", title: "厨房ダクト更新", category: "設備", amount: 1240000, applicant: "特販部 中村", status: "決裁済" },
+    { id: "cx3", store: "すさび湯 三条店", title: "新規出店 内装", category: "出店", amount: 23800000, applicant: "第三営業部 森", status: "申請中" },
+    { id: "cx4", store: "熊の鳥焼", title: "空調更新", category: "設備", amount: 980000, applicant: "第一営業部 高橋", status: "却下" },
+  ],
+  properties: [
+    { id: "p1", area: "大阪キタ", name: "梅田スカイフロント 2F", size: 42, rent: 1260000, unit: 30000, status: "商談中" },
+    { id: "p2", area: "難波", name: "なんば南ビル 1F", size: 28, rent: 980000, unit: 35000, status: "募集中" },
+    { id: "p3", area: "神戸", name: "三宮センター街 B1", size: 35, rent: 770000, unit: 22000, status: "募集中" },
+    { id: "p4", area: "京都", name: "四条烏丸 角地", size: 24, rent: 840000, unit: 35000, status: "成約" },
+  ],
+  ms: [
+    { id: "ms1", store: "すさび湯 梅田本店", kind: "MS", date: "10/20", score: "88点", staff: "外部調査" },
+    { id: "ms2", store: "ARATA", kind: "試食", date: "10/19", score: "新メニュー3品 承認", staff: "本部 天野" },
+    { id: "ms3", store: "ひよこ飯店", kind: "レセプト", date: "10/16", score: "指摘2件", staff: "第二営業部 林" },
+    { id: "ms4", store: "熊の鳥焼", kind: "MS", date: "10/12", score: "92点", staff: "外部調査" },
+  ],
+  userreq: [
+    { id: "u1", name: "山田 太郎", dept: "第一営業部", type: "新規登録", status: "申請中", date: "10/24" },
+    { id: "u2", name: "鈴木 花子", dept: "本部", type: "権限変更", status: "承認", date: "10/22" },
+    { id: "u3", name: "佐々木 健", dept: "第二営業部", type: "退職", status: "承認", date: "10/20" },
+    { id: "u4", name: "田口 実", dept: "特販部", type: "新規登録", status: "却下", date: "10/18" },
+  ],
+  feedback: [
+    { id: "f1", author: "第三営業部 森", category: "店舗一覧", text: "一覧にエリア別の集計行がほしい。", votes: 12, status: "対応中" },
+    { id: "f2", author: "本部 天野", category: "媒体一覧", text: "口コミ評価の推移グラフを出したい。", votes: 9, status: "受付" },
+    { id: "f3", author: "第一営業部 高橋", category: "タスク", text: "期限が近い順の既定ソートがほしい。", votes: 7, status: "完了" },
+    { id: "f4", author: "特販部 中村", category: "全般", text: "ダークモードの文字コントラストを上げたい。", votes: 3, status: "見送り" },
+  ],
+  corp: [
+    { id: "co1", name: "株式会社ネクサスグループ", rep: "代表取締役 天野", stores: 118, founded: "2008/06", fiscalMonth: "3月" },
+    { id: "co2", name: "ネクサスフード合同会社", rep: "代表 西村", stores: 18, founded: "2016/04", fiscalMonth: "9月" },
+    { id: "co3", name: "GOLD ダイニング株式会社", rep: "代表 中村", stores: 6, founded: "2019/11", fiscalMonth: "3月" },
+  ],
+  history: [
+    { id: "h1", at: "10/24 18:02", target: "すさび湯 烏丸店", field: "ステータス", by: "第三営業部 森", before: "営業中", after: "改装予定" },
+    { id: "h2", at: "10/23 14:30", target: "ARATA", field: "電話番号", by: "第二営業部 林", before: "06-6212-0000", after: "06-6212-1097" },
+    { id: "h3", at: "10/22 09:11", target: "すさび湯 三条店", field: "ステータス", by: "第三営業部 森", before: "—", after: "契約待ち" },
+    { id: "h4", at: "10/20 20:45", target: "お初天神GOLD", field: "営業時間", by: "特販部 中村", before: "17:00-23:00", after: "17:00-24:00" },
+  ],
+  manual: [
+    { id: "man1", category: "衛生", title: "食品衛生マニュアル 2026年版", updated: "2026/09/01" },
+    { id: "man2", category: "接客", title: "接客サービス基準書", updated: "2026/07/15" },
+    { id: "man3", category: "システム", title: "店舗情報管理ポータル 操作ガイド", updated: "2026/10/24" },
+    { id: "man4", category: "防災", title: "防火・避難マニュアル", updated: "2026/05/30" },
+  ],
 };
 
 // コレクション別の最終更新時刻（仕様書 5-1 /api/state/version 相当）

@@ -1,29 +1,22 @@
 "use client";
 import { useStore } from "@/lib/store";
+import { DataTable, Badge, type Col } from "../DataTable";
+import type { Vendor } from "@/lib/types";
+
+const cols: Col<Vendor>[] = [
+  { key: "name", label: "取引先名" },
+  { key: "category", label: "区分", render: (r) => <Badge text={r.category} cls="n" /> },
+  { key: "contact", label: "担当窓口", render: (r) => <span className="muted">{r.contact}</span> },
+  { key: "tel", label: "電話", mono: true },
+  { key: "stores", label: "取引店舗数", align: "right", render: (r) => `${r.stores} 店` },
+];
 
 export default function Vendors() {
-  const vendors = useStore((s) => s.collections.vendors) ?? [];
+  const rows = useStore((s) => s.collections.vendors) ?? [];
   return (
     <div className="pg">
       <div className="page-head"><h2>取引先</h2></div>
-      <div className="tbl-wrap">
-        <table style={{ minWidth: 720 }}>
-          <thead>
-            <tr><th>取引先名</th><th>区分</th><th>担当窓口</th><th>電話</th><th>取引店舗数</th></tr>
-          </thead>
-          <tbody>
-            {vendors.map((v) => (
-              <tr key={v.id}>
-                <td>{v.name}</td>
-                <td><span className="sp n">{v.category}</span></td>
-                <td className="muted">{v.contact}</td>
-                <td style={{ fontVariantNumeric: "tabular-nums" }}>{v.tel}</td>
-                <td style={{ fontVariantNumeric: "tabular-nums" }}>{v.stores} 店</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <DataTable columns={cols} rows={rows} minWidth={720} />
     </div>
   );
 }

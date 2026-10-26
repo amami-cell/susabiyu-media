@@ -122,6 +122,89 @@ export interface Minute {
   summary: string;
 }
 
+export interface Drawing {
+  id: string;
+  store: string;
+  kind: "図面" | "見積";
+  title: string;
+  amount: number | null;
+  date: string;
+  status: "作成中" | "確認待ち" | "確定";
+}
+
+export interface Capex {
+  id: string;
+  store: string;
+  title: string;
+  category: string;
+  amount: number;
+  applicant: string;
+  status: "申請中" | "一次承認" | "決裁済" | "却下";
+}
+
+export interface Property {
+  id: string;
+  area: string;
+  name: string;
+  size: number; // 坪
+  rent: number; // 月額
+  unit: number; // 坪単価
+  status: "募集中" | "商談中" | "成約";
+}
+
+export interface MsRecord {
+  id: string;
+  store: string;
+  kind: "MS" | "レセプト" | "試食";
+  date: string;
+  score: string;
+  staff: string;
+}
+
+export interface UserRequest {
+  id: string;
+  name: string;
+  dept: string;
+  type: "新規登録" | "権限変更" | "退職";
+  status: "申請中" | "承認" | "却下";
+  date: string;
+}
+
+export interface Feedback {
+  id: string;
+  author: string;
+  category: string;
+  text: string;
+  votes: number;
+  status: "受付" | "対応中" | "完了" | "見送り";
+}
+
+export interface Corp {
+  id: string;
+  name: string;
+  rep: string;
+  stores: number;
+  founded: string;
+  fiscalMonth: string;
+}
+
+export interface HistoryEntry {
+  id: string;
+  at: string;
+  target: string;
+  field: string;
+  by: string;
+  before: string;
+  after: string;
+}
+
+export interface ManualDoc {
+  id: string;
+  category: string;
+  title: string;
+  updated: string;
+}
+
 export interface User {
   name: string;
   dept: string;
@@ -145,6 +228,15 @@ export interface Collections {
   vehicles: Vehicle[];
   credentials: Credential[];
   minutes: Minute[];
+  drawings: Drawing[];
+  capex: Capex[];
+  properties: Property[];
+  ms: MsRecord[];
+  userreq: UserRequest[];
+  feedback: Feedback[];
+  corp: Corp[];
+  history: HistoryEntry[];
+  manual: ManualDoc[];
 }
 
 export type CollectionKey = keyof Collections;

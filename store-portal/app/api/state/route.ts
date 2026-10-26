@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { collections, versions } from "@/lib/mockData";
-import type { Collections, CollectionKey } from "@/lib/types";
+import { dataSource } from "@/lib/server/datasource";
 
 export const dynamic = "force-dynamic";
 
@@ -12,18 +11,6 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
   const keys = new URL(req.url).searchParams.get("keys");
-  if (!keys) {
-    return NextResponse.json({ collections, v: versions });
-  }
-  const wanted = keys.split(",").map((s) => s.trim()) as CollectionKey[];
-  const partial: Partial<Collections> = {};
-  const pv: Record<string, number> = {};
-  for (const k of wanted) {
-    if (k in collections) {
-      // @ts-expect-error index access across union
-      partial[k] = collections[k];
-      pv[k] = versions[k];
-    }
-  }
-  return NextResponse.json({ collections: partial, v: pv });
+  const { collections, v } = await dataSource.getState(keys ? keys.split(",").map((s) => s.trim()) : undefined);
+  return NextResponse.json({ collections, v });
 }

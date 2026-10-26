@@ -1,39 +1,29 @@
 "use client";
 import { useStore } from "@/lib/store";
+import { DataTable, Badge, type Col } from "../DataTable";
+import type { Vehicle } from "@/lib/types";
 
-// 車検・保険が60日以内に迫っていれば警告色（デモは年月まで）
 function soon(ym: string) {
   const [y, m] = ym.split("/").map(Number);
   if (!y || !m) return false;
-  const target = new Date(y, m - 1, 1);
-  const now = new Date(2026, 9, 26);
-  const diff = (target.getTime() - now.getTime()) / 86400000;
+  const diff = (new Date(y, m - 1, 1).getTime() - new Date(2026, 9, 26).getTime()) / 86400000;
   return diff <= 45;
 }
 
+const cols: Col<Vehicle>[] = [
+  { key: "name", label: "車両" },
+  { key: "plate", label: "ナンバー", mono: true },
+  { key: "store", label: "配置" },
+  { key: "inspection", label: "車検満了", render: (r) => <Badge text={r.inspection} cls={soon(r.inspection) ? "a" : "n"} /> },
+  { key: "insurance", label: "任意保険満了", render: (r) => <Badge text={r.insurance} cls={soon(r.insurance) ? "a" : "n"} /> },
+];
+
 export default function Vehicles() {
-  const vehicles = useStore((s) => s.collections.vehicles) ?? [];
+  const rows = useStore((s) => s.collections.vehicles) ?? [];
   return (
     <div className="pg">
       <div className="page-head"><h2>社用車</h2></div>
-      <div className="tbl-wrap">
-        <table style={{ minWidth: 720 }}>
-          <thead>
-            <tr><th>車両</th><th>ナンバー</th><th>配置</th><th>車検満了</th><th>任意保険満了</th></tr>
-          </thead>
-          <tbody>
-            {vehicles.map((v) => (
-              <tr key={v.id}>
-                <td>{v.name}</td>
-                <td className="muted" style={{ fontVariantNumeric: "tabular-nums" }}>{v.plate}</td>
-                <td>{v.store}</td>
-                <td><span className={`sp ${soon(v.inspection) ? "a" : "n"}`} style={{ fontVariantNumeric: "tabular-nums" }}>{v.inspection}</span></td>
-                <td><span className={`sp ${soon(v.insurance) ? "a" : "n"}`} style={{ fontVariantNumeric: "tabular-nums" }}>{v.insurance}</span></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <DataTable columns={cols} rows={rows} minWidth={720} />
     </div>
   );
 }

@@ -17,6 +17,9 @@ interface State {
   patchItem: <K extends ArrayCollections>(collection: K, id: string, patch: Partial<Collections[K][number]>) => Collections[K][number] | undefined;
   // ロールバック: 直前の値で復元
   restoreItem: <K extends ArrayCollections>(collection: K, prev: Collections[K][number]) => void;
+  // 楽観的追加 / 追加のロールバック
+  addItem: <K extends ArrayCollections>(collection: K, item: Collections[K][number]) => void;
+  removeItem: <K extends ArrayCollections>(collection: K, id: string) => void;
 }
 
 export const useStore = create<State>((set, get) => ({
@@ -46,5 +49,15 @@ export const useStore = create<State>((set, get) => ({
     const list = (get().collections[collection] as Identified[] | undefined) ?? [];
     const next = list.map((x) => (x.id === (prev as Identified).id ? prev : x));
     set((s) => ({ collections: { ...s.collections, [collection]: next } }));
+  },
+
+  addItem: (collection, item) => {
+    const list = (get().collections[collection] as Identified[] | undefined) ?? [];
+    set((s) => ({ collections: { ...s.collections, [collection]: [item as Identified, ...list] } }));
+  },
+
+  removeItem: (collection, id) => {
+    const list = (get().collections[collection] as Identified[] | undefined) ?? [];
+    set((s) => ({ collections: { ...s.collections, [collection]: list.filter((x) => x.id !== id) } }));
   },
 }));

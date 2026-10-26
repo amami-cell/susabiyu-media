@@ -78,6 +78,50 @@ export interface Alert {
   level: "critical" | "warn";
 }
 
+export interface Vendor {
+  id: string;
+  name: string;
+  category: string;
+  contact: string;
+  tel: string;
+  stores: number;
+}
+
+export interface Equipment {
+  id: string;
+  item: string;
+  store: string;
+  qty: number;
+  status: "貸与中" | "在庫" | "修理" | "廃棄";
+  assignedTo: string;
+}
+
+export interface Vehicle {
+  id: string;
+  name: string;
+  plate: string;
+  store: string;
+  inspection: string; // 車検満了
+  insurance: string; // 任意保険満了
+}
+
+export interface Credential {
+  id: string;
+  service: string;
+  store: string;
+  loginId: string;
+  password: string;
+  url: string;
+}
+
+export interface Minute {
+  id: string;
+  date: string;
+  title: string;
+  attendees: string;
+  summary: string;
+}
+
 export interface User {
   name: string;
   dept: string;
@@ -96,6 +140,11 @@ export interface Collections {
   changes: ChangeRequest[];
   tasks: Task[];
   alerts: Alert[];
+  vendors: Vendor[];
+  equipment: Equipment[];
+  vehicles: Vehicle[];
+  credentials: Credential[];
+  minutes: Minute[];
 }
 
 export type CollectionKey = keyof Collections;

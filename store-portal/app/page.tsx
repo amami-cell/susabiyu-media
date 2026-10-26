@@ -13,6 +13,11 @@ import Reviews from "@/components/pages/Reviews";
 import Changes from "@/components/pages/Changes";
 import Tasks from "@/components/pages/Tasks";
 import Alerts from "@/components/pages/Alerts";
+import Vendors from "@/components/pages/Vendors";
+import Equipment from "@/components/pages/Equipment";
+import Vehicles from "@/components/pages/Vehicles";
+import Credentials from "@/components/pages/Credentials";
+import Minutes from "@/components/pages/Minutes";
 import Placeholder from "@/components/pages/Placeholder";
 import Toast from "@/components/Toast";
 import { Icon } from "@/components/Icon";
@@ -111,6 +116,11 @@ function AppShell({ onLogout }: { onLogout: () => void }) {
       case "change": return <Changes />;
       case "tasks": return <Tasks />;
       case "alerts": return <Alerts />;
+      case "vendors": return <Vendors />;
+      case "equipment": return <Equipment />;
+      case "vehicles": return <Vehicles />;
+      case "idpw": return <Credentials />;
+      case "minutes": return <Minutes />;
       default: {
         const meta = NAV.find((n) => "k" in n && n.k === page) as { icon: string } | undefined;
         return <Placeholder title={PAGE_TITLES[page] ?? "ダッシュボード"} icon={meta?.icon ?? "Square"} />;

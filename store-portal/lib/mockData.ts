@@ -88,6 +88,39 @@ export const collections: Collections = {
     { id: "a7", store: "梅田GOLD", kind: "消防点検 日程未確定", due: "—", level: "warn" },
     { id: "a8", store: "ひよこ飯店", kind: "媒体連携エラー（ぐるなび）", due: "—", level: "warn" },
   ],
+  vendors: [
+    { id: "v1", name: "大阪フードサプライ", category: "食材卸", contact: "営業部 田中", tel: "06-6300-0001", stores: 9 },
+    { id: "v2", name: "関西酒類販売", category: "酒類卸", contact: "西村", tel: "06-6300-0002", stores: 12 },
+    { id: "v3", name: "ナニワ厨房設備", category: "厨房機器", contact: "保守課", tel: "06-6300-0003", stores: 14 },
+    { id: "v4", name: "クリーンプロ関西", category: "清掃・衛生", contact: "受付", tel: "06-6300-0004", stores: 11 },
+    { id: "v5", name: "ミヤコ内装", category: "内装・改装", contact: "設計 森本", tel: "075-200-0005", stores: 4 },
+    { id: "v6", name: "セキュリティ大阪", category: "警備・防犯", contact: "24h受付", tel: "06-6300-0006", stores: 13 },
+  ],
+  equipment: [
+    { id: "eq1", item: "iPad（POS）", store: "すさび湯 梅田本店", qty: 4, status: "貸与中", assignedTo: "店長 加藤" },
+    { id: "eq2", item: "モバイルプリンタ", store: "すさび湯 三宮店", qty: 3, status: "貸与中", assignedTo: "店長 佐藤" },
+    { id: "eq3", item: "券売機", store: "ひよこ飯店", qty: 1, status: "修理", assignedTo: "—" },
+    { id: "eq4", item: "制服（冬）", store: "本部倉庫", qty: 60, status: "在庫", assignedTo: "—" },
+    { id: "eq5", item: "ハンディ端末", store: "ARATA", qty: 5, status: "貸与中", assignedTo: "店長 林" },
+    { id: "eq6", item: "ビールサーバー", store: "たいだい", qty: 2, status: "廃棄", assignedTo: "—" },
+  ],
+  vehicles: [
+    { id: "ve1", name: "ハイエース", plate: "大阪 800 あ 12-34", store: "本部", inspection: "2027/03", insurance: "2026/11" },
+    { id: "ve2", name: "軽バン（配送）", plate: "なにわ 480 さ 56-78", store: "第一営業部", inspection: "2026/12", insurance: "2027/02" },
+    { id: "ve3", name: "営業車 プリウス", plate: "京都 300 た 90-12", store: "第三営業部", inspection: "2027/06", insurance: "2027/01" },
+    { id: "ve4", name: "冷蔵トラック", plate: "神戸 100 か 34-56", store: "本部", inspection: "2026/11", insurance: "2026/12" },
+  ],
+  credentials: [
+    { id: "cr1", service: "食べログ 管理画面", store: "すさび湯 梅田本店", loginId: "umeda_honten", password: "demo-pass-0001", url: "https://owner.tabelog.com" },
+    { id: "cr2", service: "Google ビジネス", store: "すさび湯 梅田本店", loginId: "susabiyu.umeda@example.com", password: "demo-pass-0002", url: "https://business.google.com" },
+    { id: "cr3", service: "ぐるなび 加盟店", store: "ひよこ飯店", loginId: "hiyoko1069", password: "demo-pass-0003", url: "https://pro.gnavi.co.jp" },
+    { id: "cr4", service: "Instagram", store: "梅田GOLD", loginId: "umeda_gold_official", password: "demo-pass-0004", url: "https://instagram.com" },
+  ],
+  minutes: [
+    { id: "mi1", date: "10/24", title: "第三営業部 定例会議", attendees: "森・天野 ほか 4名", summary: "烏丸店の改装スケジュールと三条店の契約進捗を共有。次回までに見積3社。" },
+    { id: "mi2", date: "10/17", title: "媒体運用ミーティング", attendees: "本部 情報システム ほか 3名", summary: "Google ビジネスの口コミ返信フローを統一。ぐるなび連携の再認証を依頼。" },
+    { id: "mi3", date: "10/10", title: "本部 月次会議", attendees: "各営業部長・本部", summary: "9月実績レビュー。未入力項目の削減目標を 164→50 に設定。" },
+  ],
 };
 
 // コレクション別の最終更新時刻（仕様書 5-1 /api/state/version 相当）

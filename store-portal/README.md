@@ -69,15 +69,45 @@ store-portal/
   （販促会議・ワークフローは仕様どおり「準備中」表示）。
 - **アプリ内テーマ**: ダーク/ライトサイドバー（仕様書の `ai-dark` / `ai`）をフッターで切替。
 
-## デプロイ（Vercel）
+## 本番デプロイ
+
+`.env.example` を複製して本番値を設定する。要点:
+
+1. **認証**: `AUTH_SECRET`（必須）＋ `AUTH_USERS` か `AUTH_EMAIL`/`AUTH_PASSWORD`。
+   未設定だと開発モード（任意資格情報で通過）になり、`NODE_ENV=production` では起動時に警告する。
+2. **データソース**: 自己ホスト/Docker は `DATA_SOURCE=file`（`DATA_DIR` に JSON 永続）、
+   サーバーレス/外部基盤は `DATA_SOURCE=http` ＋ `API_BASE`。既定は `mock`（非永続）。
+
+### Docker（自己ホスト・永続あり）
 
 ```bash
-# リポジトリを Vercel に import し、Root Directory を store-portal に設定
-# Framework Preset: Next.js（自動検出）
+docker build -t store-portal ./store-portal
+docker run -p 3000:3000 \
+  -e AUTH_SECRET=xxxxx -e AUTH_EMAIL=admin@nexus.co.jp -e AUTH_PASSWORD=xxxxx \
+  -e DATA_SOURCE=file -v $PWD/data:/app/.data \
+  store-portal
 ```
 
-ビルド時にコミットハッシュ/日時を埋め込む場合は環境変数:
-`NEXT_PUBLIC_COMMIT` / `NEXT_PUBLIC_BUILT_AT`（`app/api/build/route.ts` が参照）。
+`output: "standalone"` でビルドするので、イメージは Node ランタイム＋必要ファイルのみ。
+ヘルスチェックは `GET /api/health`。
+
+### Vercel（サーバーレス）
+
+Root Directory を `store-portal` に設定（Next.js 自動検出）。ファイル永続は使えないため
+`DATA_SOURCE=http` ＋ `API_BASE`（外部データAPI）を設定する。`AUTH_SECRET` と資格情報も環境変数で設定。
+
+### CI
+
+`.github/workflows/store-portal-ci.yml` が `store-portal/**` の変更時に `npm ci` → `npm run build`
+（型チェック・Lint 含む）を実行する。
+
+ビルド情報（サイドバー下部表示）は `NEXT_PUBLIC_COMMIT` / `NEXT_PUBLIC_BUILT_AT` で埋め込み可能。
+
+## セキュリティ
+
+- セッションは httpOnly＋署名付き（HMAC-SHA256, 8時間）。本番は `secure` Cookie。
+- `/api/state`・`/api/mutate` はセッション検証でゲート。
+- セキュリティヘッダ（X-Frame-Options / X-Content-Type-Options / Referrer-Policy / Permissions-Policy）を付与。
 
 ## 本番データへの接続
 

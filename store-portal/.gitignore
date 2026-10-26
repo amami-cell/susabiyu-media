@@ -10,6 +10,9 @@
 # production
 /build
 
+# runtime data (DATA_SOURCE=file)
+/.data
+
 # misc
 .DS_Store
 *.pem

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { dataSource } from "@/lib/server/datasource";
+import { verifySession, SESSION_COOKIE } from "@/lib/server/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +14,7 @@ const MUTABLE = new Set([
 // POST /api/mutate { action?, collection, id?, patch?, item? }  action: "update"(既定) | "create"
 // データソース（既定モック／http 切替可）に委譲し、更新後の version を返す（仕様書 5-3 ⑥）。
 export async function POST(req: Request) {
-  if (cookies().get("sp_session")?.value !== "ok") {
+  if (!verifySession(cookies().get(SESSION_COOKIE)?.value)) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
   let body: { action?: string; collection?: string; id?: string; patch?: Record<string, unknown>; item?: { id?: string } } = {};

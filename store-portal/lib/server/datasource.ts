@@ -1,5 +1,6 @@
 import { collections, versions } from "@/lib/mockData";
 import type { Collections, Versions } from "@/lib/types";
+import { fileSource } from "./filestore";
 
 // ── データソース抽象 ──
 // 既定はモック（サーバー内メモリ）。環境変数 DATA_SOURCE=http かつ API_BASE を設定すると
@@ -71,4 +72,13 @@ const http: DataSource = {
   },
 };
 
-export const dataSource: DataSource = process.env.DATA_SOURCE === "http" && base ? http : mock;
+// データソース選択（既定 mock）。本番自己ホストは DATA_SOURCE=file、
+// サーバーレス/外部APIは DATA_SOURCE=http + API_BASE。
+function pick(): DataSource {
+  const mode = process.env.DATA_SOURCE || "mock";
+  if (mode === "http" && base) return http;
+  if (mode === "file") return fileSource;
+  return mock;
+}
+
+export const dataSource: DataSource = pick();

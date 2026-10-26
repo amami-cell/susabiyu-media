@@ -14,6 +14,7 @@ import Changes from "@/components/pages/Changes";
 import Tasks from "@/components/pages/Tasks";
 import Alerts from "@/components/pages/Alerts";
 import Placeholder from "@/components/pages/Placeholder";
+import Toast from "@/components/Toast";
 import { Icon } from "@/components/Icon";
 import type { Store, BuildInfo } from "@/lib/types";
 
@@ -142,6 +143,7 @@ function AppShell({ onLogout }: { onLogout: () => void }) {
       {mobileOpen && <div className="scrim show" onClick={() => setMobileOpen(false)} style={{ zIndex: 35 }} />}
 
       <Drawer store={drawerStore} onClose={() => setDrawerStore(null)} />
+      <Toast />
     </div>
   );
 }

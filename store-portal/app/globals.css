@@ -302,4 +302,23 @@ td .extic { color: var(--faint); }
 .alert-row .ak { font-size: 13px; font-weight: 600; } .alert-row .as { font-size: 11px; color: var(--muted); }
 .alert-row .ad { margin-left: auto; font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
 
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+/* トースト */
+.toasts { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 60;
+  display: flex; flex-direction: column; gap: 8px; align-items: center; pointer-events: none; }
+.toast { pointer-events: auto; cursor: pointer; display: flex; align-items: center; gap: 8px;
+  padding: 10px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; color: #fff;
+  box-shadow: 0 8px 24px rgba(15,23,42,.25); animation: toastin .18s var(--ease); }
+.toast.ok { background: #15803d; } .toast.err { background: #b91c1c; }
+@keyframes toastin { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* インタラクティブなセル / 行内アクション */
+.cell-btn { cursor: pointer; border: none; background: none; font: inherit; padding: 0; }
+.row-actions { display: inline-flex; gap: 6px; }
+.mini { border-radius: 6px; padding: 3px 9px; font-size: 11px; font-weight: 600; cursor: pointer; border: 1px solid transparent; font-family: inherit; }
+.mini.ok { background: var(--ok-bg); color: var(--ok); border-color: #bbf7d0; }
+.mini.ok:hover { background: #bbf7d0; }
+.mini.no { background: var(--crit-bg); color: var(--crit); border-color: #fecaca; }
+.mini.no:hover { background: #fecaca; }
+.sp.clickable { cursor: pointer; } .sp.clickable:hover { filter: brightness(.96); }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }

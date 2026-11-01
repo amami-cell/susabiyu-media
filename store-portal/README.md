@@ -74,7 +74,9 @@ store-portal/
 `.env.example` を複製して本番値を設定する。要点:
 
 1. **認証**: `AUTH_SECRET`（必須）＋ `AUTH_USERS` か `AUTH_EMAIL`/`AUTH_PASSWORD`。
-   未設定だと開発モード（任意資格情報で通過）になり、`NODE_ENV=production` では起動時に警告する。
+   開発（`npm run dev`）では未設定でもデモ認証（任意資格情報で通過）が使える。
+   本番（`NODE_ENV=production`）で未設定だと**既定でフェイルクローズ（全ログイン拒否）**。
+   デモを本番モードのまま公開する場合のみ `ALLOW_DEV_AUTH=true`（セッションが偽造可能になるためデモ専用）。
 2. **データソース**: 自己ホスト/Docker は `DATA_SOURCE=file`（`DATA_DIR` に JSON 永続）、
    サーバーレス/外部基盤は `DATA_SOURCE=http` ＋ `API_BASE`。既定は `mock`（非永続）。
 

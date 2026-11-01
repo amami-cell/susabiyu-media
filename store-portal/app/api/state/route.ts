@@ -2,19 +2,10 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { dataSource } from "@/lib/server/datasource";
 import { verifySession, SESSION_COOKIE } from "@/lib/server/auth";
+import { PAGE_TO_COLLECTION } from "@/lib/server/access";
 import type { Collections } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
-
-// pageAccess=false のページに対応するコレクションはサーバー側でも遮断する
-// （仕様書6: メニュー非表示だけでなくデータ送信も止める）。
-const PAGE_TO_COLLECTION: Record<string, string> = {
-  stores: "stores", schedule: "schedule", media: "media", reviews: "reviews",
-  idpw: "credentials", vendors: "vendors", equipment: "equipment", vehicles: "vehicles",
-  capex: "capex", properties: "properties", minutes: "minutes", tasks: "tasks",
-  alerts: "alerts", ms: "ms", change: "changes", userreq: "userreq", feedback: "feedback",
-  corp: "corp", history: "history", drawings: "drawings", manual: "manual",
-};
 
 // GET /api/state            → 全コレクション一括
 // GET /api/state?keys=a,b   → 指定コレクションのみ（差分取得・仕様書 5-3）
@@ -23,18 +14,29 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
   const keys = new URL(req.url).searchParams.get("keys");
-  const { collections, v } = await dataSource.getState(keys ? keys.split(",").map((s) => s.trim()) : undefined);
+  const wantKeys = keys ? keys.split(",").map((s) => s.trim()) : undefined;
 
-  let pa = collections.pageAccess as Record<string, boolean> | undefined;
-  if (!pa) {
-    pa = (await dataSource.getState(["pageAccess"])).collections.pageAccess as Record<string, boolean> | undefined;
-  }
+  // pageAccess は権限判定に必須なので、部分取得でも一緒に取得（追加の往復を避ける）
+  const fetchKeys = wantKeys ? Array.from(new Set([...wantKeys, "pageAccess"])) : undefined;
+  const got = await dataSource.getState(fetchKeys);
+  // データソースは全件取得時に内部オブジェクトの参照を返すため、必ずコピーしてから加工する
+  const bag: Record<string, unknown> = { ...(got.collections as Record<string, unknown>) };
+  const v: Record<string, number> = { ...got.v };
+
+  const pa = bag.pageAccess as Record<string, boolean> | undefined;
   if (pa) {
-    const bag = collections as Record<string, unknown>;
     for (const [page, col] of Object.entries(PAGE_TO_COLLECTION)) {
-      if (pa[page] === false && col in bag) delete bag[col];
+      if (pa[page] === false) {
+        delete bag[col];
+        delete v[col]; // version も落として、解放後に再同期されるようにする
+      }
     }
   }
+  // クライアントが pageAccess を要求していなければ出力から除く
+  if (wantKeys && !wantKeys.includes("pageAccess")) {
+    delete bag.pageAccess;
+    delete v.pageAccess;
+  }
 
-  return NextResponse.json({ collections: collections as Partial<Collections>, v });
+  return NextResponse.json({ collections: bag as Partial<Collections>, v });
 }

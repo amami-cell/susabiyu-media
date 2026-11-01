@@ -8,11 +8,19 @@ import type { User } from "@/lib/types";
 // AUTH_SECRET 未設定時は開発モード: 任意のメール/パスワードで通過（起動ログに警告）。
 const SECRET = process.env.AUTH_SECRET || "";
 export const DEV_AUTH = !SECRET;
+const PROD = process.env.NODE_ENV === "production";
+// 本番で AUTH_SECRET 未設定なら既定でフェイルクローズ（全ログイン拒否・セッション無効）。
+// 明示的なデモ公開時のみ ALLOW_DEV_AUTH=true で開発モードを許可する（セッションは "dev-insecure"
+// 鍵で署名されるため偽造可能＝デモ専用の割り切り）。
+const ALLOW_DEV = !PROD || process.env.ALLOW_DEV_AUTH === "true";
 const TTL_SEC = 60 * 60 * 8; // 8時間
 
-if (DEV_AUTH && process.env.NODE_ENV === "production") {
-  // 本番で未設定なら運用者に気付かせる（フェイルセーフとして動作は継続）
-  console.warn("[auth] AUTH_SECRET 未設定: 開発モードで起動しています。本番では AUTH_SECRET と資格情報を設定してください。");
+if (DEV_AUTH && PROD) {
+  if (ALLOW_DEV) {
+    console.warn("[auth] 本番で AUTH_SECRET 未設定かつ ALLOW_DEV_AUTH=true: デモ用の開発認証で稼働します（セッションは偽造可能）。");
+  } else {
+    console.error("[auth] 本番で AUTH_SECRET 未設定: 認証をフェイルクローズします（全ログイン拒否）。AUTH_SECRET と資格情報を設定してください。");
+  }
 }
 
 export interface SessionPayload {
@@ -39,6 +47,7 @@ export function signSession(p: Omit<SessionPayload, "exp">): string {
 }
 
 export function verifySession(token: string | undefined): SessionPayload | null {
+  if (DEV_AUTH && !ALLOW_DEV) return null; // 本番・秘密鍵なし・デモ不許可: 有効なセッションは存在しない
   if (!token) return null;
   const dot = token.lastIndexOf(".");
   if (dot <= 0) return null;
@@ -68,6 +77,7 @@ function matchPassword(input: string, stored: string): boolean {
 export function checkCredentials(email: string, password: string): SessionPayload | null {
   const base = { name: collections.user.name, dept: collections.user.dept, role: collections.user.role };
   if (DEV_AUTH) {
+    if (!ALLOW_DEV) return null; // 本番・秘密鍵なし: フェイルクローズ
     return email && password ? { email, ...base, exp: 0 } : null;
   }
   // AUTH_USERS="email:secret,email2:secret2"（secret は平文 or sha256hex）

@@ -39,12 +39,10 @@ export default function Stores({ onOpen }: { onOpen: (s: Store) => void }) {
       return true;
     });
     if (sort) {
-      const val = (s: Store) => (sort.key === "code" ? Number(s.code) : s[sort.key] || "");
-      list = [...list].sort((a, b) => {
-        const va = val(a), vb = val(b);
-        if (typeof va === "number" && typeof vb === "number") return (va - vb) * sort.dir;
-        return String(va).localeCompare(String(vb), "ja") * sort.dir;
-      });
+      // 数値認識つき文字列比較。コードが非数値（例: "A1"）でも破綻せず推移律を保つ。
+      list = [...list].sort(
+        (a, b) => String(a[sort.key] ?? "").localeCompare(String(b[sort.key] ?? ""), "ja", { numeric: true }) * sort.dir
+      );
     }
     return list;
   }, [stores, dept, q, sort]);

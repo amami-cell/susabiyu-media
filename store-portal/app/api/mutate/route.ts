@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { dataSource } from "@/lib/server/datasource";
 import { verifySession, SESSION_COOKIE } from "@/lib/server/auth";
+import { COLLECTION_TO_PAGE } from "@/lib/server/access";
 
 export const dynamic = "force-dynamic";
 
@@ -26,6 +27,15 @@ export async function POST(req: Request) {
   const { action = "update", collection } = body;
   if (!collection || !MUTABLE.has(collection)) {
     return NextResponse.json({ error: "bad request" }, { status: 400 });
+  }
+
+  // 書き込み側にも pageAccess を強制（read 側だけでは整合しない）
+  const page = COLLECTION_TO_PAGE[collection];
+  if (page) {
+    const pa = (await dataSource.getState(["pageAccess"])).collections.pageAccess as Record<string, boolean> | undefined;
+    if (pa && pa[page] === false) {
+      return NextResponse.json({ error: "forbidden" }, { status: 403 });
+    }
   }
 
   if (action === "create") {

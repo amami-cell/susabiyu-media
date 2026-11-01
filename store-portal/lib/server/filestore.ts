@@ -47,6 +47,9 @@ export const fileSource: DataSource = {
     }
     return { collections: c, v };
   },
+  async versions() {
+    return ensure().versions;
+  },
   async update(collection, id, patch) {
     const db = ensure();
     const list = (db.collections as unknown as Record<string, { id: string }[]>)[collection];
@@ -60,6 +63,7 @@ export const fileSource: DataSource = {
   async create(collection, item) {
     const db = ensure();
     const list = (db.collections as unknown as Record<string, { id: string }[]>)[collection];
+    if (!list) return "notfound";
     if (list.some((x) => x.id === item.id)) return "dup";
     list.unshift(item);
     db.versions[collection] = Date.now();

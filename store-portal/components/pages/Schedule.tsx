@@ -19,7 +19,7 @@ export default function Schedule() {
         <div className="agenda">
           {days.map((d) => (
             <div key={d}>
-              <div className="day">2026/{d}（{["日", "月", "火", "水", "木", "金", "土"][new Date(2026, 9, Number(d.split("/")[1])).getDay()]}）</div>
+              <div className="day">2026/{d}（{["日", "月", "火", "水", "木", "金", "土"][new Date(2026, Number(d.split("/")[0]) - 1, Number(d.split("/")[1])).getDay()]}）</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 8 }}>
                 {events.filter((e) => e.date === d).map((e) => (
                   <div className="ev" key={e.id}>

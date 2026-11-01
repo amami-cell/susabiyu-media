@@ -50,7 +50,8 @@ export default function Sidebar({
           if ("line" in n) return <div key={i} className="sb-line" />;
           // pageAccess（仕様書 6）で明示的に false の項目は非表示
           if (pageAccess[n.k] === false) return null;
-          const cnt = n.k === "alerts" && alerts ? alerts.filter((a) => a.level === "critical").length || alerts.length : n.cnt;
+          // 件数バッジは許可・アラートの総件数（仕様書 2-2 の例「8」）。0件なら非表示。
+          const cnt = n.k === "alerts" && alerts ? alerts.length : n.cnt;
           return (
             <button
               key={n.k}
@@ -62,7 +63,7 @@ export default function Sidebar({
               <span className="ic">{n.emoji ? <span className="emj">{n.emoji}</span> : <Icon name={n.icon} />}</span>
               <span className="lbl">{n.t}</span>
               {n.g && <span className="gicon">G</span>}
-              {cnt != null && <span className="cnt">{cnt}</span>}
+              {cnt != null && cnt > 0 && <span className="cnt">{cnt}</span>}
               {n.ext && <span className="extic"><Icon name="ExternalLink" size={14} /></span>}
               {n.soon && <span className="soon">（準備中）</span>}
             </button>

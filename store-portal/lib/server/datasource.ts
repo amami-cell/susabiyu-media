@@ -8,8 +8,9 @@ import { fileSource } from "./filestore";
 // 本番接続は http 実装に API_BASE を向けるだけで済む（クライアントは変更不要）。
 export interface DataSource {
   getState(keys?: string[]): Promise<{ collections: Partial<Collections>; v: Versions }>;
+  versions(): Promise<Versions>;
   update(collection: string, id: string, patch: Record<string, unknown>): Promise<{ v: Versions } | "notfound">;
-  create(collection: string, item: { id: string }): Promise<{ v: Versions } | "dup">;
+  create(collection: string, item: { id: string }): Promise<{ v: Versions } | "dup" | "notfound">;
 }
 
 const mock: DataSource = {
@@ -25,6 +26,9 @@ const mock: DataSource = {
     }
     return { collections: c, v };
   },
+  async versions() {
+    return versions;
+  },
   async update(collection, id, patch) {
     const list = (collections as unknown as Record<string, { id: string }[]>)[collection];
     const item = list?.find((x) => x.id === id);
@@ -35,6 +39,7 @@ const mock: DataSource = {
   },
   async create(collection, item) {
     const list = (collections as unknown as Record<string, { id: string }[]>)[collection];
+    if (!list) return "notfound";
     if (list.some((x) => x.id === item.id)) return "dup";
     list.unshift(item);
     versions[collection] = Date.now();
@@ -49,6 +54,12 @@ const http: DataSource = {
     const r = await fetch(`${base}/state${qs}`, { cache: "no-store" });
     if (!r.ok) throw new Error(`state ${r.status}`);
     return r.json();
+  },
+  async versions() {
+    const r = await fetch(`${base}/state/version`, { cache: "no-store" });
+    if (!r.ok) throw new Error(`version ${r.status}`);
+    const j = await r.json();
+    return j.v as Versions;
   },
   async update(collection, id, patch) {
     const r = await fetch(`${base}/mutate`, {

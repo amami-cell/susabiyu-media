@@ -32,6 +32,7 @@ export async function POST(req: Request) {
     if (!body.item || !body.item.id) return NextResponse.json({ error: "bad item" }, { status: 400 });
     const res = await dataSource.create(collection, body.item as { id: string });
     if (res === "dup") return NextResponse.json({ error: "duplicate id" }, { status: 409 });
+    if (res === "notfound") return NextResponse.json({ error: "unknown collection" }, { status: 400 });
     return NextResponse.json({ ok: true, v: res.v });
   }
 

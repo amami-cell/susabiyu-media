@@ -3,6 +3,7 @@ import { useStore } from "@/lib/store";
 import { Icon } from "../Icon";
 import { Stars } from "../Stars";
 import GlobalSearch from "../GlobalSearch";
+import PromoCharts from "../PromoCharts";
 
 export default function Dashboard() {
   const user = useStore((s) => s.collections.user);
@@ -40,6 +41,8 @@ export default function Dashboard() {
         <div className="kpi"><div className="k"><Icon name="Instagram" size={14} />Instagram フォロワー</div><div className="v">{(ig?.reviews ?? 0).toLocaleString()}</div><div className="d muted">{ig?.store ?? "—"}</div></div>
         <div className="kpi"><div className="k"><Icon name="TriangleAlert" size={14} />要対応の低評価口コミ</div><div className="v">{low}</div><div className={low ? "d dn" : "d up"}>{low ? "★2以下 要フォロー" : "低評価なし"}</div></div>
       </div>
+
+      <PromoCharts />
 
       <div className="grid2">
         <div className="card">

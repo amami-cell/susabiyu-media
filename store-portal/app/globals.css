@@ -5,7 +5,7 @@
 /* ── 店舗情報管理ポータル UI（仕様書の実測値）──
    左ダークサイドバー 240px(畳むと56px) + ライト本文。確定ビジュアル。 */
 :root {
-  --page-bg:#f7f9fb; --fg:#1e293b; --muted:#64748b; --faint:#94a3b8;
+  --page-bg:#f7f9fb; --fg:#1e293b; --muted:#64748b; --faint:#687486;
   --card:#ffffff; --card-bd:#e2e8ef; --card-sh:0 1px 2px rgba(0,0,0,.05);
   --primary:#1e4b7a; --primary-700:#173c63;
   --gold:#b8952f;
@@ -13,7 +13,7 @@
   --crit:#b91c1c; --crit-bg:#fee2e2; --purple:#6d28d9; --purple-bg:#ede9fe; --blue:#1d4ed8; --blue-bg:#dbeafe;
   --slate800:#1e293b;
   --sb-bg:#111722; --sb-brand:#161a23; --sb-foot:#0d131d; --sb-line:#262e3d;
-  --sb-text:#c3c9d4; --sb-muted:#8b93a3; --sb-sec:#6b7383;
+  --sb-text:#c3c9d4; --sb-muted:#8b93a3; --sb-sec:#8690a2;
   --sb-hover:#1a2333; --sb-hover-text:#d5e6f5; --sb-active:#1c2942; --sb-active-text:#ffffff;
   --sb-avatar:#34527d; --sb-w:240px;
   --ease:cubic-bezier(.4,0,.2,1);
@@ -207,7 +207,7 @@ td .extic { color: var(--faint); }
 .sp { border-radius: 99px; font-size: 11px; font-weight: 600; padding: 2px 9px; white-space: nowrap; }
 .sp.g { background: var(--ok-bg); color: var(--ok); } .sp.p { background: var(--purple-bg); color: var(--purple); }
 .sp.a { background: var(--warn-bg); color: var(--warn); } .sp.r { background: var(--crit-bg); color: var(--crit); }
-.sp.x { background: #e2e8f0; color: #64748b; }
+.sp.x { background: #e2e8f0; color: #475569; }
 
 /* ドロワー */
 .scrim { position: fixed; inset: 0; background: rgba(15,23,42,.2); z-index: 45; opacity: 0; visibility: hidden; transition: opacity .15s; }
@@ -256,7 +256,7 @@ td .extic { color: var(--faint); }
 }
 /* 追加のステータス色 */
 .sp.b { background: var(--blue-bg); color: var(--blue); }
-.sp.n { background: #e2e8f0; color: #64748b; }
+.sp.n { background: #e2e8f0; color: #475569; }
 
 /* ログイン画面 */
 .login { min-height: 100vh; display: flex; align-items: center; justify-content: center;
@@ -329,6 +329,16 @@ td .extic { color: var(--faint); }
 .dt-toolbar .search.sm { max-width: 360px; flex: 1 1 220px; }
 .dt-count { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .dt-empty { padding: 24px 12px; text-align: center; color: var(--muted); font-size: 13px; }
+
+/* ダッシュボード横断検索 */
+.gsearch .search { max-width: 100%; }
+.gsearch-res { margin-top: 10px; display: flex; flex-direction: column; gap: 2px; max-height: 320px; overflow: auto; }
+.gsearch-item { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; background: none;
+  border: none; border-radius: 8px; padding: 8px 10px; cursor: pointer; font-family: inherit; }
+.gsearch-item:hover { background: #eef4fb; }
+.gi-label { font-weight: 600; font-size: 13px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gi-sub { font-size: 11px; color: var(--muted); margin-left: auto; white-space: nowrap; flex: 0 0 auto; }
+.gsearch-item svg { color: var(--faint); flex: 0 0 auto; }
 
 /* ゼブラ（交互背景）で横長の行を追いやすく。hover は詳細度を上げて優先 */
 tbody tr:nth-child(even) { background: #fafbfd; }

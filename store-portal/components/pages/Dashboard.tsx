@@ -1,6 +1,7 @@
 "use client";
 import { useStore } from "@/lib/store";
 import { Icon } from "../Icon";
+import GlobalSearch from "../GlobalSearch";
 
 export default function Dashboard() {
   const user = useStore((s) => s.collections.user);
@@ -14,6 +15,8 @@ export default function Dashboard() {
         <b>こんにちは、{user?.name?.split(" ")[0] ?? "ゲスト"}さん</b>
         <div className="s">本日のタスク 3件・未確認の変更申請 2件・許可アラート 8件</div>
       </div>
+
+      <GlobalSearch />
 
       <div className="kpis">
         <div className="kpi"><div className="k"><Icon name="Store" size={14} />登録店舗</div><div className="v">142</div><div className="d muted">稼働 118 / 準備中 24</div></div>

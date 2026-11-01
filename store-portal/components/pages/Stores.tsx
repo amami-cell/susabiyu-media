@@ -111,7 +111,7 @@ export default function Stores({ onOpen }: { onOpen: (s: Store) => void }) {
         </div>
       </div>
 
-      <div className="tbl-wrap">
+      <div className="tbl-wrap has-cards">
         <table>
           <thead>
             <tr>
@@ -145,6 +145,26 @@ export default function Stores({ onOpen }: { onOpen: (s: Store) => void }) {
             ))}
           </tbody>
         </table>
+
+        {/* モバイル: 店舗カードリスト（仕様書 4-5） */}
+        <div className="card-list">
+          {rows.map((s) => (
+            <div className="cl-card" key={s.id} onClick={() => onOpen(s)}>
+              <div className="cl-head">
+                <span className="stline" style={{ background: DEPT_COLOR[s.dept] ?? "#cbd5e1", height: 16 }} />
+                <span style={{ flex: 1 }}>{s.name}</span>
+                {s.warn > 0 && <span className="warnbadge"><Icon name="TriangleAlert" size={13} />{s.warn}</span>}
+                <Icon name="ExternalLink" size={14} className="extic" />
+              </div>
+              <div className="cl-row"><span className="cl-k">ステータス</span><span className="cl-v"><span className={`sp ${s.statusKey}`}>{s.status}</span></span></div>
+              <div className="cl-row"><span className="cl-k">コード</span><span className="cl-v muted">{s.code}</span></div>
+              <div className="cl-row"><span className="cl-k">営業部／エリア</span><span className="cl-v">{s.dept}／{s.area}</span></div>
+              <div className="cl-row"><span className="cl-k">業態</span><span className="cl-v">{s.genre}</span></div>
+              <div className="cl-row"><span className="cl-k">開店日</span><span className="cl-v" style={{ fontVariantNumeric: "tabular-nums" }}>{s.open}</span></div>
+              <div className="cl-row"><span className="cl-k">電話</span><span className="cl-v muted" style={{ fontVariantNumeric: "tabular-nums" }}>{s.tel}</span></div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {adding && (

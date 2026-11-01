@@ -10,6 +10,7 @@ export type NavEntry =
       cnt?: number; // 件数バッジ
       ext?: boolean; // 外部リンク ↗
       soon?: boolean; // （準備中）
+      emoji?: string; // 絵文字アイコン（仕様書 2-2 外部ツール）
     };
 
 export const NAV: NavEntry[] = [
@@ -42,7 +43,7 @@ export const NAV: NavEntry[] = [
   { k: "corp", icon: "Database", t: "法人マスタ" },
   { k: "history", icon: "History", t: "情報変更履歴" },
   { sec: "外部ツール" },
-  { k: "instagram", icon: "Instagram", t: "インスタ投稿確認", ext: true },
+  { k: "instagram", icon: "Instagram", t: "インスタ投稿確認", ext: true, emoji: "📷" },
 ];
 
 export const PAGE_TITLES: Record<string, string> = Object.fromEntries(

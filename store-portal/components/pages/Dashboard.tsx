@@ -23,7 +23,7 @@ export default function Dashboard() {
       </div>
 
       <div className="qs-card">
-        <h3 style={{ marginBottom: 10 }}><span className="ic"><Icon name="Zap" size={16} /></span>クイックスタート</h3>
+        <h3 style={{ marginBottom: 10 }}><span className="emoji">⚡</span>クイックスタート</h3>
         <div className="qs-grid">
           <button className="tile"><span className="ti a"><Icon name="Store" /></span><span><span className="tt">店舗を追加</span><span className="td">新規出店の基本情報を登録</span></span></button>
           <button className="tile"><span className="ti b"><Icon name="FilePenLine" /></span><span><span className="tt">変更申請を作成</span><span className="td">店舗情報の修正を申請</span></span></button>
@@ -34,7 +34,7 @@ export default function Dashboard() {
 
       <div className="grid2">
         <div className="card">
-          <h3><span className="ic"><Icon name="Megaphone" size={16} /></span>お知らせ</h3>
+          <h3><span className="emoji">📣</span>お知らせ</h3>
           <ul className="news">
             {notices.map((n) => (
               <li key={n.id}>
@@ -46,7 +46,7 @@ export default function Dashboard() {
           </ul>
         </div>
         <div className="card">
-          <h3><span className="ic"><Icon name="Activity" size={16} /></span>最新情報</h3>
+          <h3><span className="emoji">📢</span>最新情報</h3>
           <ul className="news">
             <li><span className="dt">10/24</span><span style={{ flex: 1 }}>すさび湯 烏丸店の改装予定を登録（11/E 着工）。</span></li>
             <li><span className="dt">10/23</span><span style={{ flex: 1 }}>ARATA の電話番号が変更されました。</span></li>

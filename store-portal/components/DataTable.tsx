@@ -50,7 +50,7 @@ export function DataTable<T extends { id: string }>({
     setSort((s) => (s && s.key === key ? { key, dir: s.dir === 1 ? -1 : 1 } : { key, dir: 1 }));
 
   return (
-    <div className="tbl-wrap">
+    <div className="tbl-wrap has-cards">
       <table style={{ minWidth }}>
         <thead>
           <tr>
@@ -89,6 +89,23 @@ export function DataTable<T extends { id: string }>({
           ))}
         </tbody>
       </table>
+
+      {/* モバイル: テーブルを隠しカードリストに切替（仕様書 4-5） */}
+      <div className="card-list">
+        {sorted.map((r) => (
+          <div key={r.id} className="cl-card" onClick={onRowClick ? () => onRowClick(r) : undefined} style={{ cursor: onRowClick ? "pointer" : "default" }}>
+            {columns.map((c) => {
+              const v = c.render ? c.render(r) : ((r as Record<string, unknown>)[c.key] as ReactNode);
+              return (
+                <div className="cl-row" key={c.key}>
+                  {c.label && <span className="cl-k">{c.label}</span>}
+                  <span className="cl-v">{v}</span>
+                </div>
+              );
+            })}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

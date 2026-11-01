@@ -59,7 +59,7 @@ export default function Sidebar({
               onClick={() => onNavigate(n.k)}
             >
               <span className="bar" />
-              <span className="ic"><Icon name={n.icon} /></span>
+              <span className="ic">{n.emoji ? <span className="emj">{n.emoji}</span> : <Icon name={n.icon} />}</span>
               <span className="lbl">{n.t}</span>
               {n.g && <span className="gicon">G</span>}
               {cnt != null && <span className="cnt">{cnt}</span>}

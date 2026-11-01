@@ -17,6 +17,7 @@
   --sb-hover:#1a2333; --sb-hover-text:#d5e6f5; --sb-active:#1c2942; --sb-active-text:#ffffff;
   --sb-avatar:#34527d; --sb-w:240px;
   --ease:cubic-bezier(.4,0,.2,1);
+  --font-inter:"Inter"; --font-noto:"Noto Sans JP";
   color-scheme: light;
 }
 .app[data-apptheme="ai"] {

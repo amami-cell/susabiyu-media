@@ -5,6 +5,7 @@ import {
   ListChecks, Bell, ClipboardCheck, FilePenLine, Workflow, UserPlus, Lightbulb,
   BookOpen, Database, History, Instagram, ExternalLink, ChevronsLeft, ChevronsRight,
   X, Menu, Plus, Search, TriangleAlert, Square, Zap, Activity, PencilRuler, LogOut,
+  BarChart3,
   type LucideProps,
 } from "lucide-react";
 import type { ComponentType } from "react";
@@ -15,6 +16,7 @@ const MAP: Record<string, ComponentType<LucideProps>> = {
   ListChecks, Bell, ClipboardCheck, FilePenLine, Workflow, UserPlus, Lightbulb,
   BookOpen, Database, History, Instagram, ExternalLink, ChevronsLeft, ChevronsRight,
   X, Menu, Plus, Search, TriangleAlert, Square, Zap, Activity, PencilRuler, LogOut,
+  BarChart3,
 };
 
 export function Icon({ name, size = 17, strokeWidth = 1.7, ...rest }: { name: string } & LucideProps) {

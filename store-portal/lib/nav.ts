@@ -29,6 +29,7 @@ export const NAV: NavEntry[] = [
   { sec: "マーケティング" },
   { k: "promo", icon: "Presentation", t: "販促会議", soon: true },
   { k: "minutes", icon: "FileText", t: "議事録" },
+  { k: "abc", icon: "BarChart3", t: "ABC分析" },
   { sec: "タスク" },
   { k: "tasks", icon: "ListChecks", t: "タスク" },
   { k: "alerts", icon: "Bell", t: "許可・アラート", cnt: 8 },

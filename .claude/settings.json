@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "social-media-skills": {
+      "source": {
+        "source": "github",
+        "repo": "social-media-skills/skills"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "social-media-skills@social-media-skills": true
+  }
+}

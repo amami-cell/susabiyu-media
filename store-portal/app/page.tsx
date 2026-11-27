@@ -19,6 +19,7 @@ import Vehicles from "@/components/pages/Vehicles";
 import Credentials from "@/components/pages/Credentials";
 import Minutes from "@/components/pages/Minutes";
 import AbcAnalysis from "@/components/pages/AbcAnalysis";
+import Pop from "@/components/pages/Pop";
 import Drawings from "@/components/pages/Drawings";
 import CapexPage from "@/components/pages/Capex";
 import Properties from "@/components/pages/Properties";
@@ -153,6 +154,7 @@ function AppShell({ onLogout }: { onLogout: () => void }) {
       case "idpw": return <Credentials />;
       case "minutes": return <Minutes />;
       case "abc": return <AbcAnalysis />;
+      case "pop": return <Pop />;
       case "drawings": return <Drawings />;
       case "capex": return <CapexPage />;
       case "properties": return <Properties />;

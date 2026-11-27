@@ -1,5 +1,0 @@
-// 自動生成: 飲み放題パック料金 割り戻し試算データ（⚠店舗）。
-// kyaku=お通し数量(客数の代理)、drinkSales/Cost=ドリンク補正の売上・原価(税抜)。
-// 推定パック売上 = kyaku × 利用率 × 想定単価、試算原価率 = drinkCost /(drinkSales+推定パック売上)。
-export interface NomiRow { name:string; kyaku:number; drinkSales:number; drinkCost:number; drinkRate:number; }
-export const NOMI_TEST_ROWS: NomiRow[] = [{"name": "すさび湯　天満橋店", "kyaku": 0, "drinkSales": 86740, "drinkCost": 47534, "drinkRate": 54.8}, {"name": "すさび湯　京都三条店", "kyaku": 2068, "drinkSales": 1202094, "drinkCost": 629897, "drinkRate": 52.4}, {"name": "すさび湯　新宿東口店", "kyaku": 5793, "drinkSales": 2109000, "drinkCost": 1060827, "drinkRate": 50.3}, {"name": "すさび湯　歌舞伎町", "kyaku": 8869, "drinkSales": 3995735, "drinkCost": 1881991, "drinkRate": 47.1}, {"name": "料理と酒　たいだい", "kyaku": 626, "drinkSales": 292486, "drinkCost": 136298, "drinkRate": 46.6}, {"name": "大衆寿司酒場すさび湯", "kyaku": 0, "drinkSales": 2176986, "drinkCost": 903449, "drinkRate": 41.5}, {"name": "NagaGutsu", "kyaku": 0, "drinkSales": 163713, "drinkCost": 66467, "drinkRate": 40.6}, {"name": "味のたぬきや", "kyaku": 411, "drinkSales": 175405, "drinkCost": 70513, "drinkRate": 40.2}];

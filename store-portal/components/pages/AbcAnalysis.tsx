@@ -14,6 +14,7 @@ import AbcTrendChart, { type TrendCat } from "@/components/AbcTrendChart";
 import AbcCostRateChart from "@/components/AbcCostRateChart";
 import AbcStoreCompare from "@/components/AbcStoreCompare";
 import AbcScatter from "@/components/AbcScatter";
+import AbcHeatmap from "@/components/AbcHeatmap";
 
 // 業態別の固定配色（dataviz検証済みカテゴリパレット・固定順）
 const CAT_COLORS: Record<string, string> = {
@@ -199,6 +200,20 @@ export default function AbcAnalysis() {
           <AbcScatter current={store} onSelectStore={(s) => setStore(s)} />
           <div className="abc-note">
             ※ 横軸＝期間売上（税抜）、縦軸＝原価率。破線は全店平均で4象限に分割。右下（高売上・低原価）が優良、左上（低売上・高原価）が要注意ゾーン。点のクリックでその店舗に切替、ホバーで詳細。
+          </div>
+        </div>
+      )}
+
+      {/* 業態別 原価率ヒートマップ */}
+      {ABC_STORES.length > 1 && (
+        <div className="card abc-detail">
+          <h3>
+            <span className="emoji">🌡️</span>業態別 原価率ヒートマップ（{ABC_PERIOD}）
+            <span className="muted" style={{ fontWeight: 400, fontSize: 12, marginLeft: 8 }}>行＝店舗（売上順）・列＝業態</span>
+          </h3>
+          <AbcHeatmap current={store} onSelectStore={(s) => setStore(s)} />
+          <div className="abc-note">
+            ※ 各セル＝その店舗×業態の期間原価率（税抜）。色が濃い（赤）ほど高原価。「—」は当該業態の取扱なし。行クリックでその店舗に切替、セルのホバーで売上も表示。
           </div>
         </div>
       )}

@@ -57,10 +57,12 @@ export default function AbcAnalysis() {
             </select>
           </label>
         )}
-        <label className="abc-field">
-          <span>期間</span>
-          <span style={{ fontWeight: 700 }}>{ABC_PERIOD_LABELS[0]}</span>
-        </label>
+        {!multiPeriod && (
+          <label className="abc-field">
+            <span>期間</span>
+            <span style={{ fontWeight: 700 }}>{ABC_PERIOD_LABELS[0]}</span>
+          </label>
+        )}
         <span className="abc-hint">カテゴリを選ぶと、下に業態別の内訳が出ます</span>
       </div>
 
@@ -80,7 +82,7 @@ export default function AbcAnalysis() {
                   </div>
                 ))}
               </div>
-              <span className="abc-cat-foot">{ABC_PERIOD_LABELS[0]} 実績 ›</span>
+              <span className="abc-cat-foot">{ABC_PERIOD_LABELS[mi]} 実績 ›</span>
             </button>
           );
         })}
@@ -126,8 +128,8 @@ export default function AbcAnalysis() {
         <div className="abc-note">
           ※ FOODING JOURNAL「ABC分析」からの実データ（{ABC_PERIOD}）。金額は税抜。
           ABCレポートに客数が無いため「販売点数（点）」「商品単価＝売上÷点数」で表示しています（客数・客単価は日報系の別レポートが必要）。
-          「1日平均点数」＝販売点数÷期間暦日数(304日)、「売上構成比」＝期間内の全カテゴリ売上に占める割合。カテゴリはFW部門名から自動分類。
-          月別の時系列はFWアクセス回復後に差し替え予定です。
+          「1日平均点数」＝販売点数÷当月暦日数、「売上構成比」＝当月の全カテゴリ売上に占める割合。カテゴリはFW部門名から自動分類。
+          対象月を切り替えると各カテゴリの選択月実績が上部に反映されます。11〜12月は未到来のため0表示。
         </div>
       </div>
     </div>

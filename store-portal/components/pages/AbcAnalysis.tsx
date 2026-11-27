@@ -12,6 +12,7 @@ import {
 import { ABC_STORES, ABC_PERIOD, ABC_MONTHS_WITH_DATA, ABC_PERIOD_LABELS } from "@/lib/abcReal";
 import AbcTrendChart, { type TrendCat } from "@/components/AbcTrendChart";
 import AbcCostRateChart from "@/components/AbcCostRateChart";
+import AbcStoreCompare from "@/components/AbcStoreCompare";
 
 // 業態別の固定配色（dataviz検証済みカテゴリパレット・固定順）
 const CAT_COLORS: Record<string, string> = {
@@ -169,6 +170,20 @@ export default function AbcAnalysis() {
           <AbcCostRateChart year={year} catKeys={CATEGORIES.map((c) => c.key)} months={months} selected={mi} onSelect={(m) => setMonth(m + 1)} />
           <div className="abc-note">
             ※ 店舗全体の月次原価率＝Σ原価÷Σ売上（税抜・全業態加重）。破線は期間平均。マーカーのクリック／ホバーで対象月を切替、売上0の月は線を分断。
+          </div>
+        </div>
+      )}
+
+      {/* 全店横断 原価率比較 */}
+      {ABC_STORES.length > 1 && (
+        <div className="card abc-detail">
+          <h3>
+            <span className="emoji">🏬</span>全店横断 原価率比較（{ABC_PERIOD}）
+            <span className="muted" style={{ fontWeight: 400, fontSize: 12, marginLeft: 8 }}>イニシエート{storeNames.length}店・原価率が高い順</span>
+          </h3>
+          <AbcStoreCompare current={store} onSelectStore={(s) => setStore(s)} />
+          <div className="abc-note">
+            ※ 各店の期間原価率＝Σ原価÷Σ売上（税抜・全業態加重）を高い順に並べたもの。破線は全店平均。選択中の店舗は紫で強調。店名バーのクリックでその店舗に切替。
           </div>
         </div>
       )}

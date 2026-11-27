@@ -15,6 +15,7 @@ import AbcCostRateChart from "@/components/AbcCostRateChart";
 import AbcStoreCompare from "@/components/AbcStoreCompare";
 import AbcScatter from "@/components/AbcScatter";
 import AbcHeatmap from "@/components/AbcHeatmap";
+import AbcHeatmapCorrected from "@/components/AbcHeatmapCorrected";
 
 // 業態別の固定配色（dataviz検証済みカテゴリパレット・固定順）
 const CAT_COLORS: Record<string, string> = {
@@ -214,6 +215,22 @@ export default function AbcAnalysis() {
           <AbcHeatmap current={store} onSelectStore={(s) => setStore(s)} />
           <div className="abc-note">
             ※ 各セル＝その店舗×業態の期間原価率（税抜）。色が濃い（赤）ほど高原価。「—」は当該業態の取扱なし。行クリックでその店舗に切替、セルのホバーで売上も表示。
+            飲み放題列は一部店舗で高くなります（下の補正版を参照）。
+          </div>
+        </div>
+      )}
+
+      {/* 業態別 原価率ヒートマップ（ドリンク補正版） */}
+      {ABC_STORES.length > 1 && (
+        <div className="card abc-detail">
+          <h3>
+            <span className="emoji">🧪</span>業態別 原価率ヒートマップ（ドリンク補正版）
+            <span className="muted" style={{ fontWeight: 400, fontSize: 12, marginLeft: 8 }}>全ドリンク部門を統合・アラカルトは食事のみ</span>
+          </h3>
+          <AbcHeatmapCorrected current={store} onSelectStore={(s) => setStore(s)} />
+          <div className="abc-note">
+            ※ 補正版：ビール・サワー・ハイボール・ソフトドリンク・飲み放題パック等の<b>全ドリンク部門を「ドリンク(補正)」に統合</b>して原価率を再計算（アラカルトは食事のみ）。
+            それでも <b>⚠（40%超）</b> の店舗は、飲み放題ドリンクを¥0計上しパック料金を別部門（お通し／コース等）に入れているため原価率が高止まりしています＝<b>FWの計上ルール見直しが必要</b>。部門名が設定されていない店舗は「—」。
           </div>
         </div>
       )}

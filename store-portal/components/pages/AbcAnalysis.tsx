@@ -11,6 +11,7 @@ import {
 } from "@/lib/abcData";
 import { ABC_STORES, ABC_PERIOD, ABC_MONTHS_WITH_DATA, ABC_PERIOD_LABELS } from "@/lib/abcReal";
 import AbcTrendChart, { type TrendCat } from "@/components/AbcTrendChart";
+import AbcCostRateChart from "@/components/AbcCostRateChart";
 
 // 業態別の固定配色（dataviz検証済みカテゴリパレット・固定順）
 const CAT_COLORS: Record<string, string> = {
@@ -154,6 +155,20 @@ export default function AbcAnalysis() {
           <AbcTrendChart year={year} cats={trendCats} months={months} selected={mi} onSelect={(m) => setMonth(m + 1)} />
           <div className="abc-note">
             ※ 各月の税抜売上を業態別に積み上げ。バーをクリック（またはホバー）すると対象月・内訳が確認できます。選択中の月は枠線で強調。
+          </div>
+        </div>
+      )}
+
+      {/* 月別 原価率の推移（店舗全体・売上加重） */}
+      {multiPeriod && (
+        <div className="card abc-detail">
+          <h3>
+            <span className="emoji">📉</span>月別 原価率の推移（店舗全体・税抜）
+            <span className="muted" style={{ fontWeight: 400, fontSize: 12, marginLeft: 8 }}>{store}</span>
+          </h3>
+          <AbcCostRateChart year={year} catKeys={CATEGORIES.map((c) => c.key)} months={months} selected={mi} onSelect={(m) => setMonth(m + 1)} />
+          <div className="abc-note">
+            ※ 店舗全体の月次原価率＝Σ原価÷Σ売上（税抜・全業態加重）。破線は期間平均。マーカーのクリック／ホバーで対象月を切替、売上0の月は線を分断。
           </div>
         </div>
       )}

@@ -10,6 +10,16 @@ import {
   type MetricKey,
 } from "@/lib/abcData";
 import { ABC_STORES, ABC_PERIOD, ABC_MONTHS_WITH_DATA, ABC_PERIOD_LABELS } from "@/lib/abcReal";
+import AbcTrendChart, { type TrendCat } from "@/components/AbcTrendChart";
+
+// 業態別の固定配色（dataviz検証済みカテゴリパレット・固定順）
+const CAT_COLORS: Record<string, string> = {
+  arakaruto: "#257de0", // blue
+  lunch: "#f47230",     // orange
+  enkai: "#00b894",     // aqua
+  tabehodai: "#f2a600", // yellow
+  nomihodai: "#ee7fac", // magenta
+};
 
 const YEAR = 2026;
 const CURRENT_MONTH = ABC_MONTHS_WITH_DATA; // 実データの最終月（2026年10月）
@@ -30,6 +40,7 @@ export default function AbcAnalysis() {
   const rows = (year[cat.key] ?? []).slice(0, ABC_MONTHS_WITH_DATA); // 実データのある期間のみ
   const months = ABC_PERIOD_LABELS;
   const multiPeriod = months.length > 1;
+  const trendCats: TrendCat[] = CATEGORIES.map((c) => ({ key: c.key, label: c.label, color: CAT_COLORS[c.key] ?? "#999" }));
 
   return (
     <div className="pg">
@@ -132,6 +143,20 @@ export default function AbcAnalysis() {
           対象月を切り替えると各カテゴリの選択月実績が上部に反映されます。11〜12月は未到来のため0表示。
         </div>
       </div>
+
+      {/* 月別 売上推移（業態別スタック） */}
+      {multiPeriod && (
+        <div className="card abc-detail">
+          <h3>
+            <span className="emoji">📈</span>月別 売上推移（業態別・税抜）
+            <span className="muted" style={{ fontWeight: 400, fontSize: 12, marginLeft: 8 }}>{store}</span>
+          </h3>
+          <AbcTrendChart year={year} cats={trendCats} months={months} selected={mi} onSelect={(m) => setMonth(m + 1)} />
+          <div className="abc-note">
+            ※ 各月の税抜売上を業態別に積み上げ。バーをクリック（またはホバー）すると対象月・内訳が確認できます。選択中の月は枠線で強調。
+          </div>
+        </div>
+      )}
     </div>
   );
 }

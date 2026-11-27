@@ -34,13 +34,13 @@ export default function Login({ onDone }: { onDone: () => void }) {
     <div className="login">
       <form className="login-card" onSubmit={submit}>
         <div className="login-brand">
-          <div className="sub">NEXUS GROUP</div>
-          <div className="ttl">店舗情報管理</div>
+          <div className="sub">八銭グループ</div>
+          <div className="ttl">販促ベース</div>
         </div>
         {err && <div className="err">{err}</div>}
         <div>
           <label htmlFor="email">メールアドレス</label>
-          <input id="email" type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@nexus-group.co.jp" />
+          <input id="email" type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@8sin.co.jp" />
         </div>
         <div>
           <label htmlFor="password">パスワード</label>

@@ -14,24 +14,12 @@ interface Src {
 const S = (v: unknown) => String(v ?? "");
 
 // 横断検索の対象。pageAccess で遮断されたコレクションはクライアント state に無いので自動的に対象外。
+// 販促ベースの横断検索対象（店舗・媒体・口コミ・議事録・予定）に限定。
 const SRC: Src[] = [
   { col: "stores", page: "stores", label: (x) => S(x.name), sub: (x) => `店舗 · ${S(x.dept)}/${S(x.area)}` },
-  { col: "vendors", page: "vendors", label: (x) => S(x.name), sub: (x) => `取引先 · ${S(x.category)}` },
-  { col: "credentials", page: "idpw", label: (x) => S(x.service), sub: (x) => `ID・PW · ${S(x.store)}` },
   { col: "media", page: "media", label: (x) => `${S(x.store)}（${S(x.source)}）`, sub: () => "媒体" },
   { col: "reviews", page: "reviews", label: (x) => S(x.store), sub: (x) => `口コミ · ${S(x.source)}` },
-  { col: "tasks", page: "tasks", label: (x) => S(x.title), sub: (x) => `タスク · ${S(x.status)}` },
-  { col: "changes", page: "change", label: (x) => `${S(x.store)}：${S(x.field)}`, sub: (x) => `変更申請 · ${S(x.status)}` },
-  { col: "properties", page: "properties", label: (x) => S(x.name), sub: (x) => `募集物件 · ${S(x.area)}` },
-  { col: "vehicles", page: "vehicles", label: (x) => S(x.name), sub: (x) => `社用車 · ${S(x.plate)}` },
-  { col: "equipment", page: "equipment", label: (x) => S(x.item), sub: (x) => `備品 · ${S(x.store)}` },
-  { col: "drawings", page: "drawings", label: (x) => S(x.title), sub: (x) => `図面・見積 · ${S(x.store)}` },
-  { col: "capex", page: "capex", label: (x) => S(x.title), sub: (x) => `CAPEX · ${S(x.store)}` },
   { col: "minutes", page: "minutes", label: (x) => S(x.title), sub: () => "議事録" },
-  { col: "corp", page: "corp", label: (x) => S(x.name), sub: () => "法人マスタ" },
-  { col: "alerts", page: "alerts", label: (x) => S(x.kind), sub: (x) => `アラート · ${S(x.store)}` },
-  { col: "userreq", page: "userreq", label: (x) => S(x.name), sub: (x) => `ユーザー申請 · ${S(x.type)}` },
-  { col: "feedback", page: "feedback", label: (x) => S(x.text), sub: () => "改善要望" },
   { col: "schedule", page: "schedule", label: (x) => S(x.title), sub: (x) => `予定 · ${S(x.date)}` },
 ];
 
@@ -74,7 +62,7 @@ export default function GlobalSearch() {
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="横断検索：店舗・取引先・ID/PW・タスクなど、すべてから探す"
+          placeholder="横断検索：店舗・媒体・口コミ・議事録・予定から探す"
           aria-label="横断検索"
         />
       </div>

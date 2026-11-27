@@ -183,7 +183,7 @@ function AppShell({ onLogout }: { onLogout: () => void }) {
       )}
       <div className="mbar">
         <button onClick={() => setMobileOpen(true)} aria-label="メニューを開く"><Icon name="Menu" size={18} /></button>
-        <span className="t">店舗情報管理</span>
+        <span className="t">販促ベース</span>
         <button aria-label="通知"><Icon name="Bell" size={18} /></button>
       </div>
 

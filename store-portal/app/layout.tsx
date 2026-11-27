@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "店舗情報管理 | NEXUS GROUP",
-  description: "店舗情報管理ポータル",
+  title: "販促ベース | 八銭グループ",
+  description: "販促管理：店舗・媒体・実績のベースを調べる",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -11,7 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="ja" data-theme="ai-dark">
       <head>
         {/* フォントはランタイムに <link> で読み込む（next/font のビルド時フェッチを避け、
-            ネットワーク制限のある CI/ビルド環境でも確実にビルドできるようにする）。 */}
+            ネットワーク制限のある CI/ビルド環境でも確実にビルドできるようにする。 */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link

@@ -13,36 +13,20 @@ export type NavEntry =
       emoji?: string; // 絵文字アイコン（仕様書 2-2 外部ツール）
     };
 
+// 販促管理用に絞り込み。目的は「ベース（店舗・媒体・実績）を調べやすくする」こと。
+// エンタープライズ系モジュール（ID/PW・取引先・備品・社用車・図面見積・CAPEX・募集物件・
+// ワークフロー・法人マスタ 等）は販促用途に不要なため非表示。
 export const NAV: NavEntry[] = [
-  { k: "dashboard", icon: "LayoutDashboard", t: "ダッシュボード" },
-  { k: "schedule", icon: "CalendarDays", t: "スケジュール", g: true },
+  { k: "dashboard", icon: "LayoutDashboard", t: "ホーム" },
+  { sec: "調べる" },
   { k: "stores", icon: "Store", t: "店舗一覧" },
   { k: "media", icon: "Megaphone", t: "媒体一覧" },
   { k: "reviews", icon: "MessageSquareText", t: "口コミ" },
-  { k: "idpw", icon: "KeyRound", t: "ID・PW" },
-  { k: "vendors", icon: "Briefcase", t: "取引先" },
-  { k: "equipment", icon: "Package", t: "貸与備品管理" },
-  { k: "vehicles", icon: "Car", t: "社用車" },
-  { k: "drawings", icon: "Ruler", t: "図面・見積" },
-  { k: "capex", icon: "Landmark", t: "CAPEX" },
-  { k: "properties", icon: "Building2", t: "募集物件・賃料相場" },
-  { sec: "マーケティング" },
+  { k: "abc", icon: "BarChart3", t: "ABC分析" },
+  { sec: "販促" },
+  { k: "schedule", icon: "CalendarDays", t: "スケジュール", g: true },
   { k: "promo", icon: "Presentation", t: "販促会議", soon: true },
   { k: "minutes", icon: "FileText", t: "議事録" },
-  { k: "abc", icon: "BarChart3", t: "ABC分析" },
-  { sec: "タスク" },
-  { k: "tasks", icon: "ListChecks", t: "タスク" },
-  { k: "alerts", icon: "Bell", t: "許可・アラート", cnt: 8 },
-  { k: "ms", icon: "ClipboardCheck", t: "MS・レセ・試食" },
-  { k: "change", icon: "FilePenLine", t: "変更申請" },
-  { k: "workflow", icon: "Workflow", t: "ワークフロー", soon: true },
-  { k: "userreq", icon: "UserPlus", t: "ユーザー申請" },
-  { k: "feedback", icon: "Lightbulb", t: "サイト改善要望" },
-  { line: true },
-  { k: "manual", icon: "BookOpen", t: "マニュアル" },
-  { sec: "マスタ" },
-  { k: "corp", icon: "Database", t: "法人マスタ" },
-  { k: "history", icon: "History", t: "情報変更履歴" },
   { sec: "外部ツール" },
   { k: "instagram", icon: "Instagram", t: "インスタ投稿確認", ext: true, emoji: "📷" },
 ];

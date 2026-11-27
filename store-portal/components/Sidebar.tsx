@@ -26,8 +26,8 @@ export default function Sidebar({
     <aside className="sb">
       <div className="sb-brand">
         <div className="txt">
-          <div className="sub">NEXUS GROUP</div>
-          <div className="ttl">店舗情報管理</div>
+          <div className="sub">八銭グループ</div>
+          <div className="ttl">販促ベース</div>
         </div>
         <div className="sb-logo">N</div>
         <button className="sb-collapse main-toggle" onClick={onToggleCollapse} aria-label={collapsed ? "メニューを開く" : "メニューを畳む"}>

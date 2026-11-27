@@ -13,6 +13,7 @@ import { ABC_STORES, ABC_PERIOD, ABC_MONTHS_WITH_DATA, ABC_PERIOD_LABELS } from 
 import AbcTrendChart, { type TrendCat } from "@/components/AbcTrendChart";
 import AbcCostRateChart from "@/components/AbcCostRateChart";
 import AbcStoreCompare from "@/components/AbcStoreCompare";
+import AbcScatter from "@/components/AbcScatter";
 
 // 業態別の固定配色（dataviz検証済みカテゴリパレット・固定順）
 const CAT_COLORS: Record<string, string> = {
@@ -184,6 +185,20 @@ export default function AbcAnalysis() {
           <AbcStoreCompare current={store} onSelectStore={(s) => setStore(s)} />
           <div className="abc-note">
             ※ 各店の期間原価率＝Σ原価÷Σ売上（税抜・全業態加重）を高い順に並べたもの。破線は全店平均。選択中の店舗は紫で強調。店名バーのクリックでその店舗に切替。
+          </div>
+        </div>
+      )}
+
+      {/* 売上規模 × 原価率 散布図 */}
+      {ABC_STORES.length > 1 && (
+        <div className="card abc-detail">
+          <h3>
+            <span className="emoji">🎯</span>売上規模 × 原価率（{ABC_PERIOD}）
+            <span className="muted" style={{ fontWeight: 400, fontSize: 12, marginLeft: 8 }}>イニシエート{storeNames.length}店・1点＝1店舗</span>
+          </h3>
+          <AbcScatter current={store} onSelectStore={(s) => setStore(s)} />
+          <div className="abc-note">
+            ※ 横軸＝期間売上（税抜）、縦軸＝原価率。破線は全店平均で4象限に分割。右下（高売上・低原価）が優良、左上（低売上・高原価）が要注意ゾーン。点のクリックでその店舗に切替、ホバーで詳細。
           </div>
         </div>
       )}

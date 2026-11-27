@@ -34,12 +34,15 @@ export interface MetricDef {
   kind: "int" | "yen" | "pct";
 }
 
+// ★実データ(FW ABC分析)に合わせたラベル。
+//   ABCレポートには「客数」が無く「販売点数」のみのため、
+//   kyakusu=販売点数 / kyakutanka=商品単価(売上/点数) として表示する。
 export const METRIC_LABELS: Record<MetricKey, MetricDef> = {
-  kyakusu: { label: "客数", unit: "人", kind: "int" },
-  kyakutanka: { label: "客単価", unit: "円", kind: "yen" },
+  kyakusu: { label: "販売点数", unit: "点", kind: "int" },
+  kyakutanka: { label: "商品単価", unit: "円", kind: "yen" },
   genkaritsu: { label: "原価率", unit: "%", kind: "pct" },
   uriageKosei: { label: "売上構成比", unit: "%", kind: "pct" },
-  avgPerDay: { label: "1日A/V", unit: "人/日", kind: "int" },
+  avgPerDay: { label: "1日平均点数", unit: "点/日", kind: "int" },
 };
 
 export const MONTH_LABELS = ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"];
@@ -56,6 +59,9 @@ export interface CatMonth {
 }
 
 export type StoreYear = Record<string, CatMonth[]>; // key: category.key → 12か月分
+
+// 実データ（lib/abcReal.ts は FW ABC分析から自動生成）
+import { ABC_REAL } from "./abcReal";
 
 // --- 決定論ダミー生成（実データ差し替え時はここを置き換え） -------------------
 function hashStr(s: string): number {
@@ -97,7 +103,14 @@ const SEASON: Record<Profile["season"], number[]> = {
 
 const DAYS = [27, 24, 27, 26, 27, 26, 27, 27, 26, 27, 26, 27];
 
+// 実データ（FW）があればそれを返し、無い店舗のみダミーにフォールバック。
 export function getStoreYear(store: string, year = 2026): StoreYear {
+  const real = ABC_REAL[store];
+  if (real) return real;
+  return makeDummyYear(store, year);
+}
+
+function makeDummyYear(store: string, year = 2026): StoreYear {
   const base = makeRng(hashStr(store));
   const storeScale = 0.8 + base() * 0.6; // 0.8〜1.4
 

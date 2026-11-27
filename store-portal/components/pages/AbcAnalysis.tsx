@@ -16,6 +16,7 @@ import AbcStoreCompare from "@/components/AbcStoreCompare";
 import AbcScatter from "@/components/AbcScatter";
 import AbcHeatmap from "@/components/AbcHeatmap";
 import AbcHeatmapCorrected from "@/components/AbcHeatmapCorrected";
+import AbcNomiTest from "@/components/AbcNomiTest";
 
 // 業態別の固定配色（dataviz検証済みカテゴリパレット・固定順）
 const CAT_COLORS: Record<string, string> = {
@@ -231,6 +232,22 @@ export default function AbcAnalysis() {
           <div className="abc-note">
             ※ 補正版：ビール・サワー・ハイボール・ソフトドリンク・飲み放題パック等の<b>全ドリンク部門を「ドリンク(補正)」に統合</b>して原価率を再計算（アラカルトは食事のみ）。
             それでも <b>⚠（40%超）</b> の店舗は、飲み放題ドリンクを¥0計上しパック料金を別部門（お通し／コース等）に入れているため原価率が高止まりしています＝<b>FWの計上ルール見直しが必要</b>。部門名が設定されていない店舗は「—」。
+          </div>
+        </div>
+      )}
+
+      {/* 飲み放題パック料金 割り戻し試算 */}
+      {ABC_STORES.length > 1 && (
+        <div className="card abc-detail">
+          <h3>
+            <span className="emoji">🧮</span>飲み放題パック料金 割り戻し試算（⚠店舗）
+            <span className="muted" style={{ fontWeight: 400, fontSize: 12, marginLeft: 8 }}>推定パック売上を加算して原価率を再計算</span>
+          </h3>
+          <AbcNomiTest />
+          <div className="abc-note">
+            ※ ⚠店舗は飲み放題ドリンクを¥0計上しているため、別部門に入っているパック料金を<b>推定で割り戻した試算</b>です。
+            推定パック売上＝<b>お通し客数 × 飲み放題利用率 × 想定パック単価</b>。スライダーで条件を変えられます（既定：単価¥1,650・利用率50%）。
+            お通し部門が未計上の店舗（天満橋・大衆寿司・NagaGutsu）は客数が取れず試算不可。あくまで概算で、正確な値はFW側で飲み放題売上を正しい部門に計上することで得られます。
           </div>
         </div>
       )}

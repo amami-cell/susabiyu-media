@@ -2,10 +2,15 @@
 import { useMemo, useState } from "react";
 import { Icon } from "@/components/Icon";
 import {
-  MH_PERIOD, MH_STORES, MH_CAT_ORDER, MH_CAT_LAB, MH_CAT_COLOR, MH_BANDS,
-  HOUR_ORDER, getStore, peakHour, bandTotals, bandOfHour,
-  type CatKey, type BandKey,
+  MH_PERIOD, MH_STORES, MH_CAT_ORDER, MH_CAT_LAB, MH_CAT_COLOR, MH_BANDS, MH_METRICS,
+  HOUR_ORDER, getStore, peakHour, bandTotals, bandOfHour, metricAt,
+  type CatKey, type BandKey, type MetricKey,
 } from "@/lib/menuHourly";
+
+const fmtMetric = (m: MetricKey, v: number) =>
+  m === "unitPrice" ? "¥" + Math.round(v).toLocaleString()
+    : m === "qty" || m === "kyaku" ? Math.round(v).toLocaleString()
+      : v.toFixed(2);
 
 const BAND_TINT: Record<BandKey, string> = {
   lunch: "rgba(244,114,48,0.06)",
@@ -21,6 +26,7 @@ export default function MenuHourly() {
   const [q, setQ] = useState("");
   const [sel, setSel] = useState<string | null>(null); // 選択メニュー名
   const [hover, setHover] = useState<number | null>(null); // hover中の時間(0-23)
+  const [metric, setMetric] = useState<MetricKey>("qty"); // 表示指標
 
   const activeCats = useMemo(() => MH_CAT_ORDER.filter((c) => cats.has(c) && store?.catHourly[c]), [cats, store]);
 
@@ -30,11 +36,16 @@ export default function MenuHourly() {
     const perHour = HOUR_ORDER.map((h) => {
       const parts = activeCats.map((c) => ({ cat: c, v: store.catHourly[c]?.[h] || 0 }));
       const tot = parts.reduce((s, p) => s + p.v, 0);
-      return { h, parts, tot };
+      const mv = metric === "qty" ? tot : metricAt(store, metric, h);
+      return { h, parts, tot, mv };
     });
-    const max = Math.max(1, ...perHour.map((x) => x.tot));
+    const max = metric === "qty"
+      ? Math.max(1, ...perHour.map((x) => x.tot))
+      : Math.max(1, ...perHour.map((x) => x.mv));
     return { perHour, max };
-  }, [store, activeCats]);
+  }, [store, activeCats, metric]);
+
+  const metricDef = MH_METRICS.find((m) => m.key === metric)!;
 
   // カテゴリ別サマリー（選択メニュー表の母集団でなく全体）
   const catSummary = useMemo(() => {
@@ -59,6 +70,27 @@ export default function MenuHourly() {
 
   const grandTotal = store ? store.hourlyTotal.reduce((s, v) => s + v, 0) : 0;
   const selMenu = useMemo(() => store?.menus.find((m) => m.name === sel) || null, [store, sel]);
+
+  // バンド別 一人当たり指標（客数加重・日平均）
+  const bandMetrics = useMemo(() => {
+    if (!store) return [];
+    return MH_BANDS.map((b) => {
+      let food = 0, drink = 0, kyaku = 0, uri = 0, han = 0;
+      for (const h of b.hours) {
+        kyaku += store.kyaku[h] || 0; uri += store.uriage[h] || 0; han += store.hanbai[h] || 0;
+        food += (store.perItem[h] || 0) * (store.kyaku[h] || 0);
+        drink += (store.perDrink[h] || 0) * (store.kyaku[h] || 0);
+      }
+      return {
+        key: b.key, label: b.label, range: b.range,
+        kyaku: Math.round(kyaku),
+        perItem: kyaku ? food / kyaku : 0,
+        perDrink: kyaku ? drink / kyaku : 0,
+        unitPrice: han ? Math.round(uri / han) : 0,
+      };
+    });
+  }, [store]);
+  const BAND_COLOR: Record<BandKey, string> = { lunch: "#f47230", dinner: "#257de0", late: "#6b7482" };
 
   const toggleCat = (c: CatKey) => {
     const n = new Set(cats);
@@ -113,10 +145,24 @@ export default function MenuHourly() {
         })}
       </div>
 
-      {/* 時間帯別 出数チャート（カテゴリ積み上げ） */}
+      {/* 時間帯別チャート（指標切替） */}
       <div className="card" style={{ padding: "12px 14px", marginBottom: 14 }}>
-        <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 2 }}>時間帯別 出数（1時間ごと・カテゴリ積み上げ）</div>
-        <div style={{ fontSize: 11, color: "var(--muted,#8a93a0)", marginBottom: 8 }}>10時始まりの営業日順。帯の背景＝ランチ／ディナー／深夜。棒にカーソルで内訳表示。</div>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 2 }}>
+          <div style={{ fontSize: 13, fontWeight: 700 }}>時間帯別 {metricDef.label}（1時間ごと）</div>
+          <div style={{ marginLeft: "auto", display: "flex", gap: 4, flexWrap: "wrap" }}>
+            {MH_METRICS.map((m) => (
+              <button key={m.key} onClick={() => setMetric(m.key)} style={{
+                fontSize: 11, padding: "4px 9px", borderRadius: 7, cursor: "pointer",
+                border: `1px solid ${metric === m.key ? "#257de0" : "var(--line,#e3e7ee)"}`,
+                background: metric === m.key ? "#257de01a" : "var(--surface,#fff)",
+                color: metric === m.key ? "var(--ink,#1a2230)" : "var(--muted,#8a93a0)", fontWeight: metric === m.key ? 700 : 400,
+              }}>{m.label}</button>
+            ))}
+          </div>
+        </div>
+        <div style={{ fontSize: 11, color: "var(--muted,#8a93a0)", marginBottom: 8 }}>
+          {metric === "qty" ? "10時始まりの営業日順・カテゴリ積み上げ。" : `10時始まりの営業日順・${metricDef.label}（${metricDef.unit}）。客数＝時間帯別売上の集客ベース（日平均）。`} 棒にカーソルで各時間の指標を表示。
+        </div>
         <div style={{ overflowX: "auto" }}>
           <svg viewBox={`0 0 ${W} ${H}`} width="100%" style={{ minWidth: 640, display: "block" }} onMouseLeave={() => setHover(null)}>
             {/* バンド背景 */}
@@ -136,33 +182,37 @@ export default function MenuHourly() {
               const y = PADT + plotH * (1 - t);
               return <g key={t}>
                 <line x1={PADL} y1={y} x2={W - 8} y2={y} stroke="var(--line,#e8ebf0)" strokeWidth={1} />
-                <text x={PADL - 5} y={y + 3} textAnchor="end" fontSize={9} fill="var(--muted,#9aa3b0)">{Math.round(chart.max * t)}</text>
+                <text x={PADL - 5} y={y + 3} textAnchor="end" fontSize={9} fill="var(--muted,#9aa3b0)">{fmtMetric(metric, chart.max * t)}</text>
               </g>;
             })}
-            {/* 棒（積み上げ） */}
+            {/* 棒 */}
             {chart.perHour.map((col, idx) => {
               const x = PADL + idx * bw + 1.5;
               const w = bw - 3;
-              let yCur = PADT + plotH;
               const segs: React.ReactNode[] = [];
-              col.parts.forEach((p) => {
-                if (!p.v) return;
-                const h = (p.v / chart.max) * plotH;
-                yCur -= h;
-                segs.push(<rect key={p.cat} x={x} y={yCur + 0.5} width={w} height={Math.max(0, h - 0.5)} fill={MH_CAT_COLOR[p.cat]} rx={1} />);
-              });
-              const isLate = bandOfHour(col.h) === "late" && col.h < 10;
+              if (metric === "qty") {
+                let yCur = PADT + plotH;
+                col.parts.forEach((p) => {
+                  if (!p.v) return;
+                  const h = (p.v / chart.max) * plotH;
+                  yCur -= h;
+                  segs.push(<rect key={p.cat} x={x} y={yCur + 0.5} width={w} height={Math.max(0, h - 0.5)} fill={MH_CAT_COLOR[p.cat]} rx={1} />);
+                });
+              } else if (col.mv > 0) {
+                const h = (col.mv / chart.max) * plotH;
+                const color = metric === "perItem" ? "#f47230" : metric === "perDrink" ? "#00b894" : metric === "unitPrice" ? "#f2a600" : "#6b7482";
+                segs.push(<rect key="m" x={x} y={PADT + plotH - h} width={w} height={Math.max(0, h)} fill={color} rx={1} />);
+              }
               return (
                 <g key={col.h} onMouseEnter={() => setHover(col.h)}>
                   {segs}
                   <rect x={PADL + idx * bw} y={PADT} width={bw} height={plotH} fill="transparent" />
                   <text x={x + w / 2} y={H - PADB + 11} textAnchor="middle" fontSize={8.5} fill={hover === col.h ? "var(--ink,#1a2230)" : "var(--muted,#9aa3b0)"} fontWeight={hover === col.h ? 700 : 400}>{hh(col.h)}</text>
-                  {idx === 0 || idx === 13 ? null : null}
                 </g>
               );
             })}
-            {/* 選択メニューの折れ線オーバーレイ */}
-            {selMenu && (() => {
+            {/* 選択メニューの折れ線オーバーレイ（出数ビュー時のみ） */}
+            {selMenu && metric === "qty" && (() => {
               const mmax = Math.max(1, ...selMenu.hours);
               const pts = HOUR_ORDER.map((h, idx) => {
                 const x = PADL + idx * bw + bw / 2;
@@ -173,18 +223,45 @@ export default function MenuHourly() {
             })()}
           </svg>
         </div>
-        {/* hoverツールチップ */}
+        {/* hoverツールチップ（各時間の全指標） */}
         {hover !== null && (() => {
           const col = chart.perHour.find((c) => c.h === hover);
           if (!col) return null;
           const top = [...col.parts].filter((p) => p.v).sort((a, b) => b.v - a.v);
           return (
-            <div style={{ marginTop: 8, padding: "8px 10px", background: "var(--surface2,#f5f7fa)", borderRadius: 8, fontSize: 12, display: "flex", gap: 14, flexWrap: "wrap", alignItems: "center" }}>
-              <b>{hh(hover)}時台</b> <span style={{ color: "var(--muted,#8a93a0)" }}>計 {col.tot.toLocaleString()}点</span>
-              {top.map((p) => <span key={p.cat} style={{ display: "inline-flex", alignItems: "center", gap: 4 }}><span style={{ width: 8, height: 8, borderRadius: 2, background: MH_CAT_COLOR[p.cat] }} />{MH_CAT_LAB[p.cat]} {p.v}</span>)}
+            <div style={{ marginTop: 8, padding: "8px 10px", background: "var(--surface2,#f5f7fa)", borderRadius: 8, fontSize: 12 }}>
+              <div style={{ display: "flex", gap: 14, flexWrap: "wrap", alignItems: "center" }}>
+                <b>{hh(hover)}時台</b>
+                <span>客数 {store.kyaku[hover].toLocaleString()}人</span>
+                <span>一人当たり出品数 <b style={{ color: "#f47230" }}>{store.perItem[hover].toFixed(2)}</b>点</span>
+                <span>一人当たり出杯数 <b style={{ color: "#00b894" }}>{store.perDrink[hover].toFixed(2)}</b>杯</span>
+                <span>一点単価 <b style={{ color: "#c98900" }}>¥{store.unitPrice[hover].toLocaleString()}</b></span>
+              </div>
+              <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 6, color: "var(--muted,#8a93a0)" }}>
+                <span>出数計 {col.tot.toLocaleString()}点</span>
+                {top.map((p) => <span key={p.cat} style={{ display: "inline-flex", alignItems: "center", gap: 4 }}><span style={{ width: 8, height: 8, borderRadius: 2, background: MH_CAT_COLOR[p.cat] }} />{MH_CAT_LAB[p.cat]} {p.v}</span>)}
+              </div>
             </div>
           );
         })()}
+      </div>
+
+      {/* バンド別 一人当たり指標 */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 10, marginBottom: 14 }}>
+        {bandMetrics.map((b) => (
+          <div key={b.key} className="card" style={{ padding: "12px 14px", borderLeft: `4px solid ${BAND_COLOR[b.key]}` }}>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 6, marginBottom: 8 }}>
+              <div style={{ fontSize: 14, fontWeight: 700 }}>{b.label}</div>
+              <div style={{ fontSize: 11, color: "var(--muted,#8a93a0)" }}>{b.range}</div>
+              <div style={{ marginLeft: "auto", fontSize: 11, color: "var(--muted,#8a93a0)" }}>客数 {b.kyaku.toLocaleString()}/日</div>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
+              <div><div style={{ fontSize: 10.5, color: "var(--muted,#8a93a0)" }}>一人出品数</div><div style={{ fontSize: 17, fontWeight: 800, color: "#f47230" }}>{b.perItem.toFixed(2)}<span style={{ fontSize: 10, fontWeight: 400, color: "var(--muted,#8a93a0)" }}> 点</span></div></div>
+              <div><div style={{ fontSize: 10.5, color: "var(--muted,#8a93a0)" }}>一人出杯数</div><div style={{ fontSize: 17, fontWeight: 800, color: "#00b894" }}>{b.perDrink.toFixed(2)}<span style={{ fontSize: 10, fontWeight: 400, color: "var(--muted,#8a93a0)" }}> 杯</span></div></div>
+              <div><div style={{ fontSize: 10.5, color: "var(--muted,#8a93a0)" }}>一点単価</div><div style={{ fontSize: 17, fontWeight: 800, color: "#c98900" }}>¥{b.unitPrice.toLocaleString()}</div></div>
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* カテゴリ別サマリー（バンド内訳） */}

@@ -15,9 +15,15 @@ export interface MhStore {
   cd: string;
   nm: string;
   period: string;
-  hourlyTotal: number[]; // 24
+  hourlyTotal: number[]; // 24 出数(品数)
   catHourly: Partial<Record<CatKey, number[]>>; // cat -> 24
   menus: MenuRow[];
+  kyaku: number[];     // 24 客数(時間帯別売上の集客・日平均)
+  uriage: number[];    // 24 売上(税抜)
+  hanbai: number[];    // 24 総出数(SalesHourly)
+  perItem: number[];   // 24 一人当たり出品数(料理品数/客数)
+  perDrink: number[];  // 24 一人当たり出杯数(ドリンク/客数)
+  unitPrice: number[]; // 24 一点単価(売上/総出数)
 }
 
 interface RawStore {
@@ -25,6 +31,8 @@ interface RawStore {
   hourlyTotal: number[];
   catHourly: Record<string, number[]>;
   menus: [string, CatKey, number[], number][];
+  kyaku: number[]; uriage: number[]; hanbai: number[];
+  perItem: number[]; perDrink: number[]; unitPrice: number[];
 }
 const DATA = raw as unknown as {
   period: string; note: string;
@@ -74,7 +82,28 @@ export function getStore(cd: string): MhStore | null {
     hourlyTotal: s.hourlyTotal,
     catHourly: s.catHourly as Partial<Record<CatKey, number[]>>,
     menus: s.menus.map(([name, cat, hours, total]) => ({ name, cat, hours, total })),
+    kyaku: s.kyaku, uriage: s.uriage, hanbai: s.hanbai,
+    perItem: s.perItem, perDrink: s.perDrink, unitPrice: s.unitPrice,
   };
+}
+
+// 時間別指標の定義
+export type MetricKey = "qty" | "perItem" | "perDrink" | "unitPrice" | "kyaku";
+export const MH_METRICS: { key: MetricKey; label: string; unit: string; stacked: boolean }[] = [
+  { key: "qty", label: "出数(品数)", unit: "点", stacked: true },
+  { key: "perItem", label: "一人当たり出品数", unit: "点/人", stacked: false },
+  { key: "perDrink", label: "一人当たり出杯数", unit: "杯/人", stacked: false },
+  { key: "unitPrice", label: "一点単価", unit: "円", stacked: false },
+  { key: "kyaku", label: "客数", unit: "人", stacked: false },
+];
+export function metricAt(s: MhStore, m: MetricKey, h: number): number {
+  switch (m) {
+    case "qty": return s.hourlyTotal[h] || 0;
+    case "perItem": return s.perItem[h] || 0;
+    case "perDrink": return s.perDrink[h] || 0;
+    case "unitPrice": return s.unitPrice[h] || 0;
+    case "kyaku": return s.kyaku[h] || 0;
+  }
 }
 
 export function peakHour(hours: number[]): number {

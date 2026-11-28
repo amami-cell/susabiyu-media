@@ -9,10 +9,13 @@ import type { User } from "@/lib/types";
 const SECRET = process.env.AUTH_SECRET || "";
 export const DEV_AUTH = !SECRET;
 const PROD = process.env.NODE_ENV === "production";
-// 本番で AUTH_SECRET 未設定なら既定でフェイルクローズ（全ログイン拒否・セッション無効）。
-// 明示的なデモ公開時のみ ALLOW_DEV_AUTH=true で開発モードを許可する（セッションは "dev-insecure"
-// 鍵で署名されるため偽造可能＝デモ専用の割り切り）。
-const ALLOW_DEV = !PROD || process.env.ALLOW_DEV_AUTH === "true";
+// デモ運用フラグ（コード埋め込み）: Vercel の環境変数設定なしで、push だけでデモ認証を有効化する。
+// true の間は AUTH_SECRET 未設定でも「任意のメール＋パスワード」でログインできる（セッションは
+// "dev-insecure" 鍵で署名＝偽造可能なデモ専用の割り切り）。
+// 本番運用に切り替えるときは AUTH_SECRET と AUTH_USERS を設定すれば、このフラグに関わらず
+// 実資格情報での認証になる（下の checkCredentials/ DEV_AUTH 参照）。不要になれば false に戻す。
+const DEMO_AUTH = true;
+const ALLOW_DEV = !PROD || process.env.ALLOW_DEV_AUTH === "true" || DEMO_AUTH;
 const TTL_SEC = 60 * 60 * 8; // 8時間
 
 if (DEV_AUTH && PROD) {

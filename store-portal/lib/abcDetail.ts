@@ -64,3 +64,28 @@ export function getStoreDetail(store: string): AbcStoreDetail | null {
 }
 
 export const yen = (n: number) => "¥" + Math.round(n).toLocaleString();
+
+// 部門未設定（FW部門名が空欄＝カテゴリ「未分類」）の店舗別アラート。
+export interface BlankDeptAlert {
+  store: string;
+  count: number; // 未設定品目数
+  total: number; // 全品目数
+  sales: number; // 未設定分の売上(税抜)
+  share: number; // 全体売上に占める割合(%)
+  rate: number; // 品目数に占める割合(%)
+}
+export function getBlankDeptAlerts(): BlankDeptAlert[] {
+  const out: BlankDeptAlert[] = [];
+  for (const s of DATA.stores) {
+    const d = DATA.data[s];
+    const none = d.cats.none;
+    if (none && none.count > 0) {
+      out.push({
+        store: s, count: none.count, total: d.count, sales: none.sales,
+        share: d.total ? (none.sales / d.total) * 100 : 0,
+        rate: d.count ? (none.count / d.count) * 100 : 0,
+      });
+    }
+  }
+  return out.sort((a, b) => b.count - a.count);
+}

@@ -2,7 +2,7 @@
 import { useMemo, useState } from "react";
 import { Icon } from "@/components/Icon";
 import {
-  ABC_STORES, ABC_PERIOD, ABC_CATS, CAT_LABEL, getStoreDetail, yen,
+  ABC_STORES, ABC_PERIOD, ABC_CATS, CAT_LABEL, getStoreDetail, getBlankDeptAlerts, yen,
   type AbcRow, type Rank, type CatKey,
 } from "@/lib/abcDetail";
 
@@ -19,8 +19,11 @@ export default function AbcAnalysis() {
   const [dept, setDept] = useState<"all" | string>("all");
   const [q, setQ] = useState("");
   const [sort, setSort] = useState<SortKey>("sales");
+  const [alertOpen, setAlertOpen] = useState(true);
 
   const detail = useMemo(() => getStoreDetail(store), [store]);
+  const blankAlerts = useMemo(() => getBlankDeptAlerts(), []);
+  const blankTotal = blankAlerts.reduce((s, a) => s + a.count, 0);
 
   const rows = useMemo(() => {
     if (!detail) return [];
@@ -68,6 +71,44 @@ export default function AbcAnalysis() {
         <h2>ABC分析（メニュー別）</h2>
         <span className="sp">{ABC_PERIOD} · FW実データ(税抜) · イニシエート{ABC_STORES.length}店 · 商品単位のA/B/Cランク＋カテゴリ区分</span>
       </div>
+
+      {/* 部門未設定アラート（全店横断） */}
+      {blankAlerts.length > 0 && (
+        <div style={{ marginBottom: 14, border: "1px solid #f0c67a", background: "rgba(242,166,0,.08)", borderRadius: 10, overflow: "hidden" }}>
+          <button
+            onClick={() => setAlertOpen((v) => !v)}
+            style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "11px 14px", background: "transparent", border: 0, cursor: "pointer", textAlign: "left", color: "var(--ink,#1a2230)" }}
+          >
+            <Icon name="TriangleAlert" size={17} />
+            <span style={{ fontSize: 13.5, fontWeight: 700 }}>部門未設定アラート</span>
+            <span style={{ fontSize: 12, color: "var(--ink2,#5b6472)" }}>{blankAlerts.length}店 · 合計{blankTotal.toLocaleString()}品がFW部門名が空欄（カテゴリ分類不可）</span>
+            <span style={{ marginLeft: "auto" }}><Icon name={alertOpen ? "ChevronUp" : "ChevronDown"} size={16} /></span>
+          </button>
+          {alertOpen && (
+            <div style={{ padding: "0 14px 12px" }}>
+              <div style={{ fontSize: 11, color: "var(--muted,#8a93a0)", marginBottom: 8 }}>
+                FW側の部門マスタ未整備の店舗です。該当品目はカテゴリ「未分類」に集約され、カテゴリ・部門区分に反映されません。店舗名クリックでその店に移動します。
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(230px,1fr))", gap: 8 }}>
+                {blankAlerts.map((a) => (
+                  <button
+                    key={a.store}
+                    onClick={() => { setStore(a.store); setCat("none"); setDept("all"); setRank("all"); }}
+                    style={{ textAlign: "left", padding: "8px 10px", borderRadius: 8, cursor: "pointer", border: "1px solid #f0c67a", background: "var(--surface,#fff)", color: "var(--ink,#1a2230)" }}
+                  >
+                    <div style={{ fontSize: 12.5, fontWeight: 600, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{a.store}</div>
+                    <div style={{ fontSize: 12, fontWeight: 700, marginTop: 2 }}>
+                      {a.count.toLocaleString()}<span style={{ fontSize: 10, fontWeight: 400 }}>品</span>
+                      <span style={{ fontSize: 11, fontWeight: 400, color: a.rate >= 50 ? "#d9822b" : "var(--ink2,#5b6472)" }}> / {a.total}品中 {a.rate.toFixed(0)}%</span>
+                    </div>
+                    <div style={{ fontSize: 11, color: "var(--muted,#8a93a0)" }}>売上 {yen(a.sales)}（{a.share.toFixed(1)}%）</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* ツールバー */}
       <div className="card" style={{ padding: "12px 14px", marginBottom: 14, display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>

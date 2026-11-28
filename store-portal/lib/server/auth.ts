@@ -79,6 +79,12 @@ function matchPassword(input: string, stored: string): boolean {
 // 資格情報を検証し、成功ならセッション用のユーザー情報を返す。
 export function checkCredentials(email: string, password: string): SessionPayload | null {
   const base = { name: collections.user.name, dept: collections.user.dept, role: collections.user.role };
+  // デモ運用（コード埋め込み）: DEMO_AUTH が true の間は AUTH_SECRET の有無に関わらず、
+  // 任意のメール＋パスワードでログインできる（Vercel の環境変数設定なしで push のみで有効）。
+  // 本番運用に切り替えるときは DEMO_AUTH を false に戻し、AUTH_SECRET＋AUTH_USERS を設定する。
+  if (DEMO_AUTH) {
+    return email && password ? { email, ...base, exp: 0 } : null;
+  }
   if (DEV_AUTH) {
     if (!ALLOW_DEV) return null; // 本番・秘密鍵なし: フェイルクローズ
     return email && password ? { email, ...base, exp: 0 } : null;

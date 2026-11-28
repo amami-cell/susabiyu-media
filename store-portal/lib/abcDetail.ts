@@ -16,6 +16,7 @@ export interface AbcRow {
   cum: number; // 累計構成比 %
   rank: Rank;
   cat: CatKey; // カテゴリ
+  dept: string; // 部門名（FW部門名・店舗接頭辞除去）
 }
 
 export interface CatSummary { count: number; sales: number; cost: number }
@@ -34,7 +35,7 @@ interface RawStore {
   cd: string; total: number; count: number;
   abc: Record<Rank, number>; abcSales: Record<Rank, number>;
   cats: Record<CatKey, CatSummary>;
-  rows: [string, number, number, number, number, number, Rank, CatKey][];
+  rows: [string, number, number, number, number, number, Rank, CatKey, string][];
 }
 
 const DATA = raw as unknown as {
@@ -57,7 +58,7 @@ export function getStoreDetail(store: string): AbcStoreDetail | null {
   return {
     cd: d.cd, total: d.total, count: d.count, abc: d.abc, abcSales: d.abcSales, cats: d.cats,
     rows: d.rows.map((r) => ({
-      menu: r[0], qty: r[1], sales: r[2], cost: r[3], kosei: r[4], cum: r[5], rank: r[6], cat: r[7],
+      menu: r[0], qty: r[1], sales: r[2], cost: r[3], kosei: r[4], cum: r[5], rank: r[6], cat: r[7], dept: r[8],
     })),
   };
 }

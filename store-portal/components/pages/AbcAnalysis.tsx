@@ -16,6 +16,7 @@ export default function AbcAnalysis() {
   const [store, setStore] = useState(ABC_STORES[0]);
   const [rank, setRank] = useState<"all" | Rank>("all");
   const [cat, setCat] = useState<"all" | CatKey>("all");
+  const [dept, setDept] = useState<"all" | string>("all");
   const [q, setQ] = useState("");
   const [sort, setSort] = useState<SortKey>("sales");
 
@@ -26,11 +27,27 @@ export default function AbcAnalysis() {
     let r: AbcRow[] = detail.rows;
     if (rank !== "all") r = r.filter((x) => x.rank === rank);
     if (cat !== "all") r = r.filter((x) => x.cat === cat);
+    if (dept !== "all") r = r.filter((x) => x.dept === dept);
     const kw = q.trim().toLowerCase();
     if (kw) r = r.filter((x) => x.menu.toLowerCase().includes(kw));
     const key = sort;
     return [...r].sort((a, b) => (b[key] as number) - (a[key] as number));
-  }, [detail, rank, cat, q, sort]);
+  }, [detail, rank, cat, dept, q, sort]);
+
+  // 選択カテゴリ内の部門別内訳（売上降順）
+  const deptBreak = useMemo(() => {
+    if (!detail || cat === "all") return [];
+    const m = new Map<string, { count: number; sales: number; cost: number }>();
+    for (const x of detail.rows) {
+      if (x.cat !== cat) continue;
+      const e = m.get(x.dept) ?? { count: 0, sales: 0, cost: 0 };
+      e.count += 1; e.sales += x.sales; e.cost += x.sales * x.cost;
+      m.set(x.dept, e);
+    }
+    return [...m.entries()]
+      .map(([name, e]) => ({ name, count: e.count, sales: e.sales, cost: e.sales ? e.cost / e.sales : 0 }))
+      .sort((a, b) => b.sales - a.sales);
+  }, [detail, cat]);
 
   if (!detail) return <div className="pg"><div className="page-head"><h2>ABC分析</h2></div><div className="card" style={{ padding: 20 }}>データがありません。</div></div>;
 
@@ -56,7 +73,7 @@ export default function AbcAnalysis() {
       <div className="card" style={{ padding: "12px 14px", marginBottom: 14, display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
         <label style={{ display: "flex", flexDirection: "column", gap: 3, fontSize: 11, color: "var(--ink2,#5b6472)" }}>
           店舗
-          <select value={store} onChange={(e) => { setStore(e.target.value); setCat("all"); setRank("all"); }} style={{ padding: "6px 10px", borderRadius: 8, border: "1px solid var(--line,#e3e7ee)", background: "var(--surface,#fff)", color: "var(--ink,#1a2230)", minWidth: 220 }}>
+          <select value={store} onChange={(e) => { setStore(e.target.value); setCat("all"); setDept("all"); setRank("all"); }} style={{ padding: "6px 10px", borderRadius: 8, border: "1px solid var(--line,#e3e7ee)", background: "var(--surface,#fff)", color: "var(--ink,#1a2230)", minWidth: 220 }}>
             {ABC_STORES.map((s) => <option key={s} value={s}>{s}</option>)}
           </select>
         </label>
@@ -103,7 +120,7 @@ export default function AbcAnalysis() {
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(170px,1fr))", gap: 10 }}>
           <button
-            onClick={() => setCat("all")}
+            onClick={() => { setCat("all"); setDept("all"); }}
             className="card"
             style={{ textAlign: "left", padding: "10px 12px", cursor: "pointer", border: cat === "all" ? "2px solid var(--accent,#1f5fa6)" : "1px solid var(--line,#e3e7ee)", background: "transparent" }}
           >
@@ -118,7 +135,7 @@ export default function AbcAnalysis() {
             return (
               <button
                 key={c.key}
-                onClick={() => setCat(active ? "all" : c.key)}
+                onClick={() => { setCat(active ? "all" : c.key); setDept("all"); }}
                 className="card"
                 style={{ textAlign: "left", padding: "10px 12px", cursor: "pointer", borderLeft: `4px solid ${CAT_COLOR[c.key]}`, border: active ? `2px solid ${CAT_COLOR[c.key]}` : undefined, borderLeftWidth: 4, borderLeftColor: CAT_COLOR[c.key], borderLeftStyle: "solid", background: active ? "var(--surface2,#f5f7fa)" : "transparent" }}
               >
@@ -132,6 +149,42 @@ export default function AbcAnalysis() {
         </div>
       </div>
 
+      {/* 部門別内訳（選択カテゴリ内のドリルダウン） */}
+      {cat !== "all" && deptBreak.length > 0 && (
+        <div className="card" style={{ padding: "12px 14px", marginBottom: 14 }}>
+          <div style={{ display: "flex", alignItems: "center", marginBottom: 10 }}>
+            <div style={{ fontSize: 13, fontWeight: 700 }}>
+              部門別内訳：{CAT_LABEL[cat as CatKey]}
+              <span style={{ fontSize: 11, fontWeight: 400, color: "var(--muted,#8a93a0)", marginLeft: 6 }}>{deptBreak.length}部門</span>
+            </div>
+            <span style={{ marginLeft: "auto", fontSize: 11, color: "var(--muted,#8a93a0)" }}>FWの部門名でさらに細分化</span>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(180px,1fr))", gap: 8 }}>
+            <button
+              onClick={() => setDept("all")}
+              style={{ textAlign: "left", padding: "8px 10px", borderRadius: 8, cursor: "pointer", border: dept === "all" ? "2px solid var(--accent,#1f5fa6)" : "1px solid var(--line,#e3e7ee)", background: "transparent", color: "var(--ink,#1a2230)" }}
+            >
+              <div style={{ fontSize: 12, fontWeight: 600 }}>全部門</div>
+              <div style={{ fontSize: 11, color: "var(--muted,#8a93a0)", marginTop: 2 }}>{detail.cats[cat as CatKey].count}品 · {yen(detail.cats[cat as CatKey].sales)}</div>
+            </button>
+            {deptBreak.map((d) => {
+              const active = dept === d.name;
+              return (
+                <button
+                  key={d.name}
+                  onClick={() => setDept(active ? "all" : d.name)}
+                  style={{ textAlign: "left", padding: "8px 10px", borderRadius: 8, cursor: "pointer", border: active ? `2px solid ${CAT_COLOR[cat as CatKey]}` : "1px solid var(--line,#e3e7ee)", background: active ? "var(--surface2,#f5f7fa)" : "transparent", color: "var(--ink,#1a2230)" }}
+                >
+                  <div style={{ fontSize: 12, fontWeight: 600, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{d.name}</div>
+                  <div style={{ fontSize: 11, color: "var(--ink2,#5b6472)", marginTop: 2 }}>{d.count}品 · {yen(d.sales)}</div>
+                  <div style={{ fontSize: 11, color: "var(--muted,#8a93a0)" }}>平均原価率 {d.cost.toFixed(1)}%</div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* 明細テーブル */}
       <div className="card" style={{ padding: 0, overflow: "hidden" }}>
         <div style={{ overflowX: "auto", maxHeight: "58vh" }}>
@@ -140,6 +193,7 @@ export default function AbcAnalysis() {
               <tr style={{ background: "var(--surface2,#f5f7fa)", position: "sticky", top: 0 }}>
                 <th style={{ textAlign: "left", padding: "8px 10px", whiteSpace: "nowrap" }}>メニュー</th>
                 <th style={{ textAlign: "left", whiteSpace: "nowrap" }}>カテゴリ</th>
+                <th style={{ textAlign: "left", whiteSpace: "nowrap" }}>部門</th>
                 {sortBtn("qty", "販売数")}
                 {sortBtn("sales", "売上(税抜)")}
                 {sortBtn("cost", "原価率")}
@@ -150,7 +204,7 @@ export default function AbcAnalysis() {
             </thead>
             <tbody>
               {rows.length === 0 ? (
-                <tr><td colSpan={8} style={{ padding: 20, textAlign: "center", color: "var(--muted,#8a93a0)" }}>該当なし</td></tr>
+                <tr><td colSpan={9} style={{ padding: 20, textAlign: "center", color: "var(--muted,#8a93a0)" }}>該当なし</td></tr>
               ) : rows.map((x, i) => (
                 <tr key={i} style={{ borderBottom: "1px solid var(--line,#eef1f5)" }}>
                   <td style={{ textAlign: "left", padding: "6px 10px", maxWidth: 240 }}>{x.menu}</td>
@@ -159,6 +213,7 @@ export default function AbcAnalysis() {
                       <span style={{ width: 8, height: 8, borderRadius: 2, background: CAT_COLOR[x.cat] }} />{CAT_LABEL[x.cat]}
                     </span>
                   </td>
+                  <td style={{ textAlign: "left", padding: "6px 10px", fontSize: 11, color: "var(--ink2,#5b6472)", maxWidth: 130, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }} title={x.dept}>{x.dept}</td>
                   <td style={{ textAlign: "right", padding: "6px 10px" }}>{x.qty.toLocaleString()}</td>
                   <td style={{ textAlign: "right", padding: "6px 10px" }}>{yen(x.sales)}</td>
                   <td style={{ textAlign: "right", padding: "6px 10px" }}>{x.cost.toFixed(1)}%</td>
@@ -173,7 +228,7 @@ export default function AbcAnalysis() {
           </table>
         </div>
         <div style={{ fontSize: 11, color: "var(--muted,#8a93a0)", padding: "8px 12px", borderTop: "1px solid var(--line,#eef1f5)" }}>
-          表示 {rows.length} / {detail.count} 品目{cat !== "all" ? `（${CAT_LABEL[cat as CatKey]}）` : ""} · 列見出しクリックで並べ替え · ランクはFWのABC区分
+          表示 {rows.length} / {detail.count} 品目{cat !== "all" ? `（${CAT_LABEL[cat as CatKey]}${dept !== "all" ? " / " + dept : ""}）` : ""} · 列見出しクリックで並べ替え · ランクはFWのABC区分
         </div>
       </div>
     </div>

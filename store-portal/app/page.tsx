@@ -22,6 +22,7 @@ import AbcAnalysis from "@/components/pages/AbcAnalysis";
 import Pop from "@/components/pages/Pop";
 import Timeband from "@/components/pages/Timeband";
 import TimebandAbc from "@/components/pages/TimebandAbc";
+import Promo from "@/components/pages/Promo";
 import Drawings from "@/components/pages/Drawings";
 import CapexPage from "@/components/pages/Capex";
 import Properties from "@/components/pages/Properties";
@@ -159,6 +160,7 @@ function AppShell({ onLogout }: { onLogout: () => void }) {
       case "pop": return <Pop />;
       case "timeband": return <Timeband />;
       case "tbabc": return <TimebandAbc />;
+      case "promoroi": return <Promo />;
       case "drawings": return <Drawings />;
       case "capex": return <CapexPage />;
       case "properties": return <Properties />;

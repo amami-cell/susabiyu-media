@@ -69,7 +69,7 @@ function AppShell({ onLogout }: { onLogout: () => void }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [appTheme, setAppTheme] = useState<"ai-dark" | "ai">("ai-dark");
   const [drawerStore, setDrawerStore] = useState<Store | null>(null);
-  const [build, setBuild] = useState<{ commit: string; builtAt: string }>({ commit: "timeband", builtAt: "11/28 15:00" });
+  const [build, setBuild] = useState<{ commit: string; builtAt: string }>({ commit: "pop-perf", builtAt: "11/28 16:00" });
   const [updateAvailable, setUpdateAvailable] = useState(false);
 
   useEffect(() => {

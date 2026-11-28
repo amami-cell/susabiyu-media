@@ -3,12 +3,14 @@ import { useMemo, useState } from "react";
 import { Icon } from "@/components/Icon";
 import popRaw from "@/lib/popData.json";
 
+interface PopPerf { month: string; kind: string; totalQty: number; totalSales: number; count: number; top: [string, number, number][] }
 interface PopItem {
   id: string; title: string; kind: string; kindLabel: string;
   period: string; sortKey: number; size: number;
   view: string; preview: string; thumb: string; modified: string;
+  perf?: PopPerf | null;
 }
-const POP = popRaw as unknown as { brand: string; updated: string; count: number; items: PopItem[] };
+const POP = popRaw as unknown as { brand: string; updated: string; count: number; items: PopItem[]; perfNote?: string; perfStores?: string[] };
 
 const KINDS: { key: string; label: string }[] = [
   { key: "all", label: "すべて" },
@@ -21,6 +23,7 @@ const KIND_COLOR: Record<string, string> = { kisetsu: "#257de0", cake: "#ee7fac"
 function fmtSize(n: number) {
   return n >= 1_000_000 ? (n / 1_048_576).toFixed(1) + "MB" : Math.round(n / 1024) + "KB";
 }
+const fmtYen = (n: number) => "¥" + Math.round(n).toLocaleString();
 
 export default function Pop() {
   const [kind, setKind] = useState("all");
@@ -103,6 +106,13 @@ export default function Pop() {
             <div style={{ padding: "10px 12px", display: "flex", flexDirection: "column", gap: 6, flex: 1 }}>
               <div style={{ fontSize: 13, fontWeight: 600, lineHeight: 1.35 }}>{it.period}</div>
               <div style={{ fontSize: 11, color: "var(--muted,#8a93a0)", wordBreak: "break-all" }}>{it.title}</div>
+              {it.perf && it.perf.count > 0 && (
+                <div style={{ marginTop: 2, padding: "6px 8px", borderRadius: 7, background: "var(--surface2,#f5f7fa)", fontSize: 11 }}>
+                  <div style={{ color: "var(--muted,#8a93a0)", marginBottom: 2 }}>キャンペーン月の該当商品実績</div>
+                  <div style={{ fontWeight: 700, fontSize: 13 }}>{fmtYen(it.perf.totalSales)}<span style={{ fontSize: 11, fontWeight: 400, color: "var(--ink2,#5b6472)" }}> ・{it.perf.totalQty.toLocaleString()}点 / {it.perf.count}商品</span></div>
+                  {it.perf.top[0] && <div style={{ color: "var(--ink2,#5b6472)", marginTop: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>1位 {it.perf.top[0][0]}（{it.perf.top[0][1]}点）</div>}
+                </div>
+              )}
               <div style={{ marginTop: "auto", display: "flex", gap: 6, alignItems: "center", paddingTop: 6 }}>
                 <button onClick={() => setPreview(it)} className="btn-ghost" style={{ fontSize: 12, padding: "5px 10px", border: "1px solid var(--line,#e3e7ee)", borderRadius: 7, background: "transparent", cursor: "pointer", color: "var(--ink,#1a2230)" }}>
                   <Icon name="Eye" size={13} /> プレビュー
@@ -131,6 +141,27 @@ export default function Pop() {
               <button onClick={() => setPreview(null)} style={{ border: 0, background: "transparent", cursor: "pointer", color: "var(--ink2,#5b6472)" }} aria-label="閉じる"><Icon name="X" size={18} /></button>
             </div>
             <iframe src={preview.preview} title={preview.title} style={{ flex: 1, border: 0, width: "100%" }} />
+            {preview.perf && preview.perf.count > 0 && (
+              <div style={{ borderTop: "1px solid var(--line,#e3e7ee)", padding: "10px 14px", maxHeight: 180, overflowY: "auto" }}>
+                <div style={{ fontSize: 12, fontWeight: 700, marginBottom: 4 }}>
+                  キャンペーン月の該当商品実績（{preview.period}）
+                  <span style={{ fontSize: 11, fontWeight: 400, color: "var(--ink2,#5b6472)", marginLeft: 8 }}>{fmtYen(preview.perf.totalSales)} ・{preview.perf.totalQty.toLocaleString()}点 ・{preview.perf.count}商品</span>
+                </div>
+                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
+                  <tbody>
+                    {preview.perf.top.map((t, i) => (
+                      <tr key={i} style={{ borderBottom: "1px solid var(--line,#eef1f5)" }}>
+                        <td style={{ padding: "3px 6px", color: "var(--muted,#8a93a0)", width: 20 }}>{i + 1}</td>
+                        <td style={{ padding: "3px 6px" }}>{t[0]}</td>
+                        <td style={{ padding: "3px 6px", textAlign: "right", whiteSpace: "nowrap" }}>{t[1].toLocaleString()}点</td>
+                        <td style={{ padding: "3px 6px", textAlign: "right", whiteSpace: "nowrap", fontWeight: 600 }}>{fmtYen(t[2])}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <div style={{ fontSize: 10, color: "var(--muted,#8a93a0)", marginTop: 4 }}>{POP.perfNote}</div>
+              </div>
+            )}
             <div style={{ fontSize: 11, color: "var(--muted,#8a93a0)", padding: "6px 14px", borderTop: "1px solid var(--line,#e3e7ee)" }}>
               プレビューが表示されない場合はGoogleにログイン済みか確認、または「Driveで開く」をご利用ください。
             </div>

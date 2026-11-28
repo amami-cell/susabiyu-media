@@ -25,6 +25,7 @@ export const NAV: NavEntry[] = [
   { k: "abc", icon: "BarChart3", t: "ABC分析" },
   { k: "timeband", icon: "Clock", t: "時間帯別" },
   { k: "tbabc", icon: "Clock4", t: "時間帯別ABC" },
+  { k: "menuhourly", icon: "Soup", t: "時間帯別メニュー" },
   { sec: "販促" },
   { k: "promoroi", icon: "TicketPercent", t: "販促ROI" },
   { k: "pop", icon: "Images", t: "販促物POP" },

@@ -23,6 +23,7 @@ export const NAV: NavEntry[] = [
   { k: "media", icon: "Megaphone", t: "媒体一覧" },
   { k: "reviews", icon: "MessageSquareText", t: "口コミ" },
   { k: "abc", icon: "BarChart3", t: "ABC分析" },
+  { k: "timeband", icon: "Clock", t: "時間帯別" },
   { sec: "販促" },
   { k: "pop", icon: "Images", t: "販促物POP" },
   { k: "schedule", icon: "CalendarDays", t: "スケジュール", g: true },

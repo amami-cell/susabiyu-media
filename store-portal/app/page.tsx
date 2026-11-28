@@ -20,6 +20,7 @@ import Credentials from "@/components/pages/Credentials";
 import Minutes from "@/components/pages/Minutes";
 import AbcAnalysis from "@/components/pages/AbcAnalysis";
 import Pop from "@/components/pages/Pop";
+import Timeband from "@/components/pages/Timeband";
 import Drawings from "@/components/pages/Drawings";
 import CapexPage from "@/components/pages/Capex";
 import Properties from "@/components/pages/Properties";
@@ -68,7 +69,7 @@ function AppShell({ onLogout }: { onLogout: () => void }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [appTheme, setAppTheme] = useState<"ai-dark" | "ai">("ai-dark");
   const [drawerStore, setDrawerStore] = useState<Store | null>(null);
-  const [build, setBuild] = useState<{ commit: string; builtAt: string }>({ commit: "demo-auth-fix", builtAt: "11/28 13:30" });
+  const [build, setBuild] = useState<{ commit: string; builtAt: string }>({ commit: "timeband", builtAt: "11/28 15:00" });
   const [updateAvailable, setUpdateAvailable] = useState(false);
 
   useEffect(() => {
@@ -155,6 +156,7 @@ function AppShell({ onLogout }: { onLogout: () => void }) {
       case "minutes": return <Minutes />;
       case "abc": return <AbcAnalysis />;
       case "pop": return <Pop />;
+      case "timeband": return <Timeband />;
       case "drawings": return <Drawings />;
       case "capex": return <CapexPage />;
       case "properties": return <Properties />;
